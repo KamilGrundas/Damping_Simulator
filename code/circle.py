@@ -16,17 +16,41 @@ class Circle(pygame.sprite.Sprite):
         # Set the position of the sprite
         self.rect = self.image.get_rect(center=pos)
         self.pos = pygame.math.Vector2(self.rect.center)
-        self.speed = 100
+        self.speed = 1
+
+        self.gravity = 100
+
+        self.change = False
 
     def move(self,dt):
 
-        self.pos.x += 1 * self.speed * dt
+        #self.pos.x += 1 * self.speed * dt
 
-        self.rect.centerx = self.pos.x
+        #self.rect.centerx = self.pos.x
 
-        self.pos.y += 1 * self.speed * dt
+        
+        if self.gravity == 0:
+            self.change = True
 
-        self.rect.centery = self.pos.y
+        if self.gravity == 100:
+            self.change = False
+
+        if self.change == True:
+            self.gravity += 1
+            self.pos.y -= self.speed * dt * self.gravity
+        
+        if self.change == False:
+            self.gravity -= 1
+            self.pos.y += self.speed * dt * self.gravity
+
+
+            
+
+
+
+        
+
+        self.rect.centery = int(self.pos.y)
 
 
     def update(self,dt):

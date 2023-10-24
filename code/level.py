@@ -14,7 +14,7 @@ class Level:
 		self.setup()
 
 	def setup(self):
-		self.circle = Circle((300,300), self.all_sprites)
+		self.circle = Circle((SCREEN_WIDTH/2,300), self.all_sprites)
 
 	def run(self,dt):
 		self.display_surface.fill('white')
