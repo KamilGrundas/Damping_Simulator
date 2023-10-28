@@ -18,7 +18,7 @@ class Level:
 
 	def setup(self):
 		self.circle = Circle((SCREEN_WIDTH/2,300), self.all_sprites)
-		self.spring = Spring((SCREEN_WIDTH/3,300), self.all_sprites)
+		self.spring = Spring((SCREEN_WIDTH/2,300),self.circle, self.all_sprites)
 
 	def input(self):
 		keys = pygame.key.get_pressed()

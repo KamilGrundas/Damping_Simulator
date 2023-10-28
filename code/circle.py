@@ -2,6 +2,9 @@ import pygame
 from settings import *
 
 
+
+
+
 class Circle(pygame.sprite.Sprite):
 
     def __init__(self, pos, group):
@@ -22,26 +25,26 @@ class Circle(pygame.sprite.Sprite):
 
         self.change = False
 
-    def move(self,dt):
+    # def move(self,dt):
 
-        #self.pos.x += 1 * self.speed * dt
+    #     #self.pos.x += 1 * self.speed * dt
 
-        #self.rect.centerx = self.pos.x
+    #     #self.rect.centerx = self.pos.x
 
         
-        if self.gravity == 0:
-            self.change = True
+    #     if self.gravity == 0:
+    #         self.change = True
 
-        if self.gravity == 100:
-            self.change = False
+    #     if self.gravity == 100:
+    #         self.change = False
 
-        if self.change == True:
-            self.gravity += 1
-            self.pos.y -= self.speed * dt * self.gravity
+    #     if self.change == True:
+    #         self.gravity += 1
+    #         self.pos.y -= self.speed * dt * self.gravity
         
-        if self.change == False:
-            self.gravity -= 1
-            self.pos.y += self.speed * dt * self.gravity
+    #     if self.change == False:
+    #         self.gravity -= 1
+    #         self.pos.y += self.speed * dt * self.gravity
 
 
             
@@ -50,8 +53,8 @@ class Circle(pygame.sprite.Sprite):
 
         
 
-        self.rect.centery = int(self.pos.y)
+    #     self.rect.centery = int(self.pos.y)
 
 
-    def update(self,dt):
-        self.move(dt)
+    # def update(self,dt):
+    #     self.move(dt)
