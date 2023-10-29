@@ -11,10 +11,11 @@ class Circle(pygame.sprite.Sprite):
         super().__init__(group)
 
         # Create an image surface with a transparent background
-        self.image = pygame.Surface((64, 64), pygame.SRCALPHA)
+        self.image = pygame.Surface((128, 64), pygame.SRCALPHA)
+        self.image.fill("black")
         
         # Draw a green circle on the image surface
-        pygame.draw.circle(self.image, (0, 255, 0), (32, 32), 32)
+        #pygame.draw.circle(self.image, (0, 255, 0), (32, 32), 32)
 
         # Set the position of the sprite
         self.rect = self.image.get_rect(center=pos)
@@ -23,7 +24,7 @@ class Circle(pygame.sprite.Sprite):
         self.speed = 300
         self.max_speed = 300
 
-        self.k = 1
+        self.k = 1.2
 
         self.change_direction = True
 

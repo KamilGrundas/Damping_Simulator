@@ -282,9 +282,9 @@ class Spring(pygame.sprite.Sprite):
         self.x.append(self.time)
         # Use a sine wave to calculate the vertical position
         self.y.append(self.rect.bottom)
-        print(self.circle.rect.top)
+        #print(self.circle.rect.top)
         
-        self.position = (self.circle.rect.top - self.rect.top) + 40
+        self.position = (self.circle.rect.top - self.rect.top)
 
         self.animate_image = pygame.transform.scale(self.original_image, (self.image.get_width(), self.position))
         self.image = self.animate_image.copy()

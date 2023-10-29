@@ -2,6 +2,8 @@ import pygame
 from settings import *
 from circle import Circle
 from spring import Spring
+from silencer import Silencer
+from connector import Connector
 
 class Level:
 	def __init__(self):
@@ -17,8 +19,10 @@ class Level:
 		self.setup()
 
 	def setup(self):
-		self.circle = Circle((SCREEN_WIDTH/2,100), self.all_sprites)
-		self.spring = Spring((SCREEN_WIDTH/2,100),self.circle, self.all_sprites)
+		self.circle = Circle((SCREEN_WIDTH/2 -32,300), self.all_sprites)
+		self.spring = Spring((SCREEN_WIDTH/2,10),self.circle, self.all_sprites)
+		self.silencer = Silencer((SCREEN_WIDTH/2 - 64,100),self.circle, self.all_sprites)
+		self.connector = Connector((SCREEN_WIDTH/2 - 63,100),self.circle, self.all_sprites)
 
 	def input(self):
 		keys = pygame.key.get_pressed()
