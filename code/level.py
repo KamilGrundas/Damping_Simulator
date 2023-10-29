@@ -17,8 +17,8 @@ class Level:
 		self.setup()
 
 	def setup(self):
-		self.circle = Circle((SCREEN_WIDTH/2,300), self.all_sprites)
-		self.spring = Spring((SCREEN_WIDTH/2,300),self.circle, self.all_sprites)
+		self.circle = Circle((SCREEN_WIDTH/2,100), self.all_sprites)
+		self.spring = Spring((SCREEN_WIDTH/2,100),self.circle, self.all_sprites)
 
 	def input(self):
 		keys = pygame.key.get_pressed()
@@ -27,6 +27,10 @@ class Level:
 			self.pause = True
 		elif keys[pygame.K_c]:
 			self.pause = False
+			self.spring.show_graph = False
+		elif keys[pygame.K_w]:
+
+			self.spring.show_graph = True
 
 
 

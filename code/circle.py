@@ -19,32 +19,52 @@ class Circle(pygame.sprite.Sprite):
         # Set the position of the sprite
         self.rect = self.image.get_rect(center=pos)
         self.pos = pygame.math.Vector2(self.rect.center)
-        self.speed = 1
+        self.current_speed = 0
+        self.speed = 300
+        self.max_speed = 300
 
-        self.gravity = 100
+        self.k = 1
 
-        self.change = False
+        self.change_direction = True
 
-    # def move(self,dt):
 
-    #     #self.pos.x += 1 * self.speed * dt
+        self.accelerate = False
+        self.up = True
 
-    #     #self.rect.centerx = self.pos.x
+    def move(self,dt):
 
+        #self.pos.x += 1 * self.speed * dt
+
+        #self.rect.centerx = self.pos.x
+
+        if self.up:
+            self.pos.y -= self.current_speed * dt
+        else:
+            self.pos.y += self.current_speed * dt
         
-    #     if self.gravity == 0:
-    #         self.change = True
-
-    #     if self.gravity == 100:
-    #         self.change = False
-
-    #     if self.change == True:
-    #         self.gravity += 1
-    #         self.pos.y -= self.speed * dt * self.gravity
         
-    #     if self.change == False:
-    #         self.gravity -= 1
-    #         self.pos.y += self.speed * dt * self.gravity
+
+        if self.accelerate:
+
+
+            self.current_speed += self.speed * dt
+            if self.current_speed > self.max_speed:
+                self.accelerate = False
+
+        else:
+
+            self.current_speed -= self.speed * dt
+            if self.current_speed < 0:
+                self.accelerate = True
+                if self.change_direction == True:
+                    self.up = False
+                    self.change_direction = False
+                    self.max_speed = self.max_speed/self.k
+                else:
+                    self.up = True
+                    self.change_direction = True
+                    self.max_speed = self.max_speed/self.k
+
 
 
             
@@ -53,8 +73,8 @@ class Circle(pygame.sprite.Sprite):
 
         
 
-    #     self.rect.centery = int(self.pos.y)
+        self.rect.centery = int(self.pos.y)
 
 
-    # def update(self,dt):
-    #     self.move(dt)
+    def update(self,dt):
+        self.move(dt)
