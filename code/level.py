@@ -4,11 +4,13 @@ from circle import Circle
 from spring import Spring
 from silencer import Silencer
 from connector import Connector
+from side_menu import SideMenu
 
 class Level:
 	def __init__(self):
 
 		self.pause = False
+
 
 		# get the display surface
 		self.display_surface = pygame.display.get_surface()
@@ -19,6 +21,7 @@ class Level:
 		self.setup()
 
 	def setup(self):
+		self.side_menu = SideMenu((SCREEN_WIDTH-SIDE_MENU_WIDTH/2,SCREEN_HEIGHT/2), self.all_sprites)
 		self.circle = Circle((SCREEN_WIDTH/2 -32,300), self.all_sprites)
 		self.spring = Spring((SCREEN_WIDTH/2,10),self.circle, self.all_sprites)
 		self.silencer = Silencer((SCREEN_WIDTH/2 - 64,100),self.circle, self.all_sprites)
@@ -44,3 +47,4 @@ class Level:
 		self.input()
 		if self.pause == False:
 			self.all_sprites.update(dt)
+
