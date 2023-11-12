@@ -5,6 +5,11 @@ SCREEN_HEIGHT = 720
 SIDE_MENU_WIDTH = 300
 TILE_SIZE = 64
 
+#buttons
+PLAY_BUTTON = "graphics/buttons/play-button.png"
+PAUSE_BUTTON = "graphics/buttons/pause-button.png"
+STOP_BUTTON = "graphics/buttons/stop-button.png"
+
 # overlay positions 
 OVERLAY_POSITIONS = {
 	'tool' : (40, SCREEN_HEIGHT - 15), 

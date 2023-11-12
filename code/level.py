@@ -5,6 +5,7 @@ from spring import Spring
 from silencer import Silencer
 from connector import Connector
 from side_menu import SideMenu
+from button import Button
 
 class Level:
 	def __init__(self):
@@ -17,11 +18,13 @@ class Level:
 
 		# sprite groups
 		self.all_sprites = pygame.sprite.Group()
+		self.buttons = pygame.sprite.Group()
 
 		self.setup()
 
 	def setup(self):
 		self.side_menu = SideMenu((SCREEN_WIDTH-SIDE_MENU_WIDTH/2,SCREEN_HEIGHT/2), self.all_sprites)
+		self.start_button = Button((SCREEN_WIDTH-SIDE_MENU_WIDTH+100,150), self.buttons)
 		self.circle = Circle((SCREEN_WIDTH/2 -32,300), self.all_sprites)
 		self.spring = Spring((SCREEN_WIDTH/2,10),self.circle, self.all_sprites)
 		self.silencer = Silencer((SCREEN_WIDTH/2 - 64,100),self.circle, self.all_sprites)
@@ -44,7 +47,9 @@ class Level:
 	def run(self,dt):
 		self.display_surface.fill('white')
 		self.all_sprites.draw(self.display_surface)
+		self.buttons.draw(self.display_surface)
+		self.buttons.update()
 		self.input()
-		if self.pause == False:
+		if self.start_button.is_playing == False:
 			self.all_sprites.update(dt)
 
