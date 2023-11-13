@@ -18,6 +18,7 @@ class Simulator:
 					sys.exit()
   
 			dt = self.clock.tick(60) / 1000
+			#print(self.clock.get_fps())
 			self.level.run(dt)
 			pygame.display.update()
 
