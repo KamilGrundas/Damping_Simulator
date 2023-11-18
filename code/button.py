@@ -1,14 +1,15 @@
 import pygame
 from settings import *
 
+
 class Button(pygame.sprite.Sprite):
     def __init__(self, pos, group):
         super().__init__(group)
 
         self.play_image = pygame.image.load(PLAY_BUTTON).convert_alpha()
         self.pause_image = pygame.image.load(PAUSE_BUTTON).convert_alpha()
-        self.play_image_resized = pygame.transform.scale(self.play_image, (100,100))
-        self.pause_image_resized = pygame.transform.scale(self.pause_image, (100,100))
+        self.play_image_resized = pygame.transform.scale(self.play_image, (100, 100))
+        self.pause_image_resized = pygame.transform.scale(self.pause_image, (100, 100))
         self.image = self.play_image_resized
         self.rect = self.image.get_rect(center=pos)
         self.is_playing = True  # Track whether the button is in play state

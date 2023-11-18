@@ -3,8 +3,8 @@ import time
 from settings import *
 from matplotlib import pyplot as plt
 
-class Silencer(pygame.sprite.Sprite):
 
+class Silencer(pygame.sprite.Sprite):
     def __init__(self, pos, circle, group):
         super().__init__(group)
 
@@ -30,13 +30,9 @@ class Silencer(pygame.sprite.Sprite):
 
         self.show_graph = False
 
-        self.medium = (self.max_height + self.min_height) /2
+        self.medium = (self.max_height + self.min_height) / 2
 
         self.start_time = time.time()
         self.x = []
         self.y = []
         self.time = 0
-
-
-
-
