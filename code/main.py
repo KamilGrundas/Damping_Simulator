@@ -17,9 +17,9 @@ class Simulator:
 					pygame.quit()
 					sys.exit()
   
-			dt = self.clock.tick(60) / 1000
+			self.clock.tick(100)
 			#print(self.clock.get_fps())
-			self.level.run(dt)
+			self.level.run()
 			pygame.display.update()
 
 if __name__ == '__main__':

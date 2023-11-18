@@ -46,7 +46,7 @@ class Level:
 
 
 
-	def run(self,dt):
+	def run(self):
 		self.display_surface.fill('white')
 		self.all_sprites.draw(self.display_surface)
 		self.controls.draw(self.display_surface)
@@ -54,5 +54,5 @@ class Level:
 		self.controls.update()
 		self.input()
 		if self.start_button.is_playing == False:
-			self.all_sprites.update(dt)
+			self.all_sprites.update()
 

@@ -21,8 +21,8 @@ class Circle(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.pos = pygame.math.Vector2(self.rect.center)
         self.current_speed = 0
-        self.speed = 300
-        self.max_speed = 300
+        self.speed = 0.3
+        self.max_speed = 10
 
         self.k = 1.2
 
@@ -32,29 +32,29 @@ class Circle(pygame.sprite.Sprite):
         self.accelerate = False
         self.up = True
 
-    def move(self,dt):
+    def move(self):
 
         #self.pos.x += 1 * self.speed * dt
-
         #self.rect.centerx = self.pos.x
+        #print(self.current_speed)
 
         if self.up:
-            self.pos.y -= self.current_speed * dt
+            self.pos.y -= self.current_speed
         else:
-            self.pos.y += self.current_speed * dt
+            self.pos.y += self.current_speed
         
         
 
         if self.accelerate:
 
 
-            self.current_speed += self.speed * dt
+            self.current_speed += self.speed
             if self.current_speed > self.max_speed:
                 self.accelerate = False
 
         else:
 
-            self.current_speed -= self.speed * dt
+            self.current_speed -= self.speed
             if self.current_speed < 0:
                 self.accelerate = True
                 if self.change_direction == True:
@@ -67,6 +67,8 @@ class Circle(pygame.sprite.Sprite):
                     self.max_speed = self.max_speed/self.k
 
 
+        print(self.max_speed)
+
 
             
 
@@ -77,5 +79,5 @@ class Circle(pygame.sprite.Sprite):
         self.rect.centery = int(self.pos.y)
 
 
-    def update(self,dt):
-        self.move(dt)
+    def update(self):
+        self.move()

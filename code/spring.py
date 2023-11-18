@@ -258,9 +258,9 @@ class Spring(pygame.sprite.Sprite):
         self.time = 0
 
 
-    def update(self, dt):
+    def update(self):
         if self.show_graph == False:
-            self.stretch(dt)
+            self.stretch()
         else:
             plt.rcParams["figure.figsize"] = [7.00, 3.50]
             plt.rcParams["figure.autolayout"] = True
@@ -270,7 +270,7 @@ class Spring(pygame.sprite.Sprite):
             plt.plot(self.x, self.y, marker="o", markersize=2, markeredgecolor="red", markerfacecolor="green")
             plt.show()
 
-    def stretch(self, dt):
+    def stretch(self):
 
         
         self.time = time.time() - self.start_time
