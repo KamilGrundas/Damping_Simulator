@@ -30,10 +30,16 @@ class Level:
             (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, 150), self.controls
         )
         self.playback_speed = Slider(
-            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, 300),
+            SLIDER_POSITIONS[0],
             self.controls,
             self.display_surface,
             "Playback speed",
+        )
+        self.suppression_level = Slider(
+            SLIDER_POSITIONS[1],
+            self.controls,
+            self.display_surface,
+            "Suppresion level",
         )
         self.circle = Circle((SCREEN_WIDTH / 2 - 32, 300), self.all_sprites)
         self.spring = Spring((SCREEN_WIDTH / 2, 10), self.circle, self.all_sprites)
@@ -59,7 +65,7 @@ class Level:
         self.display_surface.fill("white")
         self.all_sprites.draw(self.display_surface)
         self.controls.draw(self.display_surface)
-        self.circle.k = self.playback_speed.k
+        self.circle.k = self.suppression_level.k
         self.controls.update()
         self.input()
         if self.start_button.is_playing == False:

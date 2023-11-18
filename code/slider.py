@@ -58,4 +58,4 @@ class Slider(pygame.sprite.Sprite):
         # Draw the value of the slider (for demonstration purposes)
         font = pygame.font.Font(None, 24)
         value_text = font.render(f"{self.name}: {self.k:.2f}", True, (255, 255, 255))
-        screen.blit(value_text, (self.start_x - 120, self.start_y - 30))
+        screen.blit(value_text, (1010, self.start_y - 35))
