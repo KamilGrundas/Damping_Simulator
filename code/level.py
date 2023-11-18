@@ -26,7 +26,7 @@ class Level:
 	def setup(self):
 		self.side_menu = SideMenu((SCREEN_WIDTH-SIDE_MENU_WIDTH/2,SCREEN_HEIGHT/2), self.all_sprites)
 		self.start_button = Button((SCREEN_WIDTH-SIDE_MENU_WIDTH/2,150), self.controls)
-		self.slider = Slider((SCREEN_WIDTH-SIDE_MENU_WIDTH/2, 300), self.controls)
+		self.playback_speed = Slider((SCREEN_WIDTH-SIDE_MENU_WIDTH/2, 300), self.controls,self.display_surface, "Playback speed")
 		self.circle = Circle((SCREEN_WIDTH/2 -32,300), self.all_sprites)
 		self.spring = Spring((SCREEN_WIDTH/2,10),self.circle, self.all_sprites)
 		self.silencer = Silencer((SCREEN_WIDTH/2 - 64,100),self.circle, self.all_sprites)
@@ -50,7 +50,7 @@ class Level:
 		self.display_surface.fill('white')
 		self.all_sprites.draw(self.display_surface)
 		self.controls.draw(self.display_surface)
-		self.circle.k = self.slider.k
+		self.circle.k = self.playback_speed.k
 		self.controls.update()
 		self.input()
 		if self.start_button.is_playing == False:

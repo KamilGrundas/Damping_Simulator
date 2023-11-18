@@ -67,7 +67,7 @@ class Circle(pygame.sprite.Sprite):
                     self.max_speed = self.max_speed/self.k
 
 
-        print(self.max_speed)
+        #print(self.max_speed)
 
 
             
