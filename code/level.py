@@ -38,7 +38,7 @@ class Level:
         self.time_speed_slider = Slider(
             SLIDER_POSITIONS[0],
             self.controls,
-            "Playback speed",
+            "Playback speed: x",
             0.25,
             2,
             1,
@@ -46,27 +46,27 @@ class Level:
         self.suppression_level_slider = Slider(
             SLIDER_POSITIONS[1],
             self.controls,
-            "Suppresion level",
+            "Suppresion level: ",
             0.25,
             2,
             1,
         )
-        self.suppression_level_slider2 = Slider(
-            SLIDER_POSITIONS[2],
-            self.controls,
-            "Suppresion level",
-            0.25,
-            2,
-            1,
-        )
-        self.suppression_level_slider3 = Slider(
-            SLIDER_POSITIONS[3],
-            self.controls,
-            "Suppresion level",
-            0.25,
-            2,
-            1,
-        )
+        # self.suppression_level_slider2 = Slider(
+        #     SLIDER_POSITIONS[2],
+        #     self.controls,
+        #     "Suppresion level",
+        #     0.25,
+        #     2,
+        #     1,
+        # )
+        # self.suppression_level_slider3 = Slider(
+        #     SLIDER_POSITIONS[3],
+        #     self.controls,
+        #     "Suppresion level",
+        #     0.25,
+        #     2,
+        #     1,
+        # )
         self.circle = Circle((SCREEN_WIDTH / 2 - 32, 300), self.all_sprites)
         self.spring = Spring((SCREEN_WIDTH / 2, 10), self.circle, self.all_sprites)
         self.silencer = Silencer(
@@ -78,8 +78,8 @@ class Level:
 
         self.sliders.add(self.time_speed_slider)
         self.sliders.add(self.suppression_level_slider)
-        self.sliders.add(self.suppression_level_slider2)
-        self.sliders.add(self.suppression_level_slider3)
+        # self.sliders.add(self.suppression_level_slider2)
+        # self.sliders.add(self.suppression_level_slider3)
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -95,7 +95,7 @@ class Level:
     def text_blit(self):
         for slider in self.sliders:
             value_text = self.font.render(
-                f"{slider.name}: {slider.k:.2f}", True, ("black")
+                f"{slider.name}{slider.k:.2f}", True, ("black")
             )
             self.display_surface.blit(value_text, (1010, slider.start_y - 35))
 
