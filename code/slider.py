@@ -3,10 +3,9 @@ from settings import *
 
 
 class Slider(pygame.sprite.Sprite):
-    def __init__(self, pos, group, display_surface, name, min, max, default_value):
+    def __init__(self, pos, group, name, min, max, default_value):
         super().__init__(group)
 
-        self.display_surface = display_surface
         self.name = name
         self.image = pygame.Surface((10, 30), pygame.SRCALPHA)
         self.image.fill("black")
@@ -49,11 +48,8 @@ class Slider(pygame.sprite.Sprite):
 
         self.k = self.a * self.rect.x + self.b
 
-        # print(self.k)
-        self.draw_value(self.display_surface)
-
-    def draw_value(self, screen):
-        # Draw the value of the slider (for demonstration purposes)
-        font = pygame.font.Font(None, 24)
-        value_text = font.render(f"{self.name}: {self.k:.2f}", True, (255, 255, 255))
-        screen.blit(value_text, (1010, self.start_y - 35))
+    # def draw_value(self, screen):
+    #     # Draw the value of the slider (for demonstration purposes)
+    #     font = pygame.font.Font(None, 24)
+    #     value_text = font.render(f"{self.name}: {self.k:.2f}", True, ("black"))
+    #     screen.blit(value_text, (1010, self.start_y - 35))

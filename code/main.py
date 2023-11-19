@@ -18,8 +18,8 @@ class Simulator:
                     pygame.quit()
                     sys.exit()
 
-            self.clock.tick()
-            print(self.clock.get_fps())
+            self.clock.tick(100)
+            # print(self.clock.get_fps())
             self.level.run()
             pygame.display.update()
 
