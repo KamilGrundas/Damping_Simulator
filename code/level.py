@@ -29,9 +29,9 @@ class Level:
         self.setup()
 
     def setup(self):
-        # self.side_menu = SideMenu(
-        #     (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, SCREEN_HEIGHT / 2), self.controls
-        # )
+        self.side_menu = SideMenu(
+            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, SCREEN_HEIGHT / 2), self.controls
+        )
         self.start_button = Button(
             (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, 150), self.controls
         )
