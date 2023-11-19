@@ -3,7 +3,7 @@ from settings import *
 
 
 class Slider(pygame.sprite.Sprite):
-    def __init__(self, pos, group, display_surface, name):
+    def __init__(self, pos, group, display_surface, name, min, max, default_value):
         super().__init__(group)
 
         self.display_surface = display_surface
@@ -20,13 +20,11 @@ class Slider(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.dragging = False  # Flag to track whether the slider is being dragged
 
-        self.max = 2
-        self.min = 0.25
-        self.k = 1  # start value
+        self.k = default_value  # start value
 
         # Set range of slider
-        self.a = (self.max - self.min) / (SLIDER_MAX - SLIDER_MIN)
-        self.b = self.min - self.a * SLIDER_MIN
+        self.a = (max - min) / (SLIDER_MAX - SLIDER_MIN)
+        self.b = min - self.a * SLIDER_MIN
 
         self.rect.x = (self.k - self.b) / self.a
 

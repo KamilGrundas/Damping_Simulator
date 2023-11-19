@@ -39,7 +39,7 @@ class Spring(pygame.sprite.Sprite):
         self.y = []
         self.time = 0
 
-    def update(self):
+    def update(self, time_speed):
         if self.show_graph == False:
             self.stretch()
         else:

@@ -27,23 +27,23 @@ class Circle(pygame.sprite.Sprite):
         self.accelerate = False
         self.up = True
 
-    def move(self):
+    def move(self, time_speed):
         # self.pos.x += 1 * self.speed * dt
         # self.rect.centerx = self.pos.x
         # print(self.current_speed)
 
         if self.up:
-            self.pos.y -= self.current_speed
+            self.pos.y -= self.current_speed * time_speed
         else:
-            self.pos.y += self.current_speed
+            self.pos.y += self.current_speed * time_speed
 
         if self.accelerate:
-            self.current_speed += self.speed
+            self.current_speed += self.speed * time_speed
             if self.current_speed > self.max_speed:
                 self.accelerate = False
 
         else:
-            self.current_speed -= self.speed
+            self.current_speed -= self.speed * time_speed
             if self.current_speed < 0:
                 self.accelerate = True
                 if self.change_direction == True:
@@ -59,5 +59,5 @@ class Circle(pygame.sprite.Sprite):
 
         self.rect.centery = int(self.pos.y)
 
-    def update(self):
-        self.move()
+    def update(self, time_speed):
+        self.move(time_speed)

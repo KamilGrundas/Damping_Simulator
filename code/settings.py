@@ -12,7 +12,7 @@ PAUSE_BUTTON = "graphics/buttons/pause_button.png"
 STOP_BUTTON = "graphics/buttons/stop_button.png"
 
 # sliders
-SLIDER_POSITIONS = ((1100, 300), (1100, 370), (1100, 420))
+SLIDER_POSITIONS = ((1100, 300), (1100, 370), (1100, 420), (1100, 490))
 SLIDER_MAX = 1250
 SLIDER_MIN = 1010
 
