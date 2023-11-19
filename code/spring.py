@@ -34,7 +34,7 @@ class Spring(pygame.sprite.Sprite):
 
         self.medium = (self.max_height + self.min_height) / 2
 
-        self.start_time = time.time()
+        self.start_time = 0
         self.x = []
         self.y = []
         self.time = 0
@@ -59,7 +59,7 @@ class Spring(pygame.sprite.Sprite):
             plt.show()
 
     def stretch(self):
-        self.time = time.time() - self.start_time
+        self.time += 0.01
 
         self.rect = self.image.get_rect(center=self.pos)
         self.rect.top = self.pos.y
