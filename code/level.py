@@ -92,14 +92,16 @@ class Level:
         elif keys[pygame.K_w]:
             self.spring.show_graph = True
 
-    def text_blit(self):
+    def text_blit(self, fps):
+        fps_text = self.font.render(f"{fps}", True, ("black"))
+        self.display_surface.blit(fps_text, (10, 10))
         for slider in self.sliders:
             value_text = self.font.render(
                 f"{slider.name}{slider.k:.2f}", True, ("black")
             )
             self.display_surface.blit(value_text, (1010, slider.start_y - 35))
 
-    def run(self):
+    def run(self, fps):
         self.i += 1
         self.display_surface.fill("white")
         self.all_sprites.draw(self.display_surface)
@@ -108,6 +110,6 @@ class Level:
         time_speed = self.time_speed_slider.k
         self.controls.update()
         self.input()
-        self.text_blit()
+        self.text_blit(fps)
         if self.start_button.is_playing == False:
             self.all_sprites.update(time_speed)

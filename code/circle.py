@@ -51,13 +51,11 @@ class Circle(pygame.sprite.Sprite):
                 if self.change_direction == True:
                     self.up = False
                     self.change_direction = False
-                    self.max_speed = self.max_speed / round(self.k,2)
+                    self.max_speed = self.max_speed / round(self.k, 2)
                 else:
                     self.up = True
                     self.change_direction = True
-                    self.max_speed = self.max_speed / round(self.k,2)
-
-        
+                    self.max_speed = self.max_speed / round(self.k, 2)
 
         # print(self.max_speed)
 
@@ -65,5 +63,3 @@ class Circle(pygame.sprite.Sprite):
 
     def update(self, time_speed):
         self.move(time_speed)
-
-    

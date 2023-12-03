@@ -20,7 +20,7 @@ class Simulator:
 
             self.clock.tick(100)
             # print(self.clock.get_fps())
-            self.level.run()
+            self.level.run(int(self.clock.get_fps()))
             pygame.display.update()
 
 

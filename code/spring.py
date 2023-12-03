@@ -71,8 +71,10 @@ class Spring(pygame.sprite.Sprite):
         # print(self.circle.rect.top)
 
         self.position = self.circle.rect.top - self.rect.top
-
-        self.animate_image = pygame.transform.scale(
-            self.original_image, (self.image.get_width(), self.position)
-        )
+        if self.position > 0:
+            self.animate_image = pygame.transform.scale(
+                self.original_image, (self.image.get_width(), self.position)
+            )
+        else:
+            print("Collision!")
         self.image = self.animate_image.copy()
