@@ -3,8 +3,13 @@ from settings import *
 from matplotlib import pyplot as plt
 from datetime import datetime
 
-def damped_vibrations(start_x,t,k,m,b):
-    return start_x*math.exp((-b/2*m)*t)*math.cos(math.sqrt((k/m)-(b/(2*m))**2)*t)
+
+def damped_vibrations(start_x, t, k, m, b):
+    return (
+        start_x
+        * math.exp((-b / 2 * m) * t)
+        * math.cos(math.sqrt((k / m) - (b / (2 * m)) ** 2) * t)
+    )
 
 
 x = []
@@ -12,8 +17,8 @@ y = []
 t = 0
 
 
-for _ in range(0,1000,1):
-    a = damped_vibrations(1,t,4200,1.5,1)
+for _ in range(0, 1000, 1):
+    a = damped_vibrations(1, t, 4200, 1.5, 1)
     t += 0.01
     x.append(t)
     y.append(a)

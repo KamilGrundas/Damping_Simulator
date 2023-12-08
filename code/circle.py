@@ -18,16 +18,16 @@ class Circle(pygame.sprite.Sprite):
         self.start_pos_y = 0
         self.time = 0
         self.k = 4200
-        self.m = 1.5
-        self.b = 1
-
+        self.m = 2
+        self.b = 2
 
     def move(self, time_speed):
-
         time_speed = round(time_speed, 2)
         self.time += 0.01 * time_speed
 
-        self.pos.y = damped_vibrations(self.start_pos_y,self.time,self.k,self.m,self.b)
+        self.pos.y = damped_vibrations(
+            self.start_pos_y, self.time, self.k, self.m, self.b
+        )
 
         self.rect.bottom = int((self.pos.y - B) / A)
 

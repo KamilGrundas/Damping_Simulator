@@ -2,6 +2,7 @@ import math
 from matplotlib import pyplot as plt
 from datetime import datetime
 
+
 class Graph:
     def __init__(self, object):
         self.object = object

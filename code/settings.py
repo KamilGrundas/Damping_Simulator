@@ -6,17 +6,25 @@ SCREEN_HEIGHT = 720
 SIDE_MENU_WIDTH = 300
 TILE_SIZE = 64
 
-# buttons
+# graphics
 PLAY_BUTTON = "graphics/buttons/play_button.png"
 PAUSE_BUTTON = "graphics/buttons/pause_button.png"
 STOP_BUTTON = "graphics/buttons/stop_button.png"
 
-#Screen scale attributes
+SILENCER_1 = "graphics/silencer.png"
+SILENCER_2 = "graphics/silencer_2.png"
+
+# Screen scale attributes
 A = 0.007017543859649123
 B = -3.052631578947368
 
 C = (SCREEN_HEIGHT - 150) / 4
 D = 150 - C * 150
+
+# Language
+TIME = "Czas"
+START_POSITION = "Pozycja początkowa"
+SPEED = "Prędkość"
 
 
 # sliders
