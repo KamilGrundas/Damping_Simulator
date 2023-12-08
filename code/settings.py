@@ -11,6 +11,14 @@ PLAY_BUTTON = "graphics/buttons/play_button.png"
 PAUSE_BUTTON = "graphics/buttons/pause_button.png"
 STOP_BUTTON = "graphics/buttons/stop_button.png"
 
+#Screen scale attributes
+A = 0.007017543859649123
+B = -3.052631578947368
+
+C = (SCREEN_HEIGHT - 150) / 4
+D = 150 - C * 150
+
+
 # sliders
 SLIDER_POSITIONS = ((1100, 300), (1100, 370), (1100, 440), (1100, 510))
 SLIDER_MAX = 1250

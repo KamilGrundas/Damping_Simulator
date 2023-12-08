@@ -7,6 +7,7 @@ from connector import Connector
 from side_menu import SideMenu
 from button import Button
 from slider import Slider
+from graph import Graph
 
 
 class Level:
@@ -24,7 +25,7 @@ class Level:
 
         self.sliders = pygame.sprite.Group()
 
-        self.i = 0
+
 
         self.setup()
 
@@ -36,7 +37,7 @@ class Level:
             (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, 150), self.controls
         )
         self.time_speed_slider = Slider(
-            SLIDER_POSITIONS[0],
+            SLIDER_POSITIONS[3],
             self.controls,
             "Playback speed: x",
             0.25,
@@ -50,6 +51,14 @@ class Level:
             0.25,
             2,
             1,
+        )
+        self.position_slider = Slider(
+            SLIDER_POSITIONS[0],
+            self.controls,
+            "Start position: ",
+            -2,
+            2,
+            0,
         )
         # self.suppression_level_slider2 = Slider(
         #     SLIDER_POSITIONS[2],
@@ -67,17 +76,21 @@ class Level:
         #     2,
         #     1,
         # )
-        self.circle = Circle((SCREEN_WIDTH / 2 - 32, 300), self.all_sprites)
-        self.spring = Spring((SCREEN_WIDTH / 2, 10), self.circle, self.all_sprites)
-        self.silencer = Silencer(
-            (SCREEN_WIDTH / 2 - 64, 100), self.circle, self.all_sprites
-        )
-        self.connector = Connector(
-            (SCREEN_WIDTH / 2 - 63, 100), self.circle, self.all_sprites
-        )
+        self.circle = Circle(((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2, SCREEN_HEIGHT/2), self.all_sprites)
+        # self.spring = Spring((SCREEN_WIDTH / 2, 10), self.circle, self.all_sprites)
+        # self.silencer = Silencer(
+        #     (SCREEN_WIDTH / 2 - 64, 100), self.circle, self.all_sprites
+        # )
+        # self.connector = Connector(
+        #     (SCREEN_WIDTH / 2 - 63, 100), self.circle, self.all_sprites
+        # )
+
+        self.graph = Graph(self.circle)
+        print(self.graph.object.rect.centery)
 
         self.sliders.add(self.time_speed_slider)
         self.sliders.add(self.suppression_level_slider)
+        self.sliders.add(self.position_slider)
         # self.sliders.add(self.suppression_level_slider2)
         # self.sliders.add(self.suppression_level_slider3)
 
@@ -101,15 +114,21 @@ class Level:
             )
             self.display_surface.blit(value_text, (1010, slider.start_y - 35))
 
+
+
     def run(self, fps):
-        self.i += 1
+
         self.display_surface.fill("white")
         self.all_sprites.draw(self.display_surface)
         self.controls.draw(self.display_surface)
-        self.circle.k = self.suppression_level_slider.k
-        time_speed = self.time_speed_slider.k
+        # self.circle.k = self.suppression_level_slider.k
+        time_speed = self.time_speed_slider.k 
+        
         self.controls.update()
         self.input()
         self.text_blit(fps)
         if self.start_button.is_playing == False:
             self.all_sprites.update(time_speed)
+        else:
+            self.circle.rect.bottom = (self.position_slider.k - B) / A
+            self.circle.start_pos_y = self.position_slider.k
