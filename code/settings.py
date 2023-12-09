@@ -25,6 +25,8 @@ D = 150 - C * 150
 TIME = "Czas"
 START_POSITION = "Pozycja początkowa"
 SPEED = "Prędkość"
+SUPPRESION_LEVEL = "Tłumienie"
+ELASTICITY_COEFFICIENT = "Wsp. sprężystości"
 
 
 # sliders

@@ -8,8 +8,29 @@ class Graph:
         self.object = object
         self.x = []
         self.y = []
-        self.t = 0
 
     def take_points(self):
-        self.x.append(self.t)
-        self.y.append(self.object.rect.centery)
+        self.x.append(self.object.time)
+        self.y.append(self.object.pos.y)
+
+    def show_graph(self):
+        time_form = "%d.%m.%Y"
+
+        plt.rcParams["figure.figsize"] = [12.00, 3.50]
+        plt.rcParams["figure.autolayout"] = True
+        plt.figure(f"Wykres drgań {datetime.now().strftime(time_form)}")
+        plt.title("Wykres drgań x(t)")
+        plt.xlim(0, self.object.time)
+        plt.xlabel("Czas t")
+        plt.ylim(-2, 2)
+        plt.ylabel("Odchylenie x")
+        plt.grid()
+        plt.plot(
+            self.x,
+            self.y,
+            marker="o",
+            markersize=1,
+            markeredgecolor="red",
+            markerfacecolor="green",
+        )
+        plt.show()

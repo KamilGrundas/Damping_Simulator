@@ -44,8 +44,8 @@ class Level:
         self.suppression_level_slider = Slider(
             SLIDER_POSITIONS[1],
             self.controls,
-            "Suppresion level: ",
-            0.25,
+            f"{SUPPRESION_LEVEL}: ",
+            0,
             2,
             1,
         )
@@ -57,14 +57,14 @@ class Level:
             2,
             0,
         )
-        # self.suppression_level_slider2 = Slider(
-        #     SLIDER_POSITIONS[2],
-        #     self.controls,
-        #     "Suppresion level",
-        #     0.25,
-        #     2,
-        #     1,
-        # )
+        self.elasticity_level_slider = Slider(
+            SLIDER_POSITIONS[2],
+            self.controls,
+            f"{ELASTICITY_COEFFICIENT}: ",
+            0,
+            5000,
+            2500,
+        )
         # self.suppression_level_slider3 = Slider(
         #     SLIDER_POSITIONS[3],
         #     self.controls,
@@ -98,11 +98,11 @@ class Level:
         # )
 
         self.graph = Graph(self.circle)
-        print(self.graph.object.rect.centery)
 
         self.sliders.add(self.time_speed_slider)
         self.sliders.add(self.suppression_level_slider)
         self.sliders.add(self.position_slider)
+        self.sliders.add(self.elasticity_level_slider)
         # self.sliders.add(self.suppression_level_slider2)
         # self.sliders.add(self.suppression_level_slider3)
 
@@ -115,7 +115,7 @@ class Level:
             self.pause = False
             self.spring.show_graph = False
         elif keys[pygame.K_w]:
-            self.spring.show_graph = True
+            self.graph.show_graph()
 
     def text_blit(self, fps):
         fps_text = self.font.render(f"{fps}", True, ("black"))
@@ -134,7 +134,9 @@ class Level:
         self.display_surface.fill("white")
         self.all_sprites.draw(self.display_surface)
         self.controls.draw(self.display_surface)
-        # self.circle.k = self.suppression_level_slider.k
+        self.circle.n = self.suppression_level_slider.k
+        self.circle.k = self.elasticity_level_slider.k
+
         time_speed = self.time_speed_slider.k
         self.controls.update()
         self.input()
@@ -143,9 +145,12 @@ class Level:
         self.spring.stretch()
         if self.start_button.is_playing == False:
             self.all_sprites.update(time_speed)
+            self.graph.take_points()
 
         else:
             self.circle.rect.bottom = (self.position_slider.k - B) / A
             self.circle.start_pos_y = self.position_slider.k
         self.silencer_2.move()
         self.spring.stretch()
+        if self.suppression_level_slider.k == 0:
+            self.silencer_2.rect.y = -1000
