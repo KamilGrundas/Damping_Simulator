@@ -22,13 +22,9 @@ class Circle(pygame.sprite.Sprite):
         self.n = 2
 
     def move(self, time):
-
-        self.pos.y = damped_vibrations(
-            self.start_pos_y, time, self.k, self.m, self.n
-        )
+        self.pos.y = damped_vibrations(self.start_pos_y, time, self.k, self.m, self.n)
 
         self.rect.bottom = int((self.pos.y - B) / A)
-        
 
     def update(self, time):
         self.move(time)

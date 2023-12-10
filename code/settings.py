@@ -27,10 +27,18 @@ START_POSITION = "Pozycja początkowa"
 SPEED = "Prędkość"
 SUPPRESION_LEVEL = "Tłumienie"
 ELASTICITY_COEFFICIENT = "Wsp. sprężystości"
+MASS = "Masa"
 
 
 # sliders
-SLIDER_POSITIONS = ((1100, 300), (1100, 370), (1100, 440), (1100, 510))
+SLIDER_POSITIONS = (
+    (1100, 300),
+    (1100, 370),
+    (1100, 440),
+    (1100, 510),
+    (1100, 580),
+    (1100, 650),
+)
 SLIDER_MAX = 1250
 SLIDER_MIN = 1010
 
