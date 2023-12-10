@@ -169,8 +169,8 @@ class Level:
             self.circle.rect.bottom = (self.position_slider.k - B) / A
             self.circle.start_pos_y = self.position_slider.k
             self.circle.time = 0
-            self.graph.x = []
-            self.graph.y = []
+            self.graph.x = [0]
+            self.graph.y = [self.circle.start_pos_y]
         self.silencer_2.move()
         self.spring.stretch()
         if self.suppression_level_slider.k == 0:
