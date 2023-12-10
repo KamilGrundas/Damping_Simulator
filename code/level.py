@@ -12,7 +12,8 @@ from vibrations import damped_vibrations_max
 
 class Level:
     def __init__(self):
-        self.pause = False
+
+        self.time = 0
 
         # get the display surface
         self.display_surface = pygame.display.get_surface()
@@ -110,13 +111,12 @@ class Level:
     def input(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_p]:
-            self.pause = True
-        elif keys[pygame.K_c]:
-            self.pause = False
-            self.spring.show_graph = False
-        elif keys[pygame.K_w]:
-            self.graph.show_graph()
+        if keys[pygame.K_w]:
+            self.graph.show_graph(self.time)
+        # elif keys[pygame.K_c]:
+        #     self.pause = False
+        # elif keys[pygame.K_w]:
+            
 
     def text_blit(self, fps):
         # parameters = self.font.render(
@@ -133,7 +133,7 @@ class Level:
         # self.display_surface.blit(parameters2, (100,200))
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(
-            f"{TIME}: {round(self.circle.time,2)}", True, ("black")
+            f"{TIME}: {round(self.time,2)}", True, ("black")
         )
         self.display_surface.blit(fps_text, (10, 10))
         self.display_surface.blit(time_text, (10, 700))
@@ -150,7 +150,7 @@ class Level:
         self.circle.n = self.suppression_level_slider.k
         self.circle.k = self.elasticity_level_slider.k
 
-        time_speed = self.time_speed_slider.k
+        time_speed = round(self.time_speed_slider.k, 2)
 
         self.controls.update()
         self.input()
@@ -158,8 +158,9 @@ class Level:
 
         self.spring.stretch()
         if self.start_button.is_playing == False:
-            self.all_sprites.update(time_speed)
-            self.graph.take_points()
+            self.all_sprites.update(self.time)
+            self.graph.take_points(self.time)
+            self.time += 0.01 * time_speed
 
         else:
             # start_position_rescaled = self.position_slider.k
@@ -168,9 +169,9 @@ class Level:
             # suppresion_level = self.suppression_level_slider.k
             self.circle.rect.bottom = (self.position_slider.k - B) / A
             self.circle.start_pos_y = self.position_slider.k
-            self.circle.time = 0
-            self.graph.x = [0]
-            self.graph.y = [self.circle.start_pos_y]
+            self.time = 0
+            self.graph.x = []
+            self.graph.y = []
         self.silencer_2.move()
         self.spring.stretch()
         if self.suppression_level_slider.k == 0:
