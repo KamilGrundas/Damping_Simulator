@@ -7,6 +7,7 @@ from side_menu import SideMenu
 from button import Button
 from slider import Slider
 from graph import Graph
+from vibrations import damped_vibrations_max
 
 
 class Level:
@@ -118,6 +119,18 @@ class Level:
             self.graph.show_graph()
 
     def text_blit(self, fps):
+        # parameters = self.font.render(
+        #     f"{damped_vibrations_max(self.elasticity_level_slider.k, 1, self.suppression_level_slider.k)[0]}",
+        #     True,
+        #     ("black"),
+        # )
+        # parameters2 = self.font.render(
+        #     f"{damped_vibrations_max(self.elasticity_level_slider.k, 0.1, self.suppression_level_slider.k)[1]}",
+        #     True,
+        #     ("black"),
+        # )
+        # self.display_surface.blit(parameters, (100,100))
+        # self.display_surface.blit(parameters2, (100,200))
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(
             f"{TIME}: {round(self.circle.time,2)}", True, ("black")
@@ -138,6 +151,7 @@ class Level:
         self.circle.k = self.elasticity_level_slider.k
 
         time_speed = self.time_speed_slider.k
+
         self.controls.update()
         self.input()
         self.text_blit(fps)
@@ -148,8 +162,15 @@ class Level:
             self.graph.take_points()
 
         else:
+            # start_position_rescaled = self.position_slider.k
+            # start_position = self.position_slider.k
+            # elasicity_level = self.elasticity_level_slider.k
+            # suppresion_level = self.suppression_level_slider.k
             self.circle.rect.bottom = (self.position_slider.k - B) / A
             self.circle.start_pos_y = self.position_slider.k
+            self.circle.time = 0
+            self.graph.x = []
+            self.graph.y = []
         self.silencer_2.move()
         self.spring.stretch()
         if self.suppression_level_slider.k == 0:

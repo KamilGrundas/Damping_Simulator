@@ -16,8 +16,9 @@ def damped_vibrations(start_y, t, k, m, n):
         return y
 
 
-# for _ in range(0, 1000, 1):
-#     a = damped_vibrations(1, t, 4200, 1.5, 1)
-#     t += 0.01
-#     x.append(t)
-#     y.append(a)
+def damped_vibrations_max(k, m, n):
+    w_0 = math.sqrt(k / m)
+    h = math.sqrt((w_0**2) * ((n**2) / ((n**2) + math.pi**2)))
+    b = 2 * h * m
+    bk = 2 * w_0 * m
+    return [b, bk]

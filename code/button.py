@@ -7,9 +7,11 @@ class Button(pygame.sprite.Sprite):
         super().__init__(group)
 
         self.play_image = pygame.image.load(PLAY_BUTTON).convert_alpha()
-        self.pause_image = pygame.image.load(PAUSE_BUTTON).convert_alpha()
+        self.replay_image = pygame.image.load(REPLAY_BUTTON).convert_alpha()
         self.play_image_resized = pygame.transform.scale(self.play_image, (100, 100))
-        self.pause_image_resized = pygame.transform.scale(self.pause_image, (100, 100))
+        self.replay_image_resized = pygame.transform.scale(
+            self.replay_image, (100, 100)
+        )
         self.image = self.play_image_resized
         self.rect = self.image.get_rect(center=pos)
         self.is_playing = True  # Track whether the button is in play state
@@ -32,5 +34,5 @@ class Button(pygame.sprite.Sprite):
             self.image = self.play_image_resized
             # Add code here to handle play state
         else:
-            self.image = self.pause_image_resized
+            self.image = self.replay_image_resized
             # Add code here to handle pause state
