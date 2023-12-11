@@ -173,3 +173,8 @@ class Level:
         self.spring.stretch()
         if self.suppression_level_slider.k == 0:
             self.silencer_2.rect.y = -1000
+            self.silencer.rect.y = -1000
+            self.spring.rect.centerx = (SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2
+        else:
+            self.silencer.rect.y = 0
+            self.spring.rect.centerx = ((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2) + 30

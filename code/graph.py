@@ -22,7 +22,7 @@ class Graph:
         plt.title("Wykres drgań x(t)")
         plt.xlim(0, time)
         plt.xlabel("Czas t")
-        plt.ylim(-2, 2)
+        plt.ylim(-2.25, 2.25)
         plt.ylabel("Odchylenie x")
         plt.grid()
         plt.plot(
