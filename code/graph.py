@@ -29,7 +29,7 @@ class Graph:
             self.x,
             self.y,
             marker="o",
-            markersize=1,
+            markersize=0.25,
             markeredgecolor="red",
             markerfacecolor="green",
         )

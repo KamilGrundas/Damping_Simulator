@@ -38,7 +38,7 @@ class Level:
             SLIDER_POSITIONS[4],
             self.controls,
             f"{SPEED}: x",
-            0.25,
+            0.05,
             2,
             1,
         )
@@ -47,8 +47,8 @@ class Level:
             self.controls,
             f"{SUPPRESION_LEVEL}: ",
             0,
-            2,
-            1,
+            10,
+            5,
         )
         self.position_slider = Slider(
             SLIDER_POSITIONS[0],
@@ -71,8 +71,8 @@ class Level:
             self.controls,
             f"{MASS}: ",
             0.1,
-            5,
-            2.5,
+            2,
+            1,
         )
         self.circle = Circle(
             ((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2, SCREEN_HEIGHT / 2), self.all_sprites
@@ -117,18 +117,18 @@ class Level:
         # elif keys[pygame.K_w]:
 
     def text_blit(self, fps):
-        # parameters = self.font.render(
-        #     f"{damped_vibrations_max(self.elasticity_level_slider.k, 1, self.suppression_level_slider.k)[0]}",
-        #     True,
-        #     ("black"),
-        # )
-        # parameters2 = self.font.render(
-        #     f"{damped_vibrations_max(self.elasticity_level_slider.k, 0.1, self.suppression_level_slider.k)[1]}",
-        #     True,
-        #     ("black"),
-        # )
-        # self.display_surface.blit(parameters, (100,100))
-        # self.display_surface.blit(parameters2, (100,200))
+        parameters = self.font.render(
+            f"b: {damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[0]}",
+            True,
+            ("black"),
+        )
+        parameters2 = self.font.render(
+            f"bk: {damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[1]}",
+            True,
+            ("black"),
+        )
+        self.display_surface.blit(parameters, (100,100))
+        self.display_surface.blit(parameters2, (100,200))
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
         self.display_surface.blit(fps_text, (10, 10))
