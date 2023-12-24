@@ -11,7 +11,11 @@ def damped_vibrations(start_y, t, k, m, n):
         w = math.sqrt((w_0**2) - (b / (2 * m)) ** 2)
     except:
         w = 0
-    y = start_y * math.exp((-b / (2 * m)) * t) * math.cos(w * t)
+    if w_0 == 0:
+        y = start_y
+    else:
+        y = start_y * math.exp((-b / (2 * m)) * t) * math.cos(w * t)
+    
     return y
 
 

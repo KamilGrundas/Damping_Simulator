@@ -118,12 +118,12 @@ class Level:
 
     def text_blit(self, fps):
         parameters = self.font.render(
-            f"b: {damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[0]}",
+            f"b: {round(damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[0],2)}",
             True,
             ("black"),
         )
         parameters2 = self.font.render(
-            f"bk: {damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[1]}",
+            f"bk: {round(damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[1],2)}",
             True,
             ("black"),
         )
