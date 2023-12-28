@@ -12,6 +12,9 @@ from vibrations import damped_vibrations_max
 
 class Level:
     def __init__(self):
+
+        self.menu = False
+        self.show_fps = False
         self.time = 0
 
         # get the display surface
@@ -28,11 +31,17 @@ class Level:
         self.setup()
 
     def setup(self):
+        self.menu_button = Button(
+            (50, 50), self.controls, MENU_BUTTON,MENU_BUTTON
+        )
         self.side_menu = SideMenu(
             (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, SCREEN_HEIGHT / 2), self.controls
         )
         self.start_button = Button(
-            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, 150), self.controls
+            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 - 70, 150), self.controls, PAUSE_BUTTON, PLAY_BUTTON
+        )
+        self.replay_button = Button(
+            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 + 70, 150), self.controls, REPLAY_BUTTON_1, REPLAY_BUTTON_1
         )
         self.time_speed_slider = Slider(
             SLIDER_POSITIONS[4],
@@ -112,9 +121,10 @@ class Level:
 
         if keys[pygame.K_w]:
             self.graph.show_graph(self.time)
-        # elif keys[pygame.K_c]:
-        #     self.pause = False
-        # elif keys[pygame.K_w]:
+        elif keys[pygame.K_c]:
+            self.menu = True
+        elif keys[pygame.K_p]:
+            self.show_fps = True
 
     def text_blit(self, fps):
         parameters = self.font.render(
@@ -131,7 +141,8 @@ class Level:
         self.display_surface.blit(parameters2, (100,200))
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
-        self.display_surface.blit(fps_text, (10, 10))
+        if self.show_fps == True:
+            self.display_surface.blit(fps_text, (10, 10))
         self.display_surface.blit(time_text, (10, 700))
         for slider in self.sliders:
             value_text = self.font.render(
@@ -140,6 +151,7 @@ class Level:
             self.display_surface.blit(value_text, (1010, slider.start_y - 35))
 
     def run(self, fps):
+
         self.display_surface.fill("white")
         self.all_sprites.draw(self.display_surface)
         self.controls.draw(self.display_surface)
@@ -159,16 +171,24 @@ class Level:
             self.graph.take_points(self.time)
             self.time += 0.01 * time_speed
 
-        else:
-            # start_position_rescaled = self.position_slider.k
-            # start_position = self.position_slider.k
-            # elasicity_level = self.elasticity_level_slider.k
-            # suppresion_level = self.suppression_level_slider.k
+        elif self.time == 0:
+
             self.circle.rect.bottom = (self.position_slider.k - B) / A
             self.circle.start_pos_y = self.position_slider.k
+            self.replay_button.is_playing = True
+
+
+        if self.replay_button.is_playing == False:
             self.time = 0
             self.graph.x = []
             self.graph.y = []
+            self.start_button.is_playing = True
+
+        if self.menu_button.is_playing == False:
+            self.menu = True
+            self.menu_button.is_playing = True
+            
+
         self.silencer_2.move()
         self.spring.stretch()
         if self.suppression_level_slider.k == 0:

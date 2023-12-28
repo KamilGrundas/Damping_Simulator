@@ -9,7 +9,11 @@ TILE_SIZE = 64
 # graphics
 PLAY_BUTTON = "graphics/buttons/play_button.png"
 PAUSE_BUTTON = "graphics/buttons/pause_button.png"
-REPLAY_BUTTON = "graphics/buttons/replay_button.png"
+
+REPLAY_BUTTON_1 = "graphics/buttons/replay_button_1.png"
+REPLAY_BUTTON_2 = "graphics/buttons/replay_button_2.png"
+
+MENU_BUTTON = "graphics/buttons/menu_button.png"
 
 SILENCER_1 = "graphics/silencer.png"
 SILENCER_2 = "graphics/silencer_2.png"
