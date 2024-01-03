@@ -3,6 +3,7 @@ from settings import *
 from side_menu import SideMenu
 from button import Button
 from level import Level
+from level_2 import Level_2
 
 
 class Menu:
@@ -12,6 +13,8 @@ class Menu:
 
         self.level = Level()
         self.level.menu = True
+        self.level_2 = Level_2()
+        self.level_2.menu = True
         # get the display surface
         self.display_surface = pygame.display.get_surface()
 
@@ -24,9 +27,7 @@ class Menu:
         self.setup()
 
     def setup(self):
-        self.side_menu = SideMenu(
-            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, SCREEN_HEIGHT / 2), self.controls
-        )
+
         self.start_button = Button(
             (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, 150), self.controls, PAUSE_BUTTON, PLAY_BUTTON
         )
@@ -37,6 +38,8 @@ class Menu:
 
         if keys[pygame.K_m]:
             self.level.menu = False
+        elif keys[pygame.K_n]:
+            self.level_2.menu = False
 
 
 
@@ -48,6 +51,9 @@ class Menu:
 
 
         self.controls.update()
-        if self.level.menu == False:
+        if not self.level.menu:
             self.level.run(fps)
+        if not self.level_2.menu:
+            self.level_2.run(fps)
+
 

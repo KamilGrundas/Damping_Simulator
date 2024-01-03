@@ -18,6 +18,10 @@ MENU_BUTTON = "graphics/buttons/menu_button.png"
 SILENCER_1 = "graphics/silencer.png"
 SILENCER_2 = "graphics/silencer_2.png"
 
+WHEEL = "graphics/wheel.png"
+DOT = "graphics/dot.png"
+BLOCK_WHEEL = "graphics/block_wheel.png"
+
 # Screen scale attributes
 A = 0.007017543859649123
 B = -3.052631578947368
