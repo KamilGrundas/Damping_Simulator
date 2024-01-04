@@ -11,6 +11,7 @@ from graph import Graph
 from dot import Dot
 from vibrations import forced_vibrations
 from block_wheel import BlockWheel
+from block import Block
 
 
 class Level_2:
@@ -72,6 +73,24 @@ class Level_2:
             self.all_sprites,
             BLOCK_WHEEL,
         )
+
+        self.block_1 = Block(
+            (self.block_wheel.rect.left - 3, SCREEN_HEIGHT - 250),
+            self.all_sprites,
+        )
+        self.block_2 = Block(
+            (self.block_wheel.rect.right + 3, SCREEN_HEIGHT - 250),
+            self.all_sprites,
+        )
+
+        self.spring = Spring(
+            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2) + 30, 0),
+            self.block_wheel,
+            self.all_sprites,
+        )
+
+        
+        
         # self.connector = Connector(
         #     (SCREEN_WIDTH / 2 - 63, 100), self.circle, self.all_sprites
         # )
@@ -106,8 +125,16 @@ class Level_2:
 
     def run(self, fps):
 
+        self.time += 0.01
+
+        self.block_wheel.move(self.time)
+
+        self.spring.rect.top = self.dot.rect.centery
+
+
         self.display_surface.fill("white")
         self.all_sprites.draw(self.display_surface)
+        self.spring.stretch()
         self.controls.draw(self.display_surface)
         self.all_sprites.update(self.angular_velocity)
 
