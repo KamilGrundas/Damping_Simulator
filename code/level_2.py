@@ -128,13 +128,14 @@ class Level_2:
         self.time += 0.01
 
         self.block_wheel.move(self.time)
-
+        self.spring.rotate(self.dot)
         self.spring.rect.top = self.dot.rect.centery
 
 
         self.display_surface.fill("white")
         self.all_sprites.draw(self.display_surface)
-        self.spring.stretch()
+        
+
         self.controls.draw(self.display_surface)
         self.all_sprites.update(self.angular_velocity)
-
+        # self.spring.stretch()

@@ -1,8 +1,7 @@
 import pygame
 import time
 from settings import *
-from matplotlib import pyplot as plt
-
+import math
 
 class Spring(pygame.sprite.Sprite):
     def __init__(self, pos, object, group):
@@ -24,21 +23,48 @@ class Spring(pygame.sprite.Sprite):
 
     def stretch(self):
         self.rect = self.image.get_rect(center=self.pos)
-        self.rect.top = self.pos.y
 
         self.position = self.object.rect.top - self.rect.top
-
+        
         self.animate_image = pygame.transform.scale(
             self.original_image, (self.image.get_width(), self.position)
         )
         self.image = self.animate_image.copy()
 
-    def rotate(self):
+
+    def get_angle(self, dot, block):
+        dot_position = dot.rect.center
+        block_position = (block.rect.centerx, block.rect.top)
+
+        delta_x = block_position[0]-dot_position[0]
+        delta_y = block_position[1]-dot_position[1]
+        
+        radians = math.asin((delta_x)/math.sqrt(((delta_x)**2)+(delta_y)**2))
+        degrees = math.degrees(radians)
+        
+        return degrees
+    def rotate(self, dot):
+        degrees = self.get_angle(dot,self.object)
+
+    
+
         
         self.rect = self.image.get_rect(center=self.pos)
-        self.rect.top = self.pos.y
 
-        self.position = self.object.rect.top - self.rect.top
+        self.position = self.object.rect.top - dot.rect.centery
+     
 
-        self.rotate_image = pygame.transform.rotate(self.original_image, 30)
+        self.animate_image = pygame.transform.scale(
+            self.original_image, (30, self.position)
+        )
+        self.image = self.animate_image.copy()
+
+        self.rotate_image = pygame.transform.rotate(self.image, degrees)
         self.image = self.rotate_image.copy()
+
+
+
+        self.rect = self.image.get_rect(center=self.pos)
+        self.rect.centerx = dot.rect.centerx + degrees * 1.7
+
+
