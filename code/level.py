@@ -38,13 +38,13 @@ class Level:
             (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, SCREEN_HEIGHT / 2), self.controls
         )
         self.start_button = Button(
-            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 - 70, 150), self.controls, PAUSE_BUTTON, PLAY_BUTTON
+            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 - 70, 75), self.controls, PAUSE_BUTTON, PLAY_BUTTON
         )
         self.replay_button = Button(
-            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 + 70, 150), self.controls, REPLAY_BUTTON_1, REPLAY_BUTTON_1
+            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 + 70, 75), self.controls, REPLAY_BUTTON_1, REPLAY_BUTTON_1
         )
         self.time_speed_slider = Slider(
-            SLIDER_POSITIONS[4],
+            SLIDER_POSITIONS[0],
             self.controls,
             f"{SPEED}: x",
             0.05,
@@ -52,7 +52,7 @@ class Level:
             1,
         )
         self.suppression_level_slider = Slider(
-            SLIDER_POSITIONS[1],
+            SLIDER_POSITIONS[3],
             self.controls,
             f"{SUPPRESION_LEVEL}: ",
             0,
@@ -60,7 +60,7 @@ class Level:
             5,
         )
         self.position_slider = Slider(
-            SLIDER_POSITIONS[0],
+            SLIDER_POSITIONS[2],
             self.controls,
             f"{START_POSITION}: ",
             -2,
@@ -68,7 +68,7 @@ class Level:
             0,
         )
         self.elasticity_level_slider = Slider(
-            SLIDER_POSITIONS[2],
+            SLIDER_POSITIONS[4],
             self.controls,
             f"{ELASTICITY_COEFFICIENT}: ",
             0,
@@ -76,7 +76,7 @@ class Level:
             2500,
         )
         self.mass_slider = Slider(
-            SLIDER_POSITIONS[3],
+            SLIDER_POSITIONS[5],
             self.controls,
             f"{MASS}: ",
             0.1,
@@ -128,17 +128,17 @@ class Level:
 
     def text_blit(self, fps):
         parameters = self.font.render(
-            f"b: {round(damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[0],2)}",
+            f"Wsp. tłumienia: {round(damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[0],2)}",
             True,
             ("black"),
         )
         parameters2 = self.font.render(
-            f"bk: {round(damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[1],2)}",
+            f"Krytyczny wsp. tłumienia: {round(damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[1],2)}",
             True,
             ("black"),
         )
-        self.display_surface.blit(parameters, (100,100))
-        self.display_surface.blit(parameters2, (100,200))
+        self.display_surface.blit(parameters, (1010,225))
+        self.display_surface.blit(parameters2, (1010,250))
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
         if self.show_fps == True:
@@ -149,6 +149,12 @@ class Level:
                 f"{slider.name}{slider.k:.2f}", True, ("black")
             )
             self.display_surface.blit(value_text, (1010, slider.start_y - 35))
+
+    def reset(self):
+        self.time = 0
+        self.graph.x = []
+        self.graph.y = []
+        self.start_button.is_playing = True
 
     def run(self, fps):
 
@@ -179,12 +185,11 @@ class Level:
 
 
         if self.replay_button.is_playing == False:
-            self.time = 0
-            self.graph.x = []
-            self.graph.y = []
-            self.start_button.is_playing = True
+            self.reset()
+            
 
         if self.menu_button.is_playing == False:
+            self.reset()
             self.menu = True
             self.menu_button.is_playing = True
             

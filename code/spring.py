@@ -23,7 +23,7 @@ class Spring(pygame.sprite.Sprite):
 
     def stretch(self):
         self.rect = self.image.get_rect(center=self.pos)
-
+        self.rect.top = self.pos.y
         self.position = self.object.rect.top - self.rect.top
         
         self.animate_image = pygame.transform.scale(
@@ -52,7 +52,6 @@ class Spring(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.pos)
 
         self.position = self.object.rect.top - dot.rect.centery
-     
 
         self.animate_image = pygame.transform.scale(
             self.original_image, (30, self.position)

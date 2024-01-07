@@ -124,6 +124,13 @@ class Level_2:
             self.display_surface.blit(value_text, (1010, slider.start_y - 35))
 
     def run(self, fps):
+        
+        self.controls.update()
+        if self.menu_button.is_playing == False:
+            self.menu = True
+            self.menu_button.is_playing = True
+
+        
 
         self.time += 0.01
 

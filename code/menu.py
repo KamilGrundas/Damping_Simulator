@@ -53,7 +53,7 @@ class Menu:
         self.controls.update()
         if not self.level.menu:
             self.level.run(fps)
-        if not self.level_2.menu:
+        elif not self.level_2.menu:
             self.level_2.run(fps)
 
 
