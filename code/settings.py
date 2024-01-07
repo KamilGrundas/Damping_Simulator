@@ -22,6 +22,9 @@ WHEEL = "graphics/wheel.png"
 DOT = "graphics/dot.png"
 BLOCK_WHEEL = "graphics/block_wheel.png"
 
+DAMPED_VIBRATIONS_IMAGE = "graphics/damped_vibrations.png"
+FORCED_VIBRATIONS_IMAGE = "graphics/forced_vibrations.png"
+
 # Screen scale attributes
 A = 0.007017543859649123
 B = -3.052631578947368

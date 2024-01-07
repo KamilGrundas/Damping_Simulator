@@ -3,6 +3,7 @@ import time
 from settings import *
 import math
 
+
 class Spring(pygame.sprite.Sprite):
     def __init__(self, pos, object, group):
         super().__init__(group)
@@ -25,30 +26,27 @@ class Spring(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.pos)
         self.rect.top = self.pos.y
         self.position = self.object.rect.top - self.rect.top
-        
+
         self.animate_image = pygame.transform.scale(
             self.original_image, (self.image.get_width(), self.position)
         )
         self.image = self.animate_image.copy()
 
-
     def get_angle(self, dot, block):
         dot_position = dot.rect.center
         block_position = (block.rect.centerx, block.rect.top)
 
-        delta_x = block_position[0]-dot_position[0]
-        delta_y = block_position[1]-dot_position[1]
-        
-        radians = math.asin((delta_x)/math.sqrt(((delta_x)**2)+(delta_y)**2))
+        delta_x = block_position[0] - dot_position[0]
+        delta_y = block_position[1] - dot_position[1]
+
+        radians = math.asin((delta_x) / math.sqrt(((delta_x) ** 2) + (delta_y) ** 2))
         degrees = math.degrees(radians)
-        
+
         return degrees
+
     def rotate(self, dot):
-        degrees = self.get_angle(dot,self.object)
+        degrees = self.get_angle(dot, self.object)
 
-    
-
-        
         self.rect = self.image.get_rect(center=self.pos)
 
         self.position = self.object.rect.top - dot.rect.centery
@@ -61,9 +59,5 @@ class Spring(pygame.sprite.Sprite):
         self.rotate_image = pygame.transform.rotate(self.image, degrees)
         self.image = self.rotate_image.copy()
 
-
-
         self.rect = self.image.get_rect(center=self.pos)
         self.rect.centerx = dot.rect.centerx + degrees * 1.7
-
-

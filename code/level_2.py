@@ -16,7 +16,6 @@ from block import Block
 
 class Level_2:
     def __init__(self):
-
         self.menu = False
         self.show_fps = False
         self.time = 0
@@ -35,21 +34,31 @@ class Level_2:
 
         self.setup()
 
+        self.block_wheel.move(self.time)
+
+        self.dot.rotate(self.angular_velocity, 1)
+        self.spring.rotate(self.dot)
+        self.spring.rect.top = self.dot.rect.centery
+
     def setup(self):
-        self.menu_button = Button(
-            (50, 50), self.controls, MENU_BUTTON,MENU_BUTTON
-        )
+        self.menu_button = Button((50, 50), self.controls, MENU_BUTTON, MENU_BUTTON)
         self.side_menu = SideMenu(
             (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, SCREEN_HEIGHT / 2), self.controls
         )
         self.start_button = Button(
-            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 - 70, 150), self.controls, PAUSE_BUTTON, PLAY_BUTTON
+            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 - 70, 75),
+            self.controls,
+            PAUSE_BUTTON,
+            PLAY_BUTTON,
         )
         self.replay_button = Button(
-            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 + 70, 150), self.controls, REPLAY_BUTTON_1, REPLAY_BUTTON_1
+            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 + 70, 75),
+            self.controls,
+            REPLAY_BUTTON_1,
+            REPLAY_BUTTON_1,
         )
         self.time_speed_slider = Slider(
-            SLIDER_POSITIONS[4],
+            SLIDER_POSITIONS[0],
             self.controls,
             f"{SPEED}: x",
             0.05,
@@ -69,17 +78,17 @@ class Level_2:
         )
 
         self.block_wheel = BlockWheel(
-            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2), SCREEN_HEIGHT/2),
+            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2), SCREEN_HEIGHT / 2),
             self.all_sprites,
             BLOCK_WHEEL,
         )
 
         self.block_1 = Block(
-            (self.block_wheel.rect.left - 3, SCREEN_HEIGHT - 250),
+            (self.block_wheel.rect.left - 3, SCREEN_HEIGHT / 2),
             self.all_sprites,
         )
         self.block_2 = Block(
-            (self.block_wheel.rect.right + 3, SCREEN_HEIGHT - 250),
+            (self.block_wheel.rect.right + 3, SCREEN_HEIGHT / 2),
             self.all_sprites,
         )
 
@@ -89,14 +98,12 @@ class Level_2:
             self.all_sprites,
         )
 
-        
-        
+        self.sliders.add(self.time_speed_slider)
         # self.connector = Connector(
         #     (SCREEN_WIDTH / 2 - 63, 100), self.circle, self.all_sprites
         # )
 
         # self.graph = Graph(self.circle)
-
 
         # self.sliders.add(self.suppression_level_slider3)
 
@@ -111,7 +118,6 @@ class Level_2:
             self.show_fps = True
 
     def text_blit(self, fps):
-
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
         if self.show_fps == True:
@@ -124,25 +130,25 @@ class Level_2:
             self.display_surface.blit(value_text, (1010, slider.start_y - 35))
 
     def run(self, fps):
-        
         self.controls.update()
         if self.menu_button.is_playing == False:
             self.menu = True
             self.menu_button.is_playing = True
 
-        
+        time_speed = self.time_speed_slider.k
 
-        self.time += 0.01
-
-        self.block_wheel.move(self.time)
-        self.spring.rotate(self.dot)
-        self.spring.rect.top = self.dot.rect.centery
-
+        if self.start_button.is_playing == False:
+            # self.graph.take_points(self.time)
+            self.time += 0.01 * time_speed
+            self.block_wheel.move(self.time)
+            self.spring.rotate(self.dot)
+            self.spring.rect.top = self.dot.rect.centery
+            self.dot.rotate(self.angular_velocity, time_speed)
 
         self.display_surface.fill("white")
         self.all_sprites.draw(self.display_surface)
-        
 
         self.controls.draw(self.display_surface)
-        self.all_sprites.update(self.angular_velocity)
+
+        self.text_blit(fps)
         # self.spring.stretch()

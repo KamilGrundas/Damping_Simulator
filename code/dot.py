@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 
+
 class Dot(pygame.sprite.Sprite):
     def __init__(self, pos, group, png):
         super().__init__(group)
@@ -19,15 +20,13 @@ class Dot(pygame.sprite.Sprite):
         self.radius = 25
         self.angle = 90  # Początkowy kąt obiektu na okręgu
 
-    def rotate(self, angular_velocity):
-
+    def rotate(self, angular_velocity, time_speed):
         # Oblicz nowy kąt obiektu na okręgu
-        self.angle += angular_velocity
+        self.angle += angular_velocity * time_speed
 
         # Oblicz nową pozycję na okręgu przy użyciu współrzędnych biegunowych
         x = self.radius * pygame.math.Vector2(1, 0).rotate(self.angle).x
         y = self.radius * pygame.math.Vector2(1, 0).rotate(self.angle).y
-
 
         # Ustaw nową pozycję obiektu względem center_point
         self.pos = self.center_point + pygame.math.Vector2(x, y)

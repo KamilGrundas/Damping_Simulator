@@ -12,7 +12,6 @@ from vibrations import damped_vibrations_max
 
 class Level:
     def __init__(self):
-
         self.menu = False
         self.show_fps = False
         self.time = 0
@@ -31,17 +30,21 @@ class Level:
         self.setup()
 
     def setup(self):
-        self.menu_button = Button(
-            (50, 50), self.controls, MENU_BUTTON,MENU_BUTTON
-        )
+        self.menu_button = Button((50, 50), self.controls, MENU_BUTTON, MENU_BUTTON)
         self.side_menu = SideMenu(
             (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, SCREEN_HEIGHT / 2), self.controls
         )
         self.start_button = Button(
-            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 - 70, 75), self.controls, PAUSE_BUTTON, PLAY_BUTTON
+            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 - 70, 75),
+            self.controls,
+            PAUSE_BUTTON,
+            PLAY_BUTTON,
         )
         self.replay_button = Button(
-            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 + 70, 75), self.controls, REPLAY_BUTTON_1, REPLAY_BUTTON_1
+            (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2 + 70, 75),
+            self.controls,
+            REPLAY_BUTTON_1,
+            REPLAY_BUTTON_1,
         )
         self.time_speed_slider = Slider(
             SLIDER_POSITIONS[0],
@@ -137,8 +140,8 @@ class Level:
             True,
             ("black"),
         )
-        self.display_surface.blit(parameters, (1010,225))
-        self.display_surface.blit(parameters2, (1010,250))
+        self.display_surface.blit(parameters, (1010, 225))
+        self.display_surface.blit(parameters2, (1010, 250))
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
         if self.show_fps == True:
@@ -157,7 +160,6 @@ class Level:
         self.start_button.is_playing = True
 
     def run(self, fps):
-
         self.display_surface.fill("white")
         self.all_sprites.draw(self.display_surface)
         self.controls.draw(self.display_surface)
@@ -178,21 +180,17 @@ class Level:
             self.time += 0.01 * time_speed
 
         elif self.time == 0:
-
             self.circle.rect.bottom = (self.position_slider.k - B) / A
             self.circle.start_pos_y = self.position_slider.k
             self.replay_button.is_playing = True
 
-
         if self.replay_button.is_playing == False:
             self.reset()
-            
 
         if self.menu_button.is_playing == False:
             self.reset()
             self.menu = True
             self.menu_button.is_playing = True
-            
 
         self.silencer_2.move()
         self.spring.stretch()
