@@ -39,6 +39,8 @@ SPEED = "Prędkość"
 SUPPRESION_LEVEL = "Tłumienie"
 ELASTICITY_COEFFICIENT = "Wsp. sprężystości"
 MASS = "Masa"
+ANGULAR_VELOCITY = "Prędkość kątowa"
+RADIUS = "Promień"
 
 
 # sliders

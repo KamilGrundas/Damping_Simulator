@@ -1,8 +1,6 @@
 import pygame
 from settings import *
-from circle import Circle
 from spring import Spring
-from silencer import Silencer
 from wheel import Wheel
 from side_menu import SideMenu
 from button import Button
@@ -19,7 +17,7 @@ class Level_2:
         self.menu = False
         self.show_fps = False
         self.time = 0
-        self.angular_velocity = 2
+        self.angular_velocity = 5
 
         # get the display surface
         self.display_surface = pygame.display.get_surface()
@@ -34,7 +32,7 @@ class Level_2:
 
         self.setup()
 
-        self.block_wheel.move(self.time)
+        self.block_wheel.move(0.1, 0.1, 0.1, self.angular_velocity, self.time, 20)
 
         self.dot.rotate(self.angular_velocity, 1)
         self.spring.rotate(self.dot)
@@ -64,6 +62,41 @@ class Level_2:
             0.05,
             2,
             1,
+        )
+
+        self.radius_slider = Slider(
+            SLIDER_POSITIONS[2],
+            self.controls,
+            f"{RADIUS}: ",
+            0.1,
+            0.2,
+            0.15,
+        )
+
+        self.angular_velocity_slider = Slider(
+            SLIDER_POSITIONS[3],
+            self.controls,
+            f"{ANGULAR_VELOCITY}: ",
+            0,
+            5,
+            0,
+        )
+
+        self.elasticity_level_slider = Slider(
+            SLIDER_POSITIONS[4],
+            self.controls,
+            f"{ELASTICITY_COEFFICIENT}: ",
+            75,
+            200,
+            125,
+        )
+        self.mass_slider = Slider(
+            SLIDER_POSITIONS[5],
+            self.controls,
+            f"{MASS}: ",
+            0.1,
+            0.5,
+            0.25,
         )
 
         self.wheel = Wheel(
@@ -105,7 +138,10 @@ class Level_2:
 
         # self.graph = Graph(self.circle)
 
-        # self.sliders.add(self.suppression_level_slider3)
+        self.sliders.add(self.mass_slider)
+        self.sliders.add(self.angular_velocity_slider)
+        self.sliders.add(self.elasticity_level_slider)
+        self.sliders.add(self.radius_slider)
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -131,16 +167,25 @@ class Level_2:
 
     def run(self, fps):
         self.controls.update()
+
         if self.menu_button.is_playing == False:
             self.menu = True
             self.menu_button.is_playing = True
+
+        self.angular_velocity = self.angular_velocity_slider.k
+        m = self.mass_slider.k
+        k = self.elasticity_level_slider.k
+        r = self.radius_slider.k
+        r_scaled = int((r - 0.1) * ((28.6 - 7.125) / (0.4 - 0.1)) + 7.125)
+        self.dot.radius = (r - 0.1) * ((50 - 7.125) / (0.4 - 0.1)) + 7.125
+        self.wheel.scale(r_scaled)
 
         time_speed = self.time_speed_slider.k
 
         if self.start_button.is_playing == False:
             # self.graph.take_points(self.time)
             self.time += 0.01 * time_speed
-            self.block_wheel.move(self.time)
+            self.block_wheel.move(m, self.angular_velocity, r, k, self.time)
             self.spring.rotate(self.dot)
             self.spring.rect.top = self.dot.rect.centery
             self.dot.rotate(self.angular_velocity, time_speed)
