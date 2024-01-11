@@ -32,7 +32,7 @@ class Level_2:
 
         self.setup()
 
-        self.block_wheel.move(0.1, 0.1, 0.1, self.angular_velocity, self.time, 20)
+        self.block_wheel.move(0.1, 0.1, 0.1, self.angular_velocity, self.time)
 
         self.dot.rotate(self.angular_velocity, 1)
         self.spring.rotate(self.dot)
@@ -131,6 +131,8 @@ class Level_2:
             self.all_sprites,
         )
 
+        self.graph = Graph(self.block_wheel)
+
         self.sliders.add(self.time_speed_slider)
         # self.connector = Connector(
         #     (SCREEN_WIDTH / 2 - 63, 100), self.circle, self.all_sprites
@@ -152,6 +154,8 @@ class Level_2:
             self.menu = True
         elif keys[pygame.K_p]:
             self.show_fps = True
+        elif keys[pygame.K_w]:
+            self.graph.show_graph(self.time)
 
     def text_blit(self, fps):
         fps_text = self.font.render(f"{fps}", True, ("black"))
@@ -165,8 +169,15 @@ class Level_2:
             )
             self.display_surface.blit(value_text, (1010, slider.start_y - 35))
 
+    def reset(self):
+        self.time = 0
+        self.graph.x = []
+        self.graph.y = []
+        self.start_button.is_playing = True
+
     def run(self, fps):
         self.controls.update()
+        self.input()
 
         if self.menu_button.is_playing == False:
             self.menu = True
@@ -182,6 +193,10 @@ class Level_2:
 
         time_speed = self.time_speed_slider.k
 
+        if self.replay_button.is_playing == False:
+            self.reset()
+            self.replay_button.is_playing = True
+
         if self.start_button.is_playing == False:
             # self.graph.take_points(self.time)
             self.time += 0.01 * time_speed
@@ -189,6 +204,7 @@ class Level_2:
             self.spring.rotate(self.dot)
             self.spring.rect.top = self.dot.rect.centery
             self.dot.rotate(self.angular_velocity, time_speed)
+            self.graph.take_points(self.time)
 
         self.display_surface.fill("white")
         self.all_sprites.draw(self.display_surface)
