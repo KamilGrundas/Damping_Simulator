@@ -4,6 +4,7 @@ from side_menu import SideMenu
 from button import Button
 from level import Level
 from level_2 import Level_2
+from level_3 import Level_3
 
 
 class Menu:
@@ -12,6 +13,8 @@ class Menu:
         self.level.menu = True
         self.level_2 = Level_2()
         self.level_2.menu = True
+        self.level_3 = Level_3()
+        self.level_3.menu = True
         # get the display surface
         self.display_surface = pygame.display.get_surface()
 
@@ -38,6 +41,13 @@ class Menu:
             FORCED_VIBRATIONS_IMAGE,
         )
 
+        self.dynamic_damped_vibrations = Button(
+            (SCREEN_WIDTH - SCREEN_WIDTH/5, SCREEN_HEIGHT / 2),
+            self.controls,
+            FORCED_VIBRATIONS_IMAGE,
+            FORCED_VIBRATIONS_IMAGE,
+        )
+
     def input(self):
         keys = pygame.key.get_pressed()
 
@@ -55,13 +65,18 @@ class Menu:
         if self.damped_vibrations.is_playing == False:
             self.level.menu = False
             self.damped_vibrations.is_playing = True
-        if self.forced_vibrations.is_playing == False:
+        elif self.forced_vibrations.is_playing == False:
             self.level_2.menu = False
             self.forced_vibrations.is_playing = True
+        elif self.dynamic_damped_vibrations.is_playing == False:
+            self.level_3.menu = False
+            self.dynamic_damped_vibrations.is_playing = True
 
         if not self.level.menu:
             self.level.run(fps)
         elif not self.level_2.menu:
             self.level_2.run(fps)
+        elif not self.level_3.menu:
+            self.level_3.run(fps)
         else:
             self.controls.update()
