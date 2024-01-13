@@ -12,7 +12,6 @@ from block_wheel import BlockWheel
 from block import Block
 from liquid import Liquid
 
-
 class Level_2:
     def __init__(self):
         self.menu = False
@@ -178,8 +177,7 @@ class Level_2:
 
     def reset(self):
         self.time = 0
-        self.graph.x = []
-        self.graph.y = []
+        self.graph.clear_points()
         self.start_button.is_playing = True
 
     def run(self, fps):

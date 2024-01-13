@@ -155,8 +155,7 @@ class Level:
 
     def reset(self):
         self.time = 0
-        self.graph.x = []
-        self.graph.y = []
+        self.graph.clear_points()
         self.start_button.is_playing = True
 
     def run(self, fps):
