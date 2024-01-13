@@ -17,7 +17,7 @@ class Dot(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
 
         self.pos = pygame.math.Vector2(self.rect.center)
-        self.radius = 25
+        self.radius = 15
         self.angle = 90  # Początkowy kąt obiektu na okręgu
 
     def rotate(self, angular_velocity, time_speed):

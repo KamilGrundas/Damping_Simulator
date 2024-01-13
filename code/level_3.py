@@ -1,15 +1,14 @@
 import pygame
 from settings import *
 from spring import Spring
-from wheel import Wheel
 from side_menu import SideMenu
 from button import Button
 from slider import Slider
 from graph import Graph
-from dot import Dot
-from vibrations import forced_vibrations
-from block_wheel import BlockWheel
-from block import Block
+from dynamic_block import DynamicBlock
+from vibrations_c import Solution
+
+
 
 
 class Level_3:
@@ -17,7 +16,6 @@ class Level_3:
         self.menu = False
         self.show_fps = False
         self.time = 0
-        self.angular_velocity = 5
 
         # get the display surface
         self.display_surface = pygame.display.get_surface()
@@ -32,11 +30,16 @@ class Level_3:
 
         self.setup()
 
-        self.block_wheel.move(0.1, 0.1, 0.1, self.angular_velocity, self.time)
+        self.spring.rect.top = 0
+        self.spring_2.pos.y = self.block.rect.bottom
+        self.spring.stretch()
+        self.spring_2.stretch()
 
-        self.dot.rotate(self.angular_velocity, 1)
-        self.spring.rotate(self.dot)
-        self.spring.rect.top = self.dot.rect.centery
+        self.solution = Solution()
+
+        self.solution.generate_solution()
+
+        
 
     def setup(self):
         self.menu_button = Button((50, 50), self.controls, MENU_BUTTON, MENU_BUTTON)
@@ -99,46 +102,31 @@ class Level_3:
             0.25,
         )
 
-        self.wheel = Wheel(
-            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2), 100),
-            self.all_sprites,
-            WHEEL,
-        )
-        self.dot = Dot(
-            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2), 100),
-            self.all_sprites,
-            DOT,
+        self.block = DynamicBlock(
+            ((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2, SCREEN_HEIGHT / 2.5),
+            self.all_sprites, (150, 100)
         )
 
-        self.block_wheel = BlockWheel(
-            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2), SCREEN_HEIGHT / 2),
-            self.all_sprites,
-            BLOCK_WHEEL,
-        )
-
-        self.block_1 = Block(
-            (self.block_wheel.rect.left - 3, SCREEN_HEIGHT / 2),
-            self.all_sprites,
-        )
-        self.block_2 = Block(
-            (self.block_wheel.rect.right + 3, SCREEN_HEIGHT / 2),
-            self.all_sprites,
+        self.dynamic_dumper = DynamicBlock(
+            ((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2, (SCREEN_HEIGHT / 2) + 100),
+            self.all_sprites, (25,25)
         )
 
         self.spring = Spring(
-            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2) + 30, 0),
-            self.block_wheel,
+            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2), 0),
+            self.block,
             self.all_sprites,
         )
 
-        self.graph = Graph(self.block_wheel)
+        self.spring_2 = Spring(
+            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2), 0),
+            self.dynamic_dumper,
+            self.all_sprites,
+        )
+
+        self.graph = Graph(self.block)
 
         self.sliders.add(self.time_speed_slider)
-        # self.connector = Connector(
-        #     (SCREEN_WIDTH / 2 - 63, 100), self.circle, self.all_sprites
-        # )
-
-        # self.graph = Graph(self.circle)
 
         self.sliders.add(self.mass_slider)
         self.sliders.add(self.angular_velocity_slider)
@@ -171,8 +159,7 @@ class Level_3:
 
     def reset(self):
         self.time = 0
-        self.graph.x = []
-        self.graph.y = []
+        self.graph.clear_points()
         self.start_button.is_playing = True
 
     def run(self, fps):
@@ -188,8 +175,6 @@ class Level_3:
         k = self.elasticity_level_slider.k
         r = self.radius_slider.k
         r_scaled = int((r - 0.1) * ((28.6 - 7.125) / (0.4 - 0.1)) + 7.125)
-        self.dot.radius = (r - 0.1) * ((50 - 7.125) / (0.4 - 0.1)) + 7.125
-        self.wheel.scale(r_scaled)
 
         time_speed = self.time_speed_slider.k
 
@@ -200,10 +185,10 @@ class Level_3:
         if self.start_button.is_playing == False:
             # self.graph.take_points(self.time)
             self.time += 0.01 * time_speed
-            self.block_wheel.move(m, self.angular_velocity, r, k, self.time)
-            self.spring.rotate(self.dot)
-            self.spring.rect.top = self.dot.rect.centery
-            self.dot.rotate(self.angular_velocity, time_speed)
+            self.spring.stretch()
+            self.spring_2.stretch()
+            self.spring.rect.top = 0
+            self.spring_2.pos.y = self.block.rect.bottom
             self.graph.take_points(self.time)
 
         self.display_surface.fill("white")
