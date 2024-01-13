@@ -190,6 +190,8 @@ class Level_3:
             self.spring.rect.top = 0
             self.spring_2.pos.y = self.block.rect.bottom
             self.graph.take_points(self.time)
+            self.block.rect.centery = int((self.solution.read_y(self.time)[0] + 2) * ((480 - 285) / (2 + 2)) + 285)
+            self.dynamic_dumper.rect.centery = int((self.solution.read_y(self.time)[1] + 2) * ((600 - 500) / (2 + 2)) + 600)
 
         self.display_surface.fill("white")
         self.all_sprites.draw(self.display_surface)
@@ -197,4 +199,5 @@ class Level_3:
         self.controls.draw(self.display_surface)
 
         self.text_blit(fps)
+
         # self.spring.stretch()

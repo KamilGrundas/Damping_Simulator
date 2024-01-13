@@ -10,7 +10,7 @@ class Solution():
         self.m1 = 50  # masa objektu 1 [kg]
         self.k1 = 1800  # stała sprężystości sprężyny 1 [N/m]
         self.k2 = 100  # stała sprężystości sprężyny 2 (tłumika) [N/m]
-        self.m2 = 2  # masa objektu 2 [kg]
+        self.m2 = 10  # masa objektu 2 [kg]
         self.F1_amplitude = 30  # amplituda siły F1 [N]
         self.DUMP = True  # czy uwzględniamy objekt 2 (tłumik) czy nie
     
@@ -33,19 +33,20 @@ class Solution():
         y0 = [0, 0, 0, 0]
 
         # Czas symulacji
-        t = np.linspace(0, 100, 100000)
+        self.t = np.linspace(0, 100, 100000)
         # Rozwiązanie układu równań różniczkowych
-        solution = odeint(self.model, y0, t)
+        self.solution = odeint(self.model, y0, self.t)
 
+
+    def read_y(self, time):
         # Indeks odpowiadający czasowi t = 0.06
-        index_for_t_06 = np.argmax(t >= 40)
+        index = np.argmax(self.t >= time)
 
         # Odczytanie odchylenia dla t = 0.06 dla obiektu 1 i obiektu 2
-        odchylenie_objekt1_t_06 = solution[index_for_t_06, 0]
-        odchylenie_objekt2_t_06 = solution[index_for_t_06, 2]
+        y_obj_1 = self.solution[index, 0]
+        y_obj_2 = self.solution[index, 2]
 
-        print(f"Odchylenie dla t = 0.06 dla objektu 1: {odchylenie_objekt1_t_06}")
-        print(f"Odchylenie dla t = 0.06 dla objektu 2: {odchylenie_objekt2_t_06}")
+        return y_obj_1*20, y_obj_2*20
 
 
 
