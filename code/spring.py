@@ -51,13 +51,16 @@ class Spring(pygame.sprite.Sprite):
 
         self.position = self.object.rect.top - dot.rect.centery
 
-        self.animate_image = pygame.transform.scale(
-            self.original_image, (30, self.position)
-        )
-        self.image = self.animate_image.copy()
+        try:
+            self.animate_image = pygame.transform.scale(
+                self.original_image, (30, self.position)
+            )
+            self.image = self.animate_image.copy()
 
-        self.rotate_image = pygame.transform.rotate(self.image, degrees)
-        self.image = self.rotate_image.copy()
 
+            self.rotate_image = pygame.transform.rotate(self.image, degrees)
+            self.image = self.rotate_image.copy()
+        except:
+            print("error")
         self.rect = self.image.get_rect(center=self.pos)
         self.rect.centerx = dot.rect.centerx + degrees * 1.7

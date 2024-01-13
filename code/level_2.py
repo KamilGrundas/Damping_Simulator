@@ -10,6 +10,7 @@ from dot import Dot
 from vibrations import forced_vibrations
 from block_wheel import BlockWheel
 from block import Block
+from liquid import Liquid
 
 
 class Level_2:
@@ -39,6 +40,12 @@ class Level_2:
         self.spring.rect.top = self.dot.rect.centery
 
     def setup(self):
+
+        self.liquid = Liquid(
+            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2), SCREEN_HEIGHT - 250),
+            self.all_sprites,
+        )
+
         self.menu_button = Button((50, 50), self.controls, MENU_BUTTON, MENU_BUTTON)
         self.side_menu = SideMenu(
             (SCREEN_WIDTH - SIDE_MENU_WIDTH / 2, SCREEN_HEIGHT / 2), self.controls
@@ -78,7 +85,7 @@ class Level_2:
             self.controls,
             f"{ANGULAR_VELOCITY}: ",
             0,
-            5,
+            50,
             0,
         )
 

@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from vibrations import forced_vibrations, forced_vibrations_2
+from vibrations import forced_vibrations
 
 
 class BlockWheel(pygame.sprite.Sprite):
@@ -18,6 +18,6 @@ class BlockWheel(pygame.sprite.Sprite):
 
     def move(self, m, w, r, k, time):
         # self.pos.y = forced_vibrations(w, time)
-        self.pos.y = forced_vibrations_2(m, w, r, k, time)
+        self.pos.y = forced_vibrations(m, w, r, k, time)
 
         self.rect.bottom = int((self.pos.y + 2) * ((720 - 285) / (2 + 2)) + 285)
