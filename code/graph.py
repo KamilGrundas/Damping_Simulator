@@ -15,6 +15,8 @@ class Graph:
         self.x_3 = []
         self.y_3 = []
 
+        
+
     def take_points(self, time):
         if self.draw_counter == 1:
             self.x_1.append(time)
@@ -52,13 +54,16 @@ class Graph:
     def show_graph(self, time):
         time_form = "%d.%m.%Y"
 
+        all_y = self.y_1 + self.y_2 + self.y_3
+        max_y = max(all_y)
+
         plt.rcParams["figure.figsize"] = [12.00, 3.50]
         plt.rcParams["figure.autolayout"] = True
         plt.figure(f"Wykres drgań {datetime.now().strftime(time_form)}")
         plt.title("Wykres drgań x(t)")
         plt.xlim(0, time)
         plt.xlabel("Czas t")
-        plt.ylim(-2.25, 2.25)
+        plt.ylim(max_y + 0.5 * max_y, -max_y -  0.5 * max_y)
         plt.ylabel("Odchylenie x")
         plt.grid()
         plt.plot(

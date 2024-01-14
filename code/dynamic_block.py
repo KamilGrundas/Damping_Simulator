@@ -16,8 +16,8 @@ class DynamicBlock(pygame.sprite.Sprite):
 
         self.pos = pygame.math.Vector2(self.rect.center)
 
-    def move(self, m, w, r, k, time):
+    def move(self, y):
         # self.pos.y = forced_vibrations(w, time)
-        self.pos.y = 0
+        self.pos.y = y
 
-        self.rect.bottom = int((self.pos.y + 2) * ((720 - 285) / (2 + 2)) + 285)
+        self.rect.bottom = int((self.pos.y + 0.2) * ((680 - 100) / (0.2 + 0.2)) + 100)

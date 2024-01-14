@@ -44,8 +44,8 @@ class Menu:
         self.dynamic_damped_vibrations = Button(
             (SCREEN_WIDTH - SCREEN_WIDTH/5, SCREEN_HEIGHT / 2),
             self.controls,
-            FORCED_VIBRATIONS_IMAGE,
-            FORCED_VIBRATIONS_IMAGE,
+            DYNAMIC_DAMPER_IMAGE,
+            DYNAMIC_DAMPER_IMAGE,
         )
 
     def input(self):

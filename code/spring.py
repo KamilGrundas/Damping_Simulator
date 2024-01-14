@@ -26,10 +26,12 @@ class Spring(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.pos)
         self.rect.top = self.pos.y
         self.position = self.object.rect.top - self.rect.top
-
-        self.animate_image = pygame.transform.scale(
-            self.original_image, (self.image.get_width(), self.position)
-        )
+        try:
+            self.animate_image = pygame.transform.scale(
+                self.original_image, (self.image.get_width(), self.position)
+            )
+        except:
+            print("error")
         self.image = self.animate_image.copy()
 
     def get_angle(self, dot, block):

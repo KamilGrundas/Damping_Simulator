@@ -28,7 +28,7 @@ def damped_vibrations_max(k, m, n):
 
 
 def forced_vibrations(m, w, r, k, t):
-    b = 0
+    b = 0.1
     y = ((m*(w**2)*r)/math.sqrt(((k-m*(w)**2)**2)+((b*(w**2))**2)))*math.cos(w*t)
     return y
 

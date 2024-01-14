@@ -15,6 +15,8 @@ REPLAY_BUTTON_2 = "graphics/buttons/replay_button_2.png"
 
 MENU_BUTTON = "graphics/buttons/menu_button.png"
 
+DAMPER_BUTTON = "graphics/buttons/damper_button.png"
+
 SILENCER_1 = "graphics/silencer.png"
 SILENCER_2 = "graphics/silencer_2.png"
 
@@ -24,6 +26,7 @@ BLOCK_WHEEL = "graphics/block_wheel.png"
 
 DAMPED_VIBRATIONS_IMAGE = "graphics/damped_vibrations.png"
 FORCED_VIBRATIONS_IMAGE = "graphics/forced_vibrations.png"
+DYNAMIC_DAMPER_IMAGE = "graphics/dynamic_damper.png"
 
 # Screen scale attributes
 A = 0.007017543859649123
