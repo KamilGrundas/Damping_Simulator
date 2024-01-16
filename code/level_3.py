@@ -6,7 +6,6 @@ from button import Button
 from slider import Slider
 from graph import Graph
 from dynamic_block import DynamicBlock
-from vibrations_c import Solution
 from vibrations import dynamic_dumping
 
 
@@ -34,9 +33,6 @@ class Level_3:
         self.spring.stretch()
         self.spring_2.stretch()
 
-        self.solution = Solution()
-
-        self.solution.generate_solution()
 
     def setup(self):
         self.menu_button = Button((50, 50), self.controls, MENU_BUTTON, MENU_BUTTON)
@@ -71,7 +67,7 @@ class Level_3:
             f"{ELASTICITY_COEFFICIENT}: ",
             25,
             225,
-            100,
+            78.95683520871486,
         )
         self.mass_slider = Slider(
             SLIDER_POSITIONS[5],
@@ -125,6 +121,21 @@ class Level_3:
             self.graph.show_graph(self.time / 25)
 
     def text_blit(self, fps):
+        parameters = self.font.render(
+            f"Optymalny wsp. spr. :{round(dynamic_dumping( self.mass_slider.k, self.elasticity_level_slider.k, self.time)[2],2)}",
+            True,
+            ("black"),
+        )
+        # parameters2 = self.font.render(
+        #     f"Krytyczny wsp. tłumienia: {round(damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[1],2)}",
+        #     True,
+        #     ("black"),
+        # )
+
+        self.display_surface.blit(parameters, (1010, 225))
+        # self.display_surface.blit(parameters2, (1010, 250))
+
+
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
         if self.show_fps == True:
@@ -157,8 +168,6 @@ class Level_3:
         if self.replay_button.is_playing == False:
             self.reset()
             self.replay_button.is_playing = True
-
-        print(dynamic_dumping(m2, k2, self.time))
 
         if self.start_button.is_playing == False:
             self.time += 0.01 * time_speed

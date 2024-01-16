@@ -39,8 +39,7 @@ def dynamic_dumping(m2, k2, t):
     k1 = 1800
     m1 = 50
     f = 50
-    p0 = 2 * np.pi
-    p = p0
+    p = 2 * np.pi
 
     # Calculate B1 and B2 using the provided formulas
     denominator = m1 * m2 * p**4 - (m1 * k2 + (k1 + k2) * m2) * p**2 + k1 * k2
@@ -49,4 +48,6 @@ def dynamic_dumping(m2, k2, t):
     y1 = b1 * np.sin(p * t)
     y2 = b2 * np.sin(p * t)
 
-    return y1, y2
+    optimal_k2 = m2 * p**2
+
+    return y1, y2, optimal_k2
