@@ -7,7 +7,7 @@ from side_menu import SideMenu
 from button import Button
 from slider import Slider
 from graph import Graph
-from vibrations import damped_vibrations_max
+from vibrations import damped_vibrations_max, damped_vibrations
 
 
 class Level:
@@ -131,17 +131,29 @@ class Level:
 
     def text_blit(self, fps):
         parameters = self.font.render(
-            f"Wsp. tłumienia: {round(damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[0],2)}",
+            f"Wsp. tłumienia (h): {round(damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[0],2)}",
             True,
             ("black"),
         )
         parameters2 = self.font.render(
-            f"Krytyczny wsp. tłumienia: {round(damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[1],2)}",
+            f"Kryt. wsp. tłumienia (hk): {round(damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[1],2)}",
+            True,
+            ("black"),
+        )
+        parameters3 = self.font.render(
+            f"ω: {round(damped_vibrations(self.position_slider.k,self.time,self.elasticity_level_slider.k,self.mass_slider.k,self.suppression_level_slider.k)[1],2)}",
+            True,
+            ("black"),
+        )
+        parameters4 = self.font.render(
+            f"ωt: {round(damped_vibrations(self.position_slider.k,self.time,self.elasticity_level_slider.k,self.mass_slider.k,self.suppression_level_slider.k)[2],2)}",
             True,
             ("black"),
         )
         self.display_surface.blit(parameters, (1010, 225))
         self.display_surface.blit(parameters2, (1010, 250))
+        self.display_surface.blit(parameters3, (1010, 275))
+        self.display_surface.blit(parameters4, (1010, 300))
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
         if self.show_fps == True:

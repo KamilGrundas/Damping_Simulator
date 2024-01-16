@@ -1,25 +1,33 @@
-import numpy as np
+import pygame
+import sys
 
-# Redefine given data due to reset of execution state
-m1 = 50  # Mass m1 in kg
-k1 = 1800  # Spring constant k1 in N/m
-m2 = 2  # Mass m2 in kg (damper mass)
-p0 = 2 * np.pi  # Corrected operating frequency in rad/s
-k2 = m2 * p0**2  # Calculated spring constant k2 based on B1 = 0 condition
+# Inicjalizacja Pygame
+pygame.init()
 
+# Ustawienia okna
+size = (400, 300)
+screen = pygame.display.set_mode(size)
+pygame.display.set_caption("Wyświetlanie Omegi")
 
-# Given force
-F = 50  # Force in N
+# Wybór czcionki
+font_size = 48
+font = pygame.font.Font(None, font_size)
 
-# Since p is equal to p0 in this case, we can directly use p0 for calculations
-p = p0
+# Tworzenie tekstowej powierzchni
+text = font.render("ω", True, (255, 255, 255))
 
+# Główna pętla
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
-# Calculate B1 and B2 using the provided formulas
-denominator = m1 * m2 * p**4 - (m1 * k2 + (k1 + k2) * m2) * p**2 + k1 * k2
-b1 = (k2 - m2 * p**2) / denominator * F
-b2 = k2 / denominator * F
-# Output all the given data, calculated k2, and the calculated frequencies
-print(
-    f"Masa 1: {m1}\nSprężystość sprężyny 1: {k1}\nMasa 2: {m2}, {p0}\nSprężystość sprężyny 2: {k2}\nAmplituda 1: {b1}\nAmplituda 2: {b2}"
-)
+    # Czyszczenie ekranu i rysowanie tekstu
+    screen.fill((0, 0, 0))
+    screen.blit(text, (50, 50))
+    pygame.display.flip()
+
+# Zakończenie Pygame
+pygame.quit()
+sys.exit()

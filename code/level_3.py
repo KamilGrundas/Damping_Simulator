@@ -33,7 +33,6 @@ class Level_3:
         self.spring.stretch()
         self.spring_2.stretch()
 
-
     def setup(self):
         self.menu_button = Button((50, 50), self.controls, MENU_BUTTON, MENU_BUTTON)
         self.side_menu = SideMenu(
@@ -72,7 +71,7 @@ class Level_3:
         self.mass_slider = Slider(
             SLIDER_POSITIONS[5],
             self.controls,
-            f"{MASS}: ",
+            f"{MASS} tłumika: ",
             0.5,
             4.5,
             2,
@@ -134,7 +133,6 @@ class Level_3:
 
         self.display_surface.blit(parameters, (1010, 225))
         # self.display_surface.blit(parameters2, (1010, 250))
-
 
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
