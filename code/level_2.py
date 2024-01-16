@@ -12,6 +12,7 @@ from block_wheel import BlockWheel
 from block import Block
 from liquid import Liquid
 
+
 class Level_2:
     def __init__(self):
         self.menu = False
@@ -39,7 +40,6 @@ class Level_2:
         self.spring.rect.top = self.dot.rect.centery
 
     def setup(self):
-
         self.liquid = Liquid(
             (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2), SCREEN_HEIGHT - 250),
             self.all_sprites,

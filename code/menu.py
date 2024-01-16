@@ -42,7 +42,7 @@ class Menu:
         )
 
         self.dynamic_damped_vibrations = Button(
-            (SCREEN_WIDTH - SCREEN_WIDTH/5, SCREEN_HEIGHT / 2),
+            (SCREEN_WIDTH - SCREEN_WIDTH / 5, SCREEN_HEIGHT / 2),
             self.controls,
             DYNAMIC_DAMPER_IMAGE,
             DYNAMIC_DAMPER_IMAGE,

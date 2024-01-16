@@ -59,7 +59,6 @@ class Spring(pygame.sprite.Sprite):
             )
             self.image = self.animate_image.copy()
 
-
             self.rotate_image = pygame.transform.rotate(self.image, degrees)
             self.image = self.rotate_image.copy()
         except:

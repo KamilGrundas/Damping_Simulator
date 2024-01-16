@@ -15,8 +15,6 @@ class Graph:
         self.x_3 = []
         self.y_3 = []
 
-        
-
     def take_points(self, time):
         if self.draw_counter == 1:
             self.x_1.append(time)
@@ -27,7 +25,7 @@ class Graph:
         elif self.draw_counter == 3:
             self.x_3.append(time)
             self.y_3.append(self.object.pos.y)
-    
+
     def clear_points(self):
         if self.clear_counter == 4:
             print("Czyści 1")
@@ -49,7 +47,7 @@ class Graph:
             self.clear_counter = 4
         else:
             self.clear_counter += 1
-            self.draw_counter +=1
+            self.draw_counter += 1
 
     def show_graph(self, time):
         time_form = "%d.%m.%Y"
@@ -63,7 +61,7 @@ class Graph:
         plt.title("Wykres drgań x(t)")
         plt.xlim(0, time)
         plt.xlabel("Czas t")
-        plt.ylim(max_y + 0.5 * max_y, -max_y -  0.5 * max_y)
+        plt.ylim(max_y + 0.5 * max_y, -max_y - 0.5 * max_y)
         plt.ylabel("Odchylenie x")
         plt.grid()
         plt.plot(

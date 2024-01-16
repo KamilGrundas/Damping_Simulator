@@ -2,7 +2,6 @@ import pygame
 from settings import *
 
 
-
 class DynamicBlock(pygame.sprite.Sprite):
     def __init__(self, pos, group, size):
         super().__init__(group)
@@ -20,4 +19,4 @@ class DynamicBlock(pygame.sprite.Sprite):
         # self.pos.y = forced_vibrations(w, time)
         self.pos.y = y
 
-        self.rect.bottom = int((self.pos.y + 0.2) * ((680 - 100) / (0.2 + 0.2)) + 100)
+        self.rect.bottom = int((self.pos.y + 1) * ((680 - 100) / (1 + 1)) + 100)
