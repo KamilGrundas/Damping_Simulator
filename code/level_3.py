@@ -23,6 +23,7 @@ class Level_3:
         self.controls = pygame.sprite.Group()
 
         self.font = pygame.font.Font(None, 24)
+        self.font_40 = pygame.font.Font(None, 40)
 
         self.sliders = pygame.sprite.Group()
 
@@ -30,8 +31,8 @@ class Level_3:
 
         self.spring.rect.top = 0
         self.spring_2.pos.y = self.block.rect.bottom
-        self.spring.stretch()
-        self.spring_2.stretch()
+        self.spring.stretch(True)
+        self.spring_2.stretch(True)
 
     def setup(self):
         self.menu_button = Button((50, 50), self.controls, MENU_BUTTON, MENU_BUTTON)
@@ -60,18 +61,36 @@ class Level_3:
             1,
         )
 
-        self.elasticity_level_slider = Slider(
-            SLIDER_POSITIONS[4],
+        self.mass_1_slider = Slider(
+            SLIDER_POSITIONS[2],
             self.controls,
-            f"{ELASTICITY_COEFFICIENT}: ",
-            25,
-            225,
-            78.95683520871486,
+            f"{MASS} (m1): ",
+            45,
+            100,
+            70,
         )
-        self.mass_slider = Slider(
+
+        self.elasticity_level_1_slider = Slider(
+            SLIDER_POSITIONS[3],
+            self.controls,
+            f"{ELASTICITY_COEFFICIENT} (k1): ",
+            500,
+            2500,
+            1500,
+        )
+
+        self.elasticity_level_2_slider = Slider(
             SLIDER_POSITIONS[5],
             self.controls,
-            f"{MASS} tłumika: ",
+            f"{ELASTICITY_COEFFICIENT} (k2): ",
+            25,
+            225,
+            120,
+        )
+        self.mass_2_slider = Slider(
+            SLIDER_POSITIONS[4],
+            self.controls,
+            f"{MASS} tłumika (m2): ",
             0.5,
             4.5,
             2,
@@ -104,9 +123,10 @@ class Level_3:
         self.graph = Graph(self.block)
 
         self.sliders.add(self.time_speed_slider)
-        self.sliders.add(self.elasticity_level_slider)
-        self.sliders.add(self.mass_slider)
-
+        self.sliders.add(self.elasticity_level_1_slider)
+        self.sliders.add(self.mass_1_slider)
+        self.sliders.add(self.elasticity_level_2_slider)
+        self.sliders.add(self.mass_2_slider)
     def input(self):
         keys = pygame.key.get_pressed()
 
@@ -121,18 +141,24 @@ class Level_3:
 
     def text_blit(self, fps):
         parameters = self.font.render(
-            f"Optymalny wsp. spr. :{round(dynamic_dumping( self.mass_slider.k, self.elasticity_level_slider.k, self.time)[2],2)}",
+            f"{OPTIMAL_ELASCITY} (k2):{round(dynamic_dumping(self.mass_1_slider.k, self.elasticity_level_1_slider.k, self.mass_2_slider.k, self.elasticity_level_2_slider.k, self.time)[2],2)}",
             True,
             ("black"),
         )
-        # parameters2 = self.font.render(
-        #     f"Krytyczny wsp. tłumienia: {round(damped_vibrations_max(self.elasticity_level_slider.k, self.mass_slider.k, self.suppression_level_slider.k)[1],2)}",
-        #     True,
-        #     ("black"),
-        # )
+        parameters2 = self.font_40.render(
+            "m1",
+            True,
+            ("white"),
+        )
+        parameters3 = self.font_40.render(
+            "k1",
+            True,
+            ("black"),
+        )
 
         self.display_surface.blit(parameters, (1010, 225))
-        # self.display_surface.blit(parameters2, (1010, 250))
+        self.display_surface.blit(parameters2, (self.block.rect.centerx - 20, self.block.rect.centery - 15))
+        self.display_surface.blit(parameters3, (self.spring.rect.centerx + 20, self.spring.rect.centery))
 
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
@@ -154,8 +180,11 @@ class Level_3:
         self.controls.update()
         self.input()
 
-        m2 = self.mass_slider.k
-        k2 = self.elasticity_level_slider.k
+
+        m1 = self.mass_1_slider.k
+        k1 = self.elasticity_level_1_slider.k
+        m2 = self.mass_2_slider.k
+        k2 = self.elasticity_level_2_slider.k
 
         if self.menu_button.is_playing == False:
             self.menu = True
@@ -170,10 +199,10 @@ class Level_3:
         if self.start_button.is_playing == False:
             self.time += 0.01 * time_speed
 
-            self.block.move(dynamic_dumping(m2, k2, self.time)[0])
+            self.block.move(dynamic_dumping(m1,k1,m2, k2, self.time)[0])
             self.dynamic_dumper.rect.centery = (
                 int(
-                    (dynamic_dumping(m2, k2, self.time)[1] + 1)
+                    (dynamic_dumping(m1,k1,m2, k2, self.time)[1] + 1)
                     * ((480 - 285) / (1 + 1))
                     + 285
                 )
@@ -181,8 +210,8 @@ class Level_3:
             )
 
             self.graph.take_points(self.time / 25)
-            self.spring.stretch()
-            self.spring_2.stretch()
+            self.spring.stretch(True)
+            self.spring_2.stretch(True)
             self.spring.rect.top = 0
             self.spring_2.pos.y = self.block.rect.bottom - 3
 

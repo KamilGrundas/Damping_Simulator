@@ -44,6 +44,7 @@ ELASTICITY_COEFFICIENT = "Wsp. sprężystości"
 MASS = "Masa"
 ANGULAR_VELOCITY = "Prędkość kątowa"
 RADIUS = "Promień"
+OPTIMAL_ELASCITY = "Optymalny wsp. spr."
 
 
 # sliders

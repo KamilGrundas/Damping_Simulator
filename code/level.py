@@ -184,7 +184,7 @@ class Level:
         self.input()
         self.text_blit(fps)
 
-        self.spring.stretch()
+        self.spring.stretch(True)
         if self.start_button.is_playing == False:
             self.all_sprites.update(self.time)
             self.graph.take_points(self.time)
@@ -204,7 +204,7 @@ class Level:
             self.menu_button.is_playing = True
 
         self.silencer_2.move()
-        self.spring.stretch()
+        self.spring.stretch(True)
         if self.suppression_level_slider.k == 0:
             self.silencer_2.rect.y = -1000
             self.silencer.rect.y = -1000

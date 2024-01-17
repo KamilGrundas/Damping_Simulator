@@ -6,11 +6,8 @@ from side_menu import SideMenu
 from button import Button
 from slider import Slider
 from graph import Graph
-from dot import Dot
 from vibrations import forced_vibrations
-from block_wheel import BlockWheel
-from block import Block
-from liquid import Liquid
+from dynamic_block import DynamicBlock
 
 
 class Level_2:
@@ -18,7 +15,6 @@ class Level_2:
         self.menu = False
         self.show_fps = False
         self.time = 0
-        self.angular_velocity = 5
 
         # get the display surface
         self.display_surface = pygame.display.get_surface()
@@ -33,17 +29,9 @@ class Level_2:
 
         self.setup()
 
-        self.block_wheel.move(0.1, 0.1, 0.1, self.angular_velocity, self.time)
 
-        self.dot.rotate(self.angular_velocity, 1)
-        self.spring.rotate(self.dot)
-        self.spring.rect.top = self.dot.rect.centery
 
     def setup(self):
-        self.liquid = Liquid(
-            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2), SCREEN_HEIGHT - 250),
-            self.all_sprites,
-        )
 
         self.menu_button = Button((50, 50), self.controls, MENU_BUTTON, MENU_BUTTON)
         self.side_menu = SideMenu(
@@ -110,34 +98,21 @@ class Level_2:
             self.all_sprites,
             WHEEL,
         )
-        self.dot = Dot(
-            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2), 100),
-            self.all_sprites,
-            DOT,
-        )
 
-        self.block_wheel = BlockWheel(
-            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2), SCREEN_HEIGHT / 2),
-            self.all_sprites,
-            BLOCK_WHEEL,
-        )
 
-        self.block_1 = Block(
-            (self.block_wheel.rect.left - 3, SCREEN_HEIGHT / 2),
+        self.block = DynamicBlock(
+            ((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2, SCREEN_HEIGHT / 2.5),
             self.all_sprites,
-        )
-        self.block_2 = Block(
-            (self.block_wheel.rect.right + 3, SCREEN_HEIGHT / 2),
-            self.all_sprites,
+            (150, 100),
         )
 
         self.spring = Spring(
-            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2) + 30, 0),
-            self.block_wheel,
+            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2) + 30, 700),
+            self.block,
             self.all_sprites,
         )
 
-        self.graph = Graph(self.block_wheel)
+        self.graph = Graph(self.block)
 
         self.sliders.add(self.time_speed_slider)
         # self.connector = Connector(
@@ -188,13 +163,10 @@ class Level_2:
             self.menu = True
             self.menu_button.is_playing = True
 
-        self.angular_velocity = self.angular_velocity_slider.k
+
         m = self.mass_slider.k
         k = self.elasticity_level_slider.k
-        r = self.radius_slider.k
-        r_scaled = int((r - 0.1) * ((28.6 - 7.125) / (0.4 - 0.1)) + 7.125)
-        self.dot.radius = (r - 0.1) * ((50 - 7.125) / (0.4 - 0.1)) + 7.125
-        self.wheel.scale(r_scaled)
+
 
         time_speed = self.time_speed_slider.k
 
@@ -205,10 +177,7 @@ class Level_2:
         if self.start_button.is_playing == False:
             # self.graph.take_points(self.time)
             self.time += 0.01 * time_speed
-            self.block_wheel.move(m, self.angular_velocity, r, k, self.time)
-            self.spring.rotate(self.dot)
-            self.spring.rect.top = self.dot.rect.centery
-            self.dot.rotate(self.angular_velocity, time_speed)
+            self.spring.stretch(False)
             self.graph.take_points(self.time)
 
         self.display_surface.fill("white")

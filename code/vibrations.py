@@ -37,11 +37,11 @@ def forced_vibrations(m, w, r, k, t):
     return y
 
 
-def dynamic_dumping(m2, k2, t):
-    k1 = 1800
-    m1 = 50
+def dynamic_dumping(m1,k1,m2, k2, t):
+
     force = 50
-    p = 2 * np.pi
+
+    p = np.sqrt(k1/m1)
 
     # Calculate B1 and B2 using the provided formulas
     denominator = m1 * m2 * p**4 - (m1 * k2 + (k1 + k2) * m2) * p**2 + k1 * k2
