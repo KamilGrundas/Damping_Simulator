@@ -7,7 +7,7 @@ class Block(pygame.sprite.Sprite):
         super().__init__(group)
 
         # Create an image surface with a transparent background
-        self.image = pygame.Surface((6, 720), pygame.SRCALPHA)
+        self.image = pygame.Surface((200, 20), pygame.SRCALPHA)
         self.image.fill("black")
 
         # Set the position of the sprite

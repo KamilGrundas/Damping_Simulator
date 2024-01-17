@@ -20,3 +20,11 @@ class DynamicBlock(pygame.sprite.Sprite):
         self.pos.y = y
 
         self.rect.bottom = int((self.pos.y + 1) * ((680 - 100) / (1 + 1)) + 100)
+
+    def move_2(self, y):
+        self.pos.y = y
+
+        try:
+            self.rect.bottom = int((self.pos.y + 5) * ((500 - 0) / (5 + 5)) + 0)
+        except:
+            print("Nieskończoność")

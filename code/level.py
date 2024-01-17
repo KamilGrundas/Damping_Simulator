@@ -57,7 +57,7 @@ class Level:
         self.suppression_level_slider = Slider(
             SLIDER_POSITIONS[3],
             self.controls,
-            f"{SUPPRESION_LEVEL}: ",
+            f"{SUPPRESION_LEVEL} (c): ",
             0,
             10,
             5,

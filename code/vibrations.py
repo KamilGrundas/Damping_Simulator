@@ -29,13 +29,21 @@ def damped_vibrations_max(k, m, n):
     return [b, bk]
 
 
-def forced_vibrations(m, w, r, k, t):
-    b = 0.1
-    y = (
-        (m * (w**2) * r) / np.sqrt(((k - m * (w) ** 2) ** 2) + (b * w) ** 2)
-    ) * np.cos(w * t)
-    return y
+# def forced_vibrations(m, w, r, k, t):
+#     b = 0.1
+#     y = (
+#         (m * (w**2) * r) / np.sqrt(((k - m * (w) ** 2) ** 2) + (b * w) ** 2)
+#     ) * np.cos(w * t)
+#     return y
 
+
+def forced_vibrations(m, k, h, p, t):
+    a = 0.5
+    w = np.sqrt(k / m)
+    y = a*  np.sqrt((1+4*((p**2)/(w**2))*((h**2)/(w**2)))/((1-((p**2)/(w**2)))**2 +4*(((h**2)/(w**2))*((p**2)/(w**2)))))*np.sin(p*t)
+    #y = (a * np.sin(p*t)) / np.sqrt(((k - m * (w) ** 2) ** 2) + (h * w) ** 2)
+
+    return y, p/w
 
 def dynamic_dumping(m1,k1,m2, k2, t):
 

@@ -28,6 +28,9 @@ DAMPED_VIBRATIONS_IMAGE = "graphics/damped_vibrations.png"
 FORCED_VIBRATIONS_IMAGE = "graphics/forced_vibrations.png"
 DYNAMIC_DAMPER_IMAGE = "graphics/dynamic_damper.png"
 
+GRAPH = "graphics/graph.png"
+
+
 # Screen scale attributes
 A = 0.007017543859649123
 B = -3.052631578947368
@@ -39,12 +42,13 @@ D = 150 - C * 150
 TIME = "Czas"
 START_POSITION = "Pozycja początkowa"
 SPEED = "Prędkość"
-SUPPRESION_LEVEL = "Tłumienie (c)"
+SUPPRESION_LEVEL = "Tłumienie"
 ELASTICITY_COEFFICIENT = "Wsp. sprężystości"
 MASS = "Masa"
 ANGULAR_VELOCITY = "Prędkość kątowa"
 RADIUS = "Promień"
 OPTIMAL_ELASCITY = "Optymalny wsp. spr."
+FREQUENCY = "Częstość wymuszenia"
 
 
 # sliders

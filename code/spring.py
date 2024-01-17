@@ -29,8 +29,7 @@ class Spring(pygame.sprite.Sprite):
             self.position = self.object.rect.top - self.rect.top
         else:
             self.rect.bottom = self.pos.y
-            self.position = self.rect.bottom - self.object.rect.bottom
-            print(self.position)
+            self.position = self.rect.bottom - self.object.rect.bottom +5
         try:
             self.animate_image = pygame.transform.scale(
                 self.original_image, (self.image.get_width(), self.position)
