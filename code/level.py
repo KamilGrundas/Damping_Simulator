@@ -16,6 +16,8 @@ class Level:
         self.show_fps = False
         self.time = 0
 
+        self.font_40 = pygame.font.Font(None, 40)
+
         # get the display surface
         self.display_surface = pygame.display.get_surface()
 
@@ -73,7 +75,7 @@ class Level:
         self.elasticity_level_slider = Slider(
             SLIDER_POSITIONS[4],
             self.controls,
-            f"{ELASTICITY_COEFFICIENT}: ",
+            f"{ELASTICITY_COEFFICIENT} (k): ",
             0,
             5000,
             2500,
@@ -81,7 +83,7 @@ class Level:
         self.mass_slider = Slider(
             SLIDER_POSITIONS[5],
             self.controls,
-            f"{MASS}: ",
+            f"{MASS} (m): ",
             0.1,
             2,
             1,
@@ -150,10 +152,31 @@ class Level:
             True,
             ("black"),
         )
+
+        parameters5 = self.font_40.render(
+            "m",
+            True,
+            ("white"),
+        )
+        parameters6 = self.font_40.render(
+            "k",
+            True,
+            ("black"),
+        )
+
+        parameters7 = self.font_40.render(
+            "c",
+            True,
+            ("black"),
+        )
+
         self.display_surface.blit(parameters, (1010, 225))
         self.display_surface.blit(parameters2, (1010, 250))
         self.display_surface.blit(parameters3, (1010, 275))
         self.display_surface.blit(parameters4, (1010, 300))
+        self.display_surface.blit(parameters5, (self.circle.rect.centerx - 10, self.circle.rect.centery - 15))
+        self.display_surface.blit(parameters6, (self.spring.rect.centerx + 20, self.spring.rect.centery))
+        self.display_surface.blit(parameters7, (self.silencer.rect.centerx - 40, self.silencer.rect.centery))
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
         if self.show_fps == True:
@@ -182,7 +205,7 @@ class Level:
 
         self.controls.update()
         self.input()
-        self.text_blit(fps)
+        
 
         self.spring.stretch(True)
         if self.start_button.is_playing == False:
@@ -212,3 +235,6 @@ class Level:
         else:
             self.silencer.rect.y = 0
             self.spring.rect.centerx = ((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 2) + 30
+
+        self.text_blit(fps)
+        print(self.circle.rect.x, self.circle.rect.y)

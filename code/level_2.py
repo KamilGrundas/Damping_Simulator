@@ -16,7 +16,7 @@ class Level_2:
         self.menu = False
         self.show_fps = False
         self.time = 0
-
+        self.font_40 = pygame.font.Font(None, 40)
         # get the display surface
         self.display_surface = pygame.display.get_surface()
 
@@ -96,7 +96,7 @@ class Level_2:
         self.elasticity_level_slider = Slider(
             SLIDER_POSITIONS[4],
             self.controls,
-            f"{ELASTICITY_COEFFICIENT}: ",
+            f"{ELASTICITY_COEFFICIENT} (k): ",
             75,
             200,
             125,
@@ -104,7 +104,7 @@ class Level_2:
         self.mass_slider = Slider(
             SLIDER_POSITIONS[5],
             self.controls,
-            f"{MASS}: ",
+            f"{MASS} (m): ",
             1,
             5,
             3,
@@ -173,11 +173,34 @@ class Level_2:
         h = self.damp_slider.k
         m = self.mass_slider.k
         k = self.elasticity_level_slider.k
+
+        parameters2 = self.font_40.render(
+            "m",
+            True,
+            ("white"),
+        )
+        parameters3 = self.font_40.render(
+            "k",
+            True,
+            ("black"),
+        )
+
+        parameters4 = self.font_40.render(
+            "h",
+            True,
+            ("black"),
+        )
+
         parameters = self.font.render(
             f"p/w:{round(forced_vibrations(m,k,h,p,self.time)[1],2)}",
             True,
             ("black"),
         )
+
+        self.display_surface.blit(parameters2, (self.dynamic_block.rect.centerx - 10, self.dynamic_block.rect.centery - 15))
+        self.display_surface.blit(parameters3, (self.spring.rect.centerx + 20, self.spring.rect.centery))
+        self.display_surface.blit(parameters4, (self.spring.rect.centerx - 100, self.silencer.rect.centery))
+    
         self.display_surface.blit(parameters, (1010, 225))
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
