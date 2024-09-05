@@ -1,2 +1,5 @@
 .venv
-code/__pycache__
+code/
+font/
+graphics/
+concept/
