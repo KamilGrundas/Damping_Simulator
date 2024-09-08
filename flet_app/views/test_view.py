@@ -1,7 +1,6 @@
 import flet as ft
 from i18n.language import language
 import asyncio
-import math
 import numpy as np
 
 def damped_vibrations(start_y, t, k, m, n):
@@ -21,6 +20,7 @@ def damped_vibrations(start_y, t, k, m, n):
         y = start_y * np.exp((-b / (2 * m)) * t) * np.cos(w * t)
 
     return y, w, w_t
+
 def home_view(page: ft.Page):
 
     def change_language(e):
@@ -37,18 +37,10 @@ def home_view(page: ft.Page):
         page.update()
 
     def update_side_bar():
-        if checkbox1.value:
-            side_bar_main_content1.visible = True
-            side_bar_main_content2.visible = False
-            side_bar_main_content3.visible = False
-        elif checkbox2.value:
-            side_bar_main_content1.visible = False
-            side_bar_main_content2.visible = True
-            side_bar_main_content3.visible = False
-        elif checkbox3.value:
-            side_bar_main_content1.visible = False
-            side_bar_main_content2.visible = False
-            side_bar_main_content3.visible = True
+        # Show or hide sidebars based on checkbox values
+        side_bar_main_content1.visible = checkbox1.value
+        side_bar_main_content2.visible = checkbox2.value
+        side_bar_main_content3.visible = checkbox3.value
         page.update()
 
     def on_slider_change(slider, text_field):
@@ -177,7 +169,7 @@ def home_view(page: ft.Page):
         width=400,
         bgcolor=ft.colors.AMBER,
         padding=10,
-        visible=False
+        visible=True  # Initially visible
     )
 
     side_bar_main_content2 = ft.Container(
@@ -241,7 +233,7 @@ def home_view(page: ft.Page):
                 ),
                 ft.Row(
                     controls=[
-                        ft.Text(value="Spring Stiffness 1", width=100),
+                        ft.Text(value="Spring 1", width=100),
                         text_spring1_3,
                         slider_spring1_3
                     ],
@@ -259,7 +251,7 @@ def home_view(page: ft.Page):
                 ),
                 ft.Row(
                     controls=[
-                        ft.Text(value="Spring Stiffness 2", width=100),
+                        ft.Text(value="Spring 2", width=100),
                         text_spring2_3,
                         slider_spring2_3
                     ],
@@ -273,6 +265,10 @@ def home_view(page: ft.Page):
         padding=10,
         visible=False
     )
+
+    # Set initial visibility for the content sections
+    update_side_bar()
+
 
     nav_bar = ft.Container(
         content=ft.Row(
@@ -298,7 +294,7 @@ def home_view(page: ft.Page):
 
         while True:
             time += 0.01
-            rectangle.top = 300 + damped_vibrations(amplitude, time, 200, 1, 0)[0]*100
+            rectangle.top = 300 + damped_vibrations(amplitude, time, slider_spring1.value, slider_mass1.value, slider_damping1.value)[0]*100
             rectangle.update()
             await asyncio.sleep(0.01)
 
@@ -337,9 +333,9 @@ def home_view(page: ft.Page):
         content=ft.Column(
             controls=[
                 ft.Text(value="Side Bar", style="titleLarge"),
-                ft.Checkbox(label="Checkbox 1"),
-                ft.Checkbox(label="Checkbox 2"),
-                ft.Checkbox(label="Checkbox 3"),
+                checkbox1,
+                checkbox2,
+                checkbox3,
             ]
         ),
         width=400,
@@ -380,7 +376,10 @@ def home_view(page: ft.Page):
                     main,
                     ft.Column(
                         controls=[
-                            side_bar_top
+                            side_bar_top,
+                            side_bar_main_content1,
+                            side_bar_main_content2,
+                            side_bar_main_content3
                         ]
                     )
                 ],
@@ -392,7 +391,7 @@ def home_view(page: ft.Page):
     )
 
     page.add(layout)
-
+    update_side_bar()
     # Start the animation
     page.add(ft.ElevatedButton("Start Animation", on_click=lambda e: asyncio.run(animate_rectangle(rectangle))))
 
