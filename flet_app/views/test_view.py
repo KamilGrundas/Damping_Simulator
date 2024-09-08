@@ -2,6 +2,12 @@ import flet as ft
 from i18n.language import language
 import asyncio
 import numpy as np
+import matplotlib.pyplot as plt
+import io
+from PIL import Image as PilImage
+import base64
+
+
 
 def damped_vibrations(start_y, t, k, m, n):
     w_0 = np.sqrt(k / m)
@@ -45,15 +51,53 @@ def home_view(page: ft.Page):
 
     def on_slider_change(slider, text_field):
         text_field.value = str(round(slider.value, 2))
+        time_text.value = "0.00"
         page.update()
 
     def on_text_change(text_field, slider):
         try:
             value = float(text_field.value)
             slider.value = value
+            time_text.value = "0.00"
             page.update()
         except ValueError:
             pass
+
+
+    
+    def update_graph():
+        # Generate a plot using Matplotlib
+        fig, ax = plt.subplots()
+        time = np.linspace(0, 10, 1000)
+        start_y = 1
+        k = slider_spring1.value
+        m = slider_mass1.value
+        n = slider_damping1.value
+
+        y_values = [damped_vibrations(start_y, t, k, m, n)[0] for t in time]
+        ax.plot(time, y_values)
+
+        # Save the plot to a BytesIO buffer
+        buf = io.BytesIO()
+        plt.savefig(buf, format="png")
+        buf.seek(0)
+
+        # Convert the image to base64
+        pil_image = PilImage.open(buf)
+        img_byte_arr = io.BytesIO()
+        pil_image.save(img_byte_arr, format='PNG')
+        img_byte_arr = img_byte_arr.getvalue()
+
+        # Encode as base64
+        img_base64 = base64.b64encode(img_byte_arr).decode('utf-8')
+
+        # Create the Flet image component from the base64 string
+        flet_image = ft.Image(src_base64=img_base64, width=1000, height=100)
+
+        # Add the image to the page
+        graph_bar.content = flet_image
+        page.update()
+
 
     dropdown_options = [
         ft.dropdown.Option(key=list(lang.values())[0], text=list(lang.keys())[0])
@@ -285,17 +329,18 @@ def home_view(page: ft.Page):
         bgcolor=ft.colors.BLUE,
         padding=10,
     )
+
     async def animate_rectangle(rectangle):
         amplitude = 2
-
-        time = 0
-
-
+        
 
         while True:
+            time = float(time_text.value)
             time += 0.01
-            rectangle.top = 300 + damped_vibrations(amplitude, time, slider_spring1.value, slider_mass1.value, slider_damping1.value)[0]*100
+            rectangle.left = 300 + damped_vibrations(amplitude, time, slider_spring1.value, slider_mass1.value, slider_damping1.value)[0]*100
             rectangle.update()
+            time_text.value = str(round(time,2))
+            time_text.update()
             await asyncio.sleep(0.01)
 
     rectangle = ft.Container(
@@ -303,13 +348,22 @@ def home_view(page: ft.Page):
         width=100,
         height=100,
         left=(1000 - 100) // 2,
-        top=200,
+        top=20,
+    )
+    # Tworzenie licznika czasu
+    time_text = ft.Text(
+        value="0.00",
+        color=ft.colors.WHITE,
+        size=16,
+        # Pozycjonowanie w prawym dolnym rogu kontenera
+        right=10,
+        bottom=10,
     )
 
     # Main content
     main = ft.Container(
         content=ft.Stack(
-            controls=[rectangle],
+            controls=[rectangle, time_text],
             width=1000,
             height=500
         ),
@@ -328,6 +382,7 @@ def home_view(page: ft.Page):
         ],
         value="en",
     )
+
 
     side_bar_top = ft.Container(
         content=ft.Column(
@@ -362,7 +417,7 @@ def home_view(page: ft.Page):
             value="Graph Bar",
             style="titleMedium"
         ),
-        height=200,
+        height=700,
         bgcolor=ft.colors.LIGHT_BLUE,
         padding=10
     )
@@ -373,7 +428,9 @@ def home_view(page: ft.Page):
             nav_bar,
             ft.Row(
                 controls=[
-                    main,
+                    ft.Column(
+                        controls = [main, graph_bar]
+                    ),
                     ft.Column(
                         controls=[
                             side_bar_top,
@@ -384,8 +441,7 @@ def home_view(page: ft.Page):
                     )
                 ],
                 expand=True
-            ),
-            graph_bar
+            )
         ],
         expand=True
     )
@@ -394,5 +450,6 @@ def home_view(page: ft.Page):
     update_side_bar()
     # Start the animation
     page.add(ft.ElevatedButton("Start Animation", on_click=lambda e: asyncio.run(animate_rectangle(rectangle))))
+    page.add(ft.ElevatedButton("Plot Graph", on_click=lambda e: update_graph()))
 
 ft.app(target=home_view)
