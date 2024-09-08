@@ -1,6 +1,26 @@
 import flet as ft
 from i18n.language import language
+import asyncio
+import math
+import numpy as np
 
+def damped_vibrations(start_y, t, k, m, n):
+    w_0 = np.sqrt(k / m)
+
+    b = n / (2 * m)
+
+    try:
+        w = np.sqrt((w_0**2) - (b / (2 * m)) ** 2)
+        w_t = np.sqrt(w**2 - b**2)
+    except:
+        w = 0
+        w_t = np.sqrt(w**2 - b**2)
+    if w_0 == 0:
+        y = start_y
+    else:
+        y = start_y * np.exp((-b / (2 * m)) * t) * np.cos(w * t)
+
+    return y, w, w_t
 def home_view(page: ft.Page):
 
     def change_language(e):
@@ -32,7 +52,7 @@ def home_view(page: ft.Page):
         page.update()
 
     def on_slider_change(slider, text_field):
-        text_field.value = str(round(slider.value,2))
+        text_field.value = str(round(slider.value, 2))
         page.update()
 
     def on_text_change(text_field, slider):
@@ -43,7 +63,6 @@ def home_view(page: ft.Page):
         except ValueError:
             pass
 
-
     dropdown_options = [
         ft.dropdown.Option(key=list(lang.values())[0], text=list(lang.keys())[0])
         for lang in language.supported_languages["languages"]
@@ -51,11 +70,10 @@ def home_view(page: ft.Page):
     current_language = language.language
     dropdown = ft.Dropdown(
         label=language.get("language"),
-        options=dropdown_options, 
+        options=dropdown_options,
         value=current_language,
         on_change=change_language
     )
-
 
     checkbox1 = ft.Checkbox(
         label=language.get("damped_vibrations"),
@@ -124,7 +142,6 @@ def home_view(page: ft.Page):
         padding=10
     )
 
-
     side_bar_main_content1 = ft.Container(
         content=ft.Column(
             controls=[
@@ -177,7 +194,7 @@ def home_view(page: ft.Page):
                 ),
                 ft.Row(
                     controls=[
-                        ft.Text(value="Excitation", width=100),
+                        ft.Text(value="Excitation Frequency", width=100),
                         text_excitation2,
                         slider_excitation2
                     ],
@@ -209,7 +226,6 @@ def home_view(page: ft.Page):
         padding=10,
         visible=False
     )
-
 
     side_bar_main_content3 = ft.Container(
         content=ft.Column(
@@ -273,17 +289,75 @@ def home_view(page: ft.Page):
         bgcolor=ft.colors.BLUE,
         padding=10,
     )
+    async def animate_rectangle(rectangle):
+        amplitude = 2
+
+        time = 0
+
+
+
+        while True:
+            time += 0.01
+            rectangle.top = 300 + damped_vibrations(amplitude, time, 200, 1, 0)[0]*100
+            rectangle.update()
+            await asyncio.sleep(0.01)
+
+    rectangle = ft.Container(
+        bgcolor=ft.colors.BLACK,
+        width=100,
+        height=100,
+        left=(1000 - 100) // 2,
+        top=200,
+    )
 
     # Main content
     main = ft.Container(
-        content=ft.Text(
-            value="Main Content",
-            style="titleLarge"
+        content=ft.Stack(
+            controls=[rectangle],
+            width=1000,
+            height=500
         ),
-        height=300,
         expand=True,
+        height=900,
         bgcolor=ft.colors.LIGHT_GREEN,
         padding=10
+    )
+
+    # Navigation bar and sidebar
+    dropdown = ft.Dropdown(
+        label="Language",
+        options=[
+            ft.dropdown.Option(key="en", text="English"),
+            ft.dropdown.Option(key="pl", text="Polski")
+        ],
+        value="en",
+    )
+
+    side_bar_top = ft.Container(
+        content=ft.Column(
+            controls=[
+                ft.Text(value="Side Bar", style="titleLarge"),
+                ft.Checkbox(label="Checkbox 1"),
+                ft.Checkbox(label="Checkbox 2"),
+                ft.Checkbox(label="Checkbox 3"),
+            ]
+        ),
+        width=400,
+        bgcolor=ft.colors.AMBER,
+        padding=10
+    )
+
+    nav_bar = ft.Container(
+        content=ft.Row(
+            controls=[
+                ft.Text(value="Navigation Bar", style="headlineSmall"),
+                dropdown,
+            ],
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+        ),
+        height=100,
+        bgcolor=ft.colors.BLUE,
+        padding=10,
     )
 
     # Graph bar
@@ -292,7 +366,7 @@ def home_view(page: ft.Page):
             value="Graph Bar",
             style="titleMedium"
         ),
-        height=100,
+        height=200,
         bgcolor=ft.colors.LIGHT_BLUE,
         padding=10
     )
@@ -306,10 +380,7 @@ def home_view(page: ft.Page):
                     main,
                     ft.Column(
                         controls=[
-                            side_bar_top,
-                            side_bar_main_content1,
-                            side_bar_main_content2,
-                            side_bar_main_content3
+                            side_bar_top
                         ]
                     )
                 ],
@@ -321,5 +392,8 @@ def home_view(page: ft.Page):
     )
 
     page.add(layout)
+
+    # Start the animation
+    page.add(ft.ElevatedButton("Start Animation", on_click=lambda e: asyncio.run(animate_rectangle(rectangle))))
 
 ft.app(target=home_view)
