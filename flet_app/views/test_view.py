@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import io
 from PIL import Image as PilImage
 import base64
-
+from flet_app.classes.timer import Timer
 
 
 def damped_vibrations(start_y, t, k, m, n):
@@ -28,6 +28,8 @@ def damped_vibrations(start_y, t, k, m, n):
     return y, w, w_t
 
 def home_view(page: ft.Page):
+
+    timer = Timer()
 
     def change_language(e):
         selected_lang_code = dropdown.value
@@ -51,14 +53,15 @@ def home_view(page: ft.Page):
 
     def on_slider_change(slider, text_field):
         text_field.value = str(round(slider.value, 2))
-        time_text.value = "0.00"
+        timer.value = 0
+        update_graph()
         page.update()
 
     def on_text_change(text_field, slider):
         try:
             value = float(text_field.value)
             slider.value = value
-            time_text.value = "0.00"
+            timer.value = 0
             page.update()
         except ValueError:
             pass
@@ -68,7 +71,7 @@ def home_view(page: ft.Page):
     def update_graph():
         # Generate a plot using Matplotlib
         fig, ax = plt.subplots()
-        time = np.linspace(0, 10, 1000)
+        time = np.linspace(0, 10, 10000)
         start_y = 1
         k = slider_spring1.value
         m = slider_mass1.value
@@ -310,8 +313,7 @@ def home_view(page: ft.Page):
         visible=False
     )
 
-    # Set initial visibility for the content sections
-    update_side_bar()
+
 
 
     nav_bar = ft.Container(
@@ -335,11 +337,10 @@ def home_view(page: ft.Page):
         
 
         while True:
-            time = float(time_text.value)
-            time += 0.01
-            rectangle.left = 300 + damped_vibrations(amplitude, time, slider_spring1.value, slider_mass1.value, slider_damping1.value)[0]*100
+            timer.value += 0.01
+            rectangle.left = 300 + damped_vibrations(amplitude, timer.value, slider_spring1.value, slider_mass1.value, slider_damping1.value)[0]*100
             rectangle.update()
-            time_text.value = str(round(time,2))
+            time_text.value = timer.get_formatted_time()
             time_text.update()
             await asyncio.sleep(0.01)
 
@@ -371,16 +372,6 @@ def home_view(page: ft.Page):
         height=900,
         bgcolor=ft.colors.LIGHT_GREEN,
         padding=10
-    )
-
-    # Navigation bar and sidebar
-    dropdown = ft.Dropdown(
-        label="Language",
-        options=[
-            ft.dropdown.Option(key="en", text="English"),
-            ft.dropdown.Option(key="pl", text="Polski")
-        ],
-        value="en",
     )
 
 
@@ -452,4 +443,3 @@ def home_view(page: ft.Page):
     page.add(ft.ElevatedButton("Start Animation", on_click=lambda e: asyncio.run(animate_rectangle(rectangle))))
     page.add(ft.ElevatedButton("Plot Graph", on_click=lambda e: update_graph()))
 
-ft.app(target=home_view)
