@@ -7,7 +7,10 @@ import io
 from PIL import Image as PilImage
 import base64
 from flet_app.classes.timer import Timer
+import json
 
+with open("flet_app/views/widgets_config.json") as f:
+    config = json.load(f)
 
 def damped_vibrations(start_y, t, k, m, n):
     w_0 = np.sqrt(k / m)
@@ -51,20 +54,6 @@ def home_view(page: ft.Page):
         side_bar_main_content3.visible = checkbox3.value
         page.update()
 
-    def on_slider_change(slider, text_field):
-        text_field.value = str(round(slider.value, 2))
-        timer.value = 0
-        update_graph()
-        page.update()
-
-    def on_text_change(text_field, slider):
-        try:
-            value = float(text_field.value)
-            slider.value = value
-            timer.value = 0
-            page.update()
-        except ValueError:
-            pass
 
 
     
@@ -73,9 +62,9 @@ def home_view(page: ft.Page):
         fig, ax = plt.subplots()
         time = np.linspace(0, 10, 10000)
         start_y = 1
-        k = slider_spring1.value
-        m = slider_mass1.value
-        n = slider_damping1.value
+        k = sliders[2].controls[1].value
+        m = sliders[3].controls[1].value
+        n = sliders[1].controls[1].value
 
         y_values = [damped_vibrations(start_y, t, k, m, n)[0] for t in time]
         ax.plot(time, y_values)
@@ -130,42 +119,60 @@ def home_view(page: ft.Page):
         on_change=lambda e: update_checkbox(checkbox3, [checkbox1, checkbox2, checkbox3]),
     )
 
-    # Sliders and TextFields for checkbox1
-    slider_damping1 = ft.Slider(min=0, max=10, value=5, on_change=lambda e: on_slider_change(slider_damping1, text_damping1))
-    text_damping1 = ft.TextField(width=90, value="5", on_change=lambda e: on_text_change(text_damping1, slider_damping1))
+    def create_slider_and_text(min_val, max_val, default_val, label):
+        # Create a slider
+        slider = ft.Slider(min=min_val, max=max_val, value=default_val)
 
-    slider_spring1 = ft.Slider(min=0, max=5000, value=2500, on_change=lambda e: on_slider_change(slider_spring1, text_spring1))
-    text_spring1 = ft.TextField(width=90, value="2500", on_change=lambda e: on_text_change(text_spring1, slider_spring1))
+        # Create a text field with initial value as slider's value
+        text_field = ft.TextField(value=str(default_val), width=90)
 
-    slider_mass1 = ft.Slider(min=0.1, max=2, value=1.05, on_change=lambda e: on_slider_change(slider_mass1, text_mass1))
-    text_mass1 = ft.TextField(width=90, value="1.05", on_change=lambda e: on_text_change(text_mass1, slider_mass1))
+        # Function to update the text field when the slider value changes
+        def on_slider_change(e):
+            text_field.value = str(round(slider.value, 2))  # Sync slider value with text field
+            timer.value = 0
+            update_graph()
+            text_field.update()
 
-    # Sliders and TextFields for checkbox2
-    slider_damping2 = ft.Slider(min=0, max=20, value=10, on_change=lambda e: on_slider_change(slider_damping2, text_damping2))
-    text_damping2 = ft.TextField(width=90, value="10", on_change=lambda e: on_text_change(text_damping2, slider_damping2))
+        # Function to update the slider when the text field value changes
+        def on_text_change(e):
+            try:
+                # Ensure the input is valid before updating the slider
+                new_value = float(text_field.value)
+                if min_val <= new_value <= max_val:
+                    slider.value = new_value  # Sync text field value with slider
+                    timer.value = 0
+                    update_graph()
+                    slider.update()
+            except ValueError:
+                pass  # Ignore if the input is not a valid float
 
-    slider_excitation2 = ft.Slider(min=0, max=50, value=25, on_change=lambda e: on_slider_change(slider_excitation2, text_excitation2))
-    text_excitation2 = ft.TextField(width=90, value="25", on_change=lambda e: on_text_change(text_excitation2, slider_excitation2))
+        # Bind event handlers for both slider and text field
+        slider.on_change = on_slider_change
+        text_field.on_change = on_text_change
 
-    slider_spring2 = ft.Slider(min=75, max=200, value=137.5, on_change=lambda e: on_slider_change(slider_spring2, text_spring2))
-    text_spring2 = ft.TextField(width=90, value="137.5", on_change=lambda e: on_text_change(text_spring2, slider_spring2))
+        # Return a row with a label, slider, and text field
+        return ft.Row(controls=[ft.Text(value=label, width=100), slider, text_field])
 
-    slider_mass2 = ft.Slider(min=1, max=5, value=3, on_change=lambda e: on_slider_change(slider_mass2, text_mass2))
-    text_mass2 = ft.TextField(width=90, value="3", on_change=lambda e: on_text_change(text_mass2, slider_mass2))
+    def create_sliders_from_json(data):
+        rows = []
+        
+        # Iterate over each level in the JSON data
+        for level_name, controls in data.items():
+            rows.append(ft.Text(value=level_name, style="titleMedium"))  # Section title
+            
+            # Iterate over the individual control elements
+            for control_name, control_data in controls.items():
+                min_val = control_data["min"]
+                max_val = control_data["max"]
+                default_val = control_data["default_value"]
+                
+                # Create slider and text field for each control
+                row = create_slider_and_text(min_val, max_val, default_val, control_name)
+                rows.append(row)  # Add the row to the list
+        
+        return rows
 
-    # Sliders and TextFields for checkbox3
-    slider_mass1_3 = ft.Slider(min=45, max=100, value=72.5, on_change=lambda e: on_slider_change(slider_mass1_3, text_mass1_3))
-    text_mass1_3 = ft.TextField(width=90, value="72.5", on_change=lambda e: on_text_change(text_mass1_3, slider_mass1_3))
-
-    slider_spring1_3 = ft.Slider(min=500, max=2500, value=1500, on_change=lambda e: on_slider_change(slider_spring1_3, text_spring1_3))
-    text_spring1_3 = ft.TextField(width=90, value="1500", on_change=lambda e: on_text_change(text_spring1_3, slider_spring1_3))
-
-    slider_mass2_3 = ft.Slider(min=0.5, max=4.5, value=2.5, on_change=lambda e: on_slider_change(slider_mass2_3, text_mass2_3))
-    text_mass2_3 = ft.TextField(width=90, value="2.5", on_change=lambda e: on_text_change(text_mass2_3, slider_mass2_3))
-
-    slider_spring2_3 = ft.Slider(min=25, max=225, value=125, on_change=lambda e: on_slider_change(slider_spring2_3, text_spring2_3))
-    text_spring2_3 = ft.TextField(width=90, value="125", on_change=lambda e: on_text_change(text_spring2_3, slider_spring2_3))
-
+    sliders = create_sliders_from_json(config)
 
     side_bar_top = ft.Container(
         content=ft.Column(
@@ -183,35 +190,7 @@ def home_view(page: ft.Page):
 
     side_bar_main_content1 = ft.Container(
         content=ft.Column(
-            controls=[
-                ft.Row(
-                    controls=[
-                        ft.Text(value="Damping", width=100),
-                        text_damping1,
-                        slider_damping1
-                    ],
-                    alignment="end",
-                    width=500
-                ),
-                ft.Row(
-                    controls=[
-                        ft.Text(value="Spring Stiffness", width=100),
-                        text_spring1,
-                        slider_spring1
-                    ],
-                    alignment="end",
-                    width=500
-                ),
-                ft.Row(
-                    controls=[
-                        ft.Text(value="Mass", width=100),
-                        text_mass1,
-                        slider_mass1
-                    ],
-                    alignment="end",
-                    width=500
-                ),
-            ]
+            controls=sliders[0:4]
         ),
         width=400,
         bgcolor=ft.colors.AMBER,
@@ -221,44 +200,7 @@ def home_view(page: ft.Page):
 
     side_bar_main_content2 = ft.Container(
         content=ft.Column(
-            controls=[
-                ft.Row(
-                    controls=[
-                        ft.Text(value="Damping", width=100),
-                        text_damping2,
-                        slider_damping2
-                    ],
-                    alignment="end",
-                    width=500
-                ),
-                ft.Row(
-                    controls=[
-                        ft.Text(value="Excitation Frequency", width=100),
-                        text_excitation2,
-                        slider_excitation2
-                    ],
-                    alignment="end",
-                    width=500
-                ),
-                ft.Row(
-                    controls=[
-                        ft.Text(value="Spring Stiffness", width=100),
-                        text_spring2,
-                        slider_spring2
-                    ],
-                    alignment="end",
-                    width=500
-                ),
-                ft.Row(
-                    controls=[
-                        ft.Text(value="Mass", width=100),
-                        text_mass2,
-                        slider_mass2
-                    ],
-                    alignment="end",
-                    width=500
-                ),
-            ]
+            controls=sliders[4:9]
         ),
         width=400,
         bgcolor=ft.colors.AMBER,
@@ -268,44 +210,7 @@ def home_view(page: ft.Page):
 
     side_bar_main_content3 = ft.Container(
         content=ft.Column(
-            controls=[
-                ft.Row(
-                    controls=[
-                        ft.Text(value="Mass 1", width=100),
-                        text_mass1_3,
-                        slider_mass1_3
-                    ],
-                    alignment="end",
-                    width=500
-                ),
-                ft.Row(
-                    controls=[
-                        ft.Text(value="Spring 1", width=100),
-                        text_spring1_3,
-                        slider_spring1_3
-                    ],
-                    alignment="end",
-                    width=500
-                ),
-                ft.Row(
-                    controls=[
-                        ft.Text(value="Mass 2", width=100),
-                        text_mass2_3,
-                        slider_mass2_3
-                    ],
-                    alignment="end",
-                    width=500
-                ),
-                ft.Row(
-                    controls=[
-                        ft.Text(value="Spring 2", width=100),
-                        text_spring2_3,
-                        slider_spring2_3
-                    ],
-                    alignment="end",
-                    width=500
-                ),
-            ]
+            controls=sliders[9:]
         ),
         width=400,
         bgcolor=ft.colors.AMBER,
@@ -338,7 +243,7 @@ def home_view(page: ft.Page):
 
         while True:
             timer.value += 0.01
-            rectangle.left = 300 + damped_vibrations(amplitude, timer.value, slider_spring1.value, slider_mass1.value, slider_damping1.value)[0]*100
+            rectangle.left = 300 + damped_vibrations(amplitude, timer.value, sliders[2].controls[1].value, sliders[3].controls[1].value, sliders[1].controls[1].value)[0]*100
             rectangle.update()
             time_text.value = timer.get_formatted_time()
             time_text.update()
