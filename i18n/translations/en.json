@@ -1,0 +1,7 @@
+{
+    "greeting":"Welcome",
+    "language":"Language",
+    "damped_vibrations": "Damped vibrations",
+    "forced_damped_vibrations": "Forced damped vibrations",
+    "dynamic_vibration_absorber": "Dynamic vibration absorber"
+}
