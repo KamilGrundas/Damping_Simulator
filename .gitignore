@@ -1,5 +1,4 @@
 .venv
-code/
-font/
-graphics/
-concept/
+__pycache__/
+*.pyc
+*.pyo
