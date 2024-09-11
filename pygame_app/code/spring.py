@@ -9,7 +9,7 @@ class Spring(pygame.sprite.Sprite):
         super().__init__(group)
 
         # Create an image surface with a transparent background
-        self.original_image = pygame.image.load("graphics/spring.png").convert_alpha()
+        self.original_image = pygame.image.load("pygame_app/graphics/spring.png").convert_alpha()
 
         self.original_image = pygame.transform.scale(self.original_image, (30, 100))
         # self.original_image = pygame.transform.rotate(self.original_image, 30)

@@ -7,28 +7,28 @@ SIDE_MENU_WIDTH = 300
 TILE_SIZE = 64
 
 # graphics
-PLAY_BUTTON = "graphics/buttons/play_button.png"
-PAUSE_BUTTON = "graphics/buttons/pause_button.png"
+PLAY_BUTTON = "pygame_app/graphics/buttons/play_button.png"
+PAUSE_BUTTON = "pygame_app/graphics/buttons/pause_button.png"
 
-REPLAY_BUTTON_1 = "graphics/buttons/replay_button_1.png"
-REPLAY_BUTTON_2 = "graphics/buttons/replay_button_2.png"
+REPLAY_BUTTON_1 = "pygame_app/graphics/buttons/replay_button_1.png"
+REPLAY_BUTTON_2 = "pygame_app/graphics/buttons/replay_button_2.png"
 
-MENU_BUTTON = "graphics/buttons/menu_button.png"
+MENU_BUTTON = "pygame_app/graphics/buttons/menu_button.png"
 
-DAMPER_BUTTON = "graphics/buttons/damper_button.png"
+DAMPER_BUTTON = "pygame_app/graphics/buttons/damper_button.png"
 
-SILENCER_1 = "graphics/silencer.png"
-SILENCER_2 = "graphics/silencer_2.png"
+SILENCER_1 = "pygame_app/graphics/silencer.png"
+SILENCER_2 = "pygame_app/graphics/silencer_2.png"
 
-WHEEL = "graphics/wheel.png"
-DOT = "graphics/dot.png"
-BLOCK_WHEEL = "graphics/block_wheel.png"
+WHEEL = "pygame_app/graphics/wheel.png"
+DOT = "pygame_app/graphics/dot.png"
+BLOCK_WHEEL = "pygame_app/graphics/block_wheel.png"
 
-DAMPED_VIBRATIONS_IMAGE = "graphics/damped_vibrations.png"
-FORCED_VIBRATIONS_IMAGE = "graphics/forced_vibrations.png"
-DYNAMIC_DAMPER_IMAGE = "graphics/dynamic_damper.png"
+DAMPED_VIBRATIONS_IMAGE = "pygame_app/graphics/damped_vibrations.png"
+FORCED_VIBRATIONS_IMAGE = "pygame_app/graphics/forced_vibrations.png"
+DYNAMIC_DAMPER_IMAGE = "pygame_app/graphics/dynamic_damper.png"
 
-GRAPH = "graphics/graph.png"
+GRAPH = "pygame_app/graphics/graph.png"
 
 
 # Screen scale attributes
