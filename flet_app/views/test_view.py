@@ -6,33 +6,23 @@ import matplotlib.pyplot as plt
 import io
 from PIL import Image as PilImage
 import base64
+from flet.matplotlib_chart import MatplotlibChart
 from flet_app.classes.timer import Timer
+from flet_app.classes.input_slider import SliderWithText
+from flet_app.classes.animation import DampedVibrationAnimator, damped_vibrations
 import json
+
 
 with open("flet_app/views/widgets_config.json") as f:
     config = json.load(f)
 
-def damped_vibrations(start_y, t, k, m, n):
-    w_0 = np.sqrt(k / m)
+import numpy as np
 
-    b = n / (2 * m)
 
-    try:
-        w = np.sqrt((w_0**2) - (b / (2 * m)) ** 2)
-        w_t = np.sqrt(w**2 - b**2)
-    except:
-        w = 0
-        w_t = np.sqrt(w**2 - b**2)
-    if w_0 == 0:
-        y = start_y
-    else:
-        y = start_y * np.exp((-b / (2 * m)) * t) * np.cos(w * t)
 
-    return y, w, w_t
 
 def home_view(page: ft.Page):
 
-    timer = Timer()
 
     def change_language(e):
         selected_lang_code = dropdown.value
@@ -40,18 +30,11 @@ def home_view(page: ft.Page):
         page.clean()
         home_view(page)
 
-    def update_checkbox(selected, checkboxes):
+    def update_checkbox(selected, checkboxes, controls):
         for checkbox in checkboxes:
             if checkbox != selected:
                 checkbox.value = False
-        update_side_bar()
-        page.update()
-
-    def update_side_bar():
-        # Show or hide sidebars based on checkbox values
-        side_bar_main_content1.visible = checkbox1.value
-        side_bar_main_content2.visible = checkbox2.value
-        side_bar_main_content3.visible = checkbox3.value
+        side_bar_main.content.controls = controls
         page.update()
 
 
@@ -61,34 +44,19 @@ def home_view(page: ft.Page):
         # Generate a plot using Matplotlib
         fig, ax = plt.subplots()
         time = np.linspace(0, 10, 10000)
-        start_y = 1
-        k = sliders[2].controls[1].value
-        m = sliders[3].controls[1].value
-        n = sliders[1].controls[1].value
+        parameters = sliders_dict["damped_vibrations"]
 
-        y_values = [damped_vibrations(start_y, t, k, m, n)[0] for t in time]
+        y_values = [damped_vibrations(t, parameters)[0] for t in time]
         ax.plot(time, y_values)
 
-        # Save the plot to a BytesIO buffer
-        buf = io.BytesIO()
-        plt.savefig(buf, format="png")
-        buf.seek(0)
+        # Set axis labels and legend
+        ax.set_xlabel("Time (s)")
+        ax.set_ylabel("Amplitude")
+        ax.legend(title="Damped Vibrations")
 
-        # Convert the image to base64
-        pil_image = PilImage.open(buf)
-        img_byte_arr = io.BytesIO()
-        pil_image.save(img_byte_arr, format='PNG')
-        img_byte_arr = img_byte_arr.getvalue()
-
-        # Encode as base64
-        img_base64 = base64.b64encode(img_byte_arr).decode('utf-8')
-
-        # Create the Flet image component from the base64 string
-        flet_image = ft.Image(src_base64=img_base64, width=1000, height=100)
-
-        # Add the image to the page
-        graph_bar.content = flet_image
-        page.update()
+        # Update the graph bar with the new chart
+        graph_bar.content = MatplotlibChart(fig, expand=True)
+        graph_bar.update()
 
 
     dropdown_options = [
@@ -106,73 +74,48 @@ def home_view(page: ft.Page):
     checkbox1 = ft.Checkbox(
         label=language.get("damped_vibrations"),
         value=True,
-        on_change=lambda e: update_checkbox(checkbox1, [checkbox1, checkbox2, checkbox3]),
+        on_change=lambda e: update_checkbox(checkbox1, [checkbox1, checkbox2, checkbox3], sliders[0:4]),
     )
     checkbox2 = ft.Checkbox(
         label=language.get("forced_damped_vibrations"),
         value=False,
-        on_change=lambda e: update_checkbox(checkbox2, [checkbox1, checkbox2, checkbox3]),
+        on_change=lambda e: update_checkbox(checkbox2, [checkbox1, checkbox2, checkbox3], sliders[4:9]),
     )
     checkbox3 = ft.Checkbox(
         label=language.get("dynamic_vibration_absorber"),
         value=False,
-        on_change=lambda e: update_checkbox(checkbox3, [checkbox1, checkbox2, checkbox3]),
+        on_change=lambda e: update_checkbox(checkbox3, [checkbox1, checkbox2, checkbox3], sliders[9:]),
     )
 
-    def create_slider_and_text(min_val, max_val, default_val, label):
-        # Create a slider
-        slider = ft.Slider(min=min_val, max=max_val, value=default_val)
-
-        # Create a text field with initial value as slider's value
-        text_field = ft.TextField(value=str(default_val), width=90)
-
-        # Function to update the text field when the slider value changes
-        def on_slider_change(e):
-            text_field.value = str(round(slider.value, 2))  # Sync slider value with text field
-            timer.value = 0
-            update_graph()
-            text_field.update()
-
-        # Function to update the slider when the text field value changes
-        def on_text_change(e):
-            try:
-                # Ensure the input is valid before updating the slider
-                new_value = float(text_field.value)
-                if min_val <= new_value <= max_val:
-                    slider.value = new_value  # Sync text field value with slider
-                    timer.value = 0
-                    update_graph()
-                    slider.update()
-            except ValueError:
-                pass  # Ignore if the input is not a valid float
-
-        # Bind event handlers for both slider and text field
-        slider.on_change = on_slider_change
-        text_field.on_change = on_text_change
-
-        # Return a row with a label, slider, and text field
-        return ft.Row(controls=[ft.Text(value=label, width=100), slider, text_field])
+    sliders_dict = {}
 
     def create_sliders_from_json(data):
         rows = []
-        
+
         # Iterate over each level in the JSON data
         for level_name, controls in data.items():
             rows.append(ft.Text(value=level_name, style="titleMedium"))  # Section title
-            
+
+            sliders_dict[level_name] = {}
+
             # Iterate over the individual control elements
             for control_name, control_data in controls.items():
                 min_val = control_data["min"]
                 max_val = control_data["max"]
                 default_val = control_data["default_value"]
-                
-                # Create slider and text field for each control
-                row = create_slider_and_text(min_val, max_val, default_val, control_name)
+
+                slider_with_text = SliderWithText(
+                    min_val, max_val, default_val, control_name
+                )
+                sliders_dict[level_name][control_name] = slider_with_text
+                row = slider_with_text.create_row()
                 rows.append(row)  # Add the row to the list
-        
+
         return rows
 
     sliders = create_sliders_from_json(config)
+
+
 
     side_bar_top = ft.Container(
         content=ft.Column(
@@ -188,7 +131,7 @@ def home_view(page: ft.Page):
         padding=10
     )
 
-    side_bar_main_content1 = ft.Container(
+    side_bar_main = ft.Container(
         content=ft.Column(
             controls=sliders[0:4]
         ),
@@ -197,28 +140,6 @@ def home_view(page: ft.Page):
         padding=10,
         visible=True  # Initially visible
     )
-
-    side_bar_main_content2 = ft.Container(
-        content=ft.Column(
-            controls=sliders[4:9]
-        ),
-        width=400,
-        bgcolor=ft.colors.AMBER,
-        padding=10,
-        visible=False
-    )
-
-    side_bar_main_content3 = ft.Container(
-        content=ft.Column(
-            controls=sliders[9:]
-        ),
-        width=400,
-        bgcolor=ft.colors.AMBER,
-        padding=10,
-        visible=False
-    )
-
-
 
 
     nav_bar = ft.Container(
@@ -237,17 +158,7 @@ def home_view(page: ft.Page):
         padding=10,
     )
 
-    async def animate_rectangle(rectangle):
-        amplitude = 2
-        
 
-        while True:
-            timer.value += 0.01
-            rectangle.left = 300 + damped_vibrations(amplitude, timer.value, sliders[2].controls[1].value, sliders[3].controls[1].value, sliders[1].controls[1].value)[0]*100
-            rectangle.update()
-            time_text.value = timer.get_formatted_time()
-            time_text.update()
-            await asyncio.sleep(0.01)
 
     rectangle = ft.Container(
         bgcolor=ft.colors.BLACK,
@@ -262,8 +173,8 @@ def home_view(page: ft.Page):
         color=ft.colors.WHITE,
         size=16,
         # Pozycjonowanie w prawym dolnym rogu kontenera
-        right=10,
-        bottom=10,
+        left=10,
+        top=10,
     )
 
     # Main content
@@ -330,9 +241,7 @@ def home_view(page: ft.Page):
                     ft.Column(
                         controls=[
                             side_bar_top,
-                            side_bar_main_content1,
-                            side_bar_main_content2,
-                            side_bar_main_content3
+                            side_bar_main
                         ]
                     )
                 ],
@@ -341,10 +250,10 @@ def home_view(page: ft.Page):
         ],
         expand=True
     )
-
+    
+    animation = DampedVibrationAnimator(rectangle,sliders_dict,time_text)
     page.add(layout)
-    update_side_bar()
-    # Start the animation
-    page.add(ft.ElevatedButton("Start Animation", on_click=lambda e: asyncio.run(animate_rectangle(rectangle))))
+
+    page.add(ft.ElevatedButton("Start Animation", on_click=lambda e: asyncio.run(animation.start_animation())))
     page.add(ft.ElevatedButton("Plot Graph", on_click=lambda e: update_graph()))
 

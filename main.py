@@ -12,3 +12,4 @@ def main(page: ft.Page):
 
 # Uruchomienie aplikacji
 ft.app(target=main)
+#aa

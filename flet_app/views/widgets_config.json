@@ -1,11 +1,11 @@
 {
     "damped_vibrations": {
-        "damping": {"min": 0, "max": 10, "default_value": 5},
-        "spring": {"min": 0, "max": 5000, "default_value": 2500},
+        "damping_coefficient": {"min": 0, "max": 10, "default_value": 5},
+        "spring_constant": {"min": 0, "max": 5000, "default_value": 2500},
         "mass": {"min": 0.1, "max": 2, "default_value": 1.05}
     },
     "forced_damped_vibrations": {
-        "damping": {"min": 0, "max": 20, "default_value": 10},
+        "damping_coefficient": {"min": 0, "max": 20, "default_value": 10},
         "excitation": {"min": 0, "max": 50, "default_value": 25},
         "spring": {"min": 75, "max": 200, "default_value": 137.5},
         "mass": {"min": 1, "max": 5, "default_value": 3}
