@@ -18,18 +18,22 @@ class Timer:
         return "{:.2f}".format(self.value)
 
     async def start(self):
-        self.running = True
-        start_time = time.time()
-        while self.running:
-            await asyncio.sleep(0.02)
-            current_time = time.time()
-            self.value += current_time - start_time
-            start_time = current_time
-            if self.on_change_callback:
-                self.on_change_callback(self.value)
+        if self.running == True:
+            pass
+        else:
+            self.running = True
+            start_time = time.time()
+            while self.running:
+                await asyncio.sleep(0.01)
+                current_time = time.time()
+                self.value += current_time - start_time
+                start_time = current_time
+                if self.on_change_callback:
+                    self.on_change_callback(self.value)
 
-    def reset(self):
+    async def reset(self):
         self.running = False
+        await asyncio.sleep(0.02)
         self.value = 0
         if self.on_change_callback:
             self.on_change_callback(self.value)

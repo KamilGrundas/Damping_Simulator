@@ -9,18 +9,16 @@ class DampedVibrationAnimator:
         self.timer = Timer()
         self.time_text = time_text
         self.amplitude = 2
+        self.timer.on_change(self.animate_rectangle)
 
     def animate_rectangle(self, time):
         displacement = damped_vibrations(time, self.sliders_dict)[0]
-        self.rectangle.left = 300 + displacement * 100
+        self.rectangle.top = 300 + displacement * 100
         self.rectangle.update()
-
         self.time_text.value = self.timer.get_formatted_time()
         self.time_text.update()
 
-    async def start_animation(self):
-        self.timer.on_change(self.animate_rectangle)
-        await self.timer.start()
+
 
 
 def damped_vibrations(time, parameters):

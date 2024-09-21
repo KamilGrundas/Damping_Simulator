@@ -90,7 +90,7 @@ def home_view(page: ft.Page):
         rows = []
 
         for level_name, controls in data.items():
-            rows.append(ft.Text(value=level_name, style="titleMedium"))
+            rows.append(ft.Text(value=language.get(level_name), style="titleMedium"))
 
             sliders_dict[level_name] = {}
 
@@ -143,7 +143,7 @@ def home_view(page: ft.Page):
             ],
             alignment="spaceBetween",
         ),
-        height=100,
+        height=70,
         bgcolor=ft.colors.BLUE,
         padding=10,
     )
@@ -152,7 +152,6 @@ def home_view(page: ft.Page):
         bgcolor=ft.colors.BLACK,
         width=100,
         height=100,
-        left=(1000 - 100) // 2,
         top=20,
     )
 
@@ -165,11 +164,14 @@ def home_view(page: ft.Page):
     )
 
     main = ft.Container(
-        content=ft.Stack(controls=[rectangle, time_text], width=1000, height=500),
+        content=ft.Stack(
+            controls=[rectangle, time_text],
+            alignment=ft.alignment.top_center,
+        ),
         expand=True,
-        height=900,
+        height=1000,
         bgcolor=ft.colors.LIGHT_GREEN,
-        padding=10,
+        padding=10
     )
 
     graph_bar = ft.Container(
@@ -186,7 +188,11 @@ def home_view(page: ft.Page):
                 controls=[
                     ft.Container(content=main, expand=True),
                     ft.Column(
-                        controls=[side_bar_top, side_bar_main],
+                        controls=[side_bar_top, side_bar_main,
+                                  ft.ElevatedButton("Plot Graph", on_click=lambda e: update_graph()),
+                                  ft.ElevatedButton("Reset", on_click=lambda e: asyncio.run(animation.timer.reset())),
+                                  ft.ElevatedButton("Start", on_click=lambda e: asyncio.run(animation.timer.start())),
+                                  ],
                         alignment=ft.MainAxisAlignment.START,
                     ),
                 ],
@@ -201,10 +207,3 @@ def home_view(page: ft.Page):
     page.add(layout)
     page.scroll = True
 
-    page.add(
-        ft.ElevatedButton(
-            "Start Animation",
-            on_click=lambda e: asyncio.run(animation.start_animation()),
-        )
-    )
-    page.add(ft.ElevatedButton("Plot Graph", on_click=lambda e: update_graph()))
