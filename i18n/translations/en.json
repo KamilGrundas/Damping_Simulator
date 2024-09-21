@@ -1,6 +1,8 @@
 {
+    "page_title": "Page title",
     "greeting": "Welcome",
     "language": "Language",
+    "type_of_vibration": "Type of vibration",
     "damped_vibrations": "Damped vibrations",
     "forced_damped_vibrations": "Forced damped vibrations",
     "dynamic_vibration_absorber": "Dynamic vibration absorber",

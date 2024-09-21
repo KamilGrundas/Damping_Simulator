@@ -19,8 +19,6 @@ class DampedVibrationAnimator:
         self.time_text.update()
 
 
-
-
 def damped_vibrations(time, parameters):
     spring_constant = parameters["spring_constant"].get_value()
     mass = parameters["mass"].get_value()

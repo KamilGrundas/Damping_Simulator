@@ -1,7 +1,18 @@
-{
-    "greeting":"Witaj",
-    "language":"Język",
-    "damped_vibrations": "Damped pl vibrations",
-    "forced_damped_vibrations": "Forced damped vibrations",
-    "dynamic_vibration_absorber": "Dynamic vibration absorber"
+{ 
+    "page_title": "Tytuł strony",
+    "greeting": "Witamy", 
+    "language": "Język", 
+    "type_of_vibration": "Rodzaj drgań", 
+    "damped_vibrations": "Drgania tłumione", 
+    "forced_damped_vibrations": "Drgania wymuszone tłumione", 
+    "dynamic_vibration_absorber": "Dynamiczny pochłaniacz drgań", 
+    "damping_coefficient": "Współczynnik tłumienia", 
+    "spring_constant": "Stała sprężystości", 
+    "mass": "Masa", 
+    "excitation": "Wymuszenie", 
+    "spring": "Sprężyna", 
+    "mass1": "Masa 1", 
+    "spring1": "Sprężyna 1", 
+    "mass2": "Masa 2", 
+    "spring2": "Sprężyna 2" 
 }
