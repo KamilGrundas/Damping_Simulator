@@ -127,6 +127,7 @@ class Level_3:
         self.sliders.add(self.mass_1_slider)
         self.sliders.add(self.elasticity_level_2_slider)
         self.sliders.add(self.mass_2_slider)
+
     def input(self):
         keys = pygame.key.get_pressed()
 
@@ -157,8 +158,12 @@ class Level_3:
         )
 
         self.display_surface.blit(parameters, (1010, 225))
-        self.display_surface.blit(parameters2, (self.block.rect.centerx - 20, self.block.rect.centery - 15))
-        self.display_surface.blit(parameters3, (self.spring.rect.centerx + 20, self.spring.rect.centery))
+        self.display_surface.blit(
+            parameters2, (self.block.rect.centerx - 20, self.block.rect.centery - 15)
+        )
+        self.display_surface.blit(
+            parameters3, (self.spring.rect.centerx + 20, self.spring.rect.centery)
+        )
 
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
@@ -180,7 +185,6 @@ class Level_3:
         self.controls.update()
         self.input()
 
-
         m1 = self.mass_1_slider.k
         k1 = self.elasticity_level_1_slider.k
         m2 = self.mass_2_slider.k
@@ -199,10 +203,10 @@ class Level_3:
         if self.start_button.is_playing == False:
             self.time += 0.01 * time_speed
 
-            self.block.move(dynamic_dumping(m1,k1,m2, k2, self.time)[0])
+            self.block.move(dynamic_dumping(m1, k1, m2, k2, self.time)[0])
             self.dynamic_dumper.rect.centery = (
                 int(
-                    (dynamic_dumping(m1,k1,m2, k2, self.time)[1] + 1)
+                    (dynamic_dumping(m1, k1, m2, k2, self.time)[1] + 1)
                     * ((480 - 285) / (1 + 1))
                     + 285
                 )

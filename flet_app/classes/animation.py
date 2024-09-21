@@ -1,8 +1,5 @@
 from flet_app.classes.timer import Timer
-import asyncio
 import numpy as np
-from typing import Optional
-
 
 
 class DampedVibrationAnimator:
@@ -13,21 +10,17 @@ class DampedVibrationAnimator:
         self.time_text = time_text
         self.amplitude = 2
 
-
-    def animate_rectangle(self,time):
+    def animate_rectangle(self, time):
         displacement = damped_vibrations(time, self.sliders_dict)[0]
-        self.rectangle.left = 300 + displacement * 100  # Przesunięcie prostokąta
+        self.rectangle.left = 300 + displacement * 100
         self.rectangle.update()
-           
-        self.time_text.value = self.timer.get_formatted_time()  # Aktualizacja tekstu czasu
+
+        self.time_text.value = self.timer.get_formatted_time()
         self.time_text.update()
 
     async def start_animation(self):
-        self.timer.on_change(self.animate_rectangle)    
+        self.timer.on_change(self.animate_rectangle)
         await self.timer.start()
-      
-            
-
 
 
 def damped_vibrations(time, parameters):
@@ -63,4 +56,3 @@ def damped_vibrations(time, parameters):
         )
 
     return displacement, damped_frequency, damped_frequency_with_correction
-

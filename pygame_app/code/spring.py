@@ -9,7 +9,9 @@ class Spring(pygame.sprite.Sprite):
         super().__init__(group)
 
         # Create an image surface with a transparent background
-        self.original_image = pygame.image.load("pygame_app/graphics/spring.png").convert_alpha()
+        self.original_image = pygame.image.load(
+            "pygame_app/graphics/spring.png"
+        ).convert_alpha()
 
         self.original_image = pygame.transform.scale(self.original_image, (30, 100))
         # self.original_image = pygame.transform.rotate(self.original_image, 30)
@@ -29,7 +31,7 @@ class Spring(pygame.sprite.Sprite):
             self.position = self.object.rect.top - self.rect.top
         else:
             self.rect.bottom = self.pos.y
-            self.position = self.rect.bottom - self.object.rect.bottom +5
+            self.position = self.rect.bottom - self.object.rect.bottom + 5
         try:
             self.animate_image = pygame.transform.scale(
                 self.original_image, (self.image.get_width(), self.position)

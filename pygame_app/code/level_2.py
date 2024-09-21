@@ -37,9 +37,7 @@ class Level_2:
 
         self.spring.rect.top = self.dynamic_block.rect.bottom
 
-
         self.spring.stretch(False)
-
 
         self.silencer_2.rect.top = self.dynamic_block.rect.bottom
 
@@ -72,8 +70,6 @@ class Level_2:
             2,
             1,
         )
-
-
 
         self.damp_slider = Slider(
             SLIDER_POSITIONS[2],
@@ -110,8 +106,6 @@ class Level_2:
             3,
         )
 
-
-
         self.block = Block(
             ((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 3, 680),
             self.all_sprites,
@@ -130,7 +124,7 @@ class Level_2:
         )
 
         self.silencer = Silencer(
-            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 3) - 30,430),
+            (((SCREEN_WIDTH - SIDE_MENU_WIDTH) / 3) - 30, 430),
             self.dynamic_block,
             self.all_sprites,
             SILENCER_1,
@@ -197,10 +191,20 @@ class Level_2:
             ("black"),
         )
 
-        self.display_surface.blit(parameters2, (self.dynamic_block.rect.centerx - 10, self.dynamic_block.rect.centery - 15))
-        self.display_surface.blit(parameters3, (self.spring.rect.centerx + 20, self.spring.rect.centery))
-        self.display_surface.blit(parameters4, (self.spring.rect.centerx - 100, self.silencer.rect.centery))
-    
+        self.display_surface.blit(
+            parameters2,
+            (
+                self.dynamic_block.rect.centerx - 10,
+                self.dynamic_block.rect.centery - 15,
+            ),
+        )
+        self.display_surface.blit(
+            parameters3, (self.spring.rect.centerx + 20, self.spring.rect.centery)
+        )
+        self.display_surface.blit(
+            parameters4, (self.spring.rect.centerx - 100, self.silencer.rect.centery)
+        )
+
         self.display_surface.blit(parameters, (1010, 225))
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
@@ -222,18 +226,14 @@ class Level_2:
         self.controls.update()
         self.input()
 
-        
-
         if self.menu_button.is_playing == False:
             self.menu = True
             self.menu_button.is_playing = True
-
 
         p = self.angular_velocity_slider.k
         h = self.damp_slider.k
         m = self.mass_slider.k
         k = self.elasticity_level_slider.k
-
 
         time_speed = self.time_speed_slider.k
 
@@ -245,14 +245,12 @@ class Level_2:
             # self.graph.take_points(self.time)
             self.time += 0.01 * time_speed
             self.graph.take_points(self.time)
-            self.dynamic_block.move_2(forced_vibrations(m,k,h,p,self.time)[0])
+            self.dynamic_block.move_2(forced_vibrations(m, k, h, p, self.time)[0])
 
-        
         self.silencer_2.rect.top = self.dynamic_block.rect.bottom
         self.spring.stretch(False)
         self.display_surface.fill("white")
         self.all_sprites.draw(self.display_surface)
-
 
         self.controls.draw(self.display_surface)
 

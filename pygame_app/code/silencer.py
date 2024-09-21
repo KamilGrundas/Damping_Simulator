@@ -29,5 +29,7 @@ class Silencer(pygame.sprite.Sprite):
         self.image = self.rotate_image.copy()
 
     def scale(self):
-        self.scale_image = pygame.transform.scale(self.image,(self.image.get_width(), 250))
+        self.scale_image = pygame.transform.scale(
+            self.image, (self.image.get_width(), 250)
+        )
         self.image = self.scale_image.copy()

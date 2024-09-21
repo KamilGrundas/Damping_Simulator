@@ -1,7 +1,16 @@
 {
-    "greeting":"Welcome",
-    "language":"Language",
+    "greeting": "Welcome",
+    "language": "Language",
     "damped_vibrations": "Damped vibrations",
     "forced_damped_vibrations": "Forced damped vibrations",
-    "dynamic_vibration_absorber": "Dynamic vibration absorber"
+    "dynamic_vibration_absorber": "Dynamic vibration absorber",
+    "damping_coefficient": "Damping coefficient",
+    "spring_constant": "Spring constant",
+    "mass": "Mass",
+    "excitation": "Excitation",
+    "spring": "Spring",
+    "mass1": "Mass 1",
+    "spring1": "Spring 1",
+    "mass2": "Mass 2",
+    "spring2": "Spring 2"
 }

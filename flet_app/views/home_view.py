@@ -10,13 +10,11 @@ def home_view(page: ft.Page):
         page.clean()
         home_view(page)
 
-
     def update_checkbox(selected, checkboxes):
         for checkbox in checkboxes:
             if checkbox != selected:
                 checkbox.value = False
         page.update()
-
 
     checkbox1 = ft.Checkbox(
         label=language.get("greeting"),
@@ -40,7 +38,6 @@ def home_view(page: ft.Page):
         ),
     )
 
-
     dropdown_options = [
         ft.dropdown.Option(key=list(lang.values())[0], text=list(lang.keys())[0])
         for lang in language.supported_languages["languages"]
@@ -49,17 +46,21 @@ def home_view(page: ft.Page):
     current_language = language.language
     dropdown = ft.Dropdown(
         label=language.get("language"),
-        options=dropdown_options, 
+        options=dropdown_options,
         value=current_language,
-        on_change=change_language
+        on_change=change_language,
     )
 
     page.add(
         ft.Row([dropdown], alignment=ft.MainAxisAlignment.END),
-        ft.Text("Witaj w aplikacji Flet!" if language.language == "pl" else "Welcome to the Flet app!"),
+        ft.Text(
+            "Witaj w aplikacji Flet!"
+            if language.language == "pl"
+            else "Welcome to the Flet app!"
+        ),
         checkbox1,
         checkbox2,
-        checkbox3
+        checkbox3,
     )
 
 

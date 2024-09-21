@@ -19,10 +19,7 @@ with open("flet_app/views/widgets_config.json") as f:
 import numpy as np
 
 
-
-
 def home_view(page: ft.Page):
-
 
     def change_language(e):
         selected_lang_code = dropdown.value
@@ -37,11 +34,8 @@ def home_view(page: ft.Page):
         side_bar_main.content.controls = controls
         page.update()
 
-
-
-    
     def update_graph():
-        # Generate a plot using Matplotlib
+
         fig, ax = plt.subplots()
         time = np.linspace(0, 10, 10000)
         parameters = sliders_dict["damped_vibrations"]
@@ -49,15 +43,12 @@ def home_view(page: ft.Page):
         y_values = [damped_vibrations(t, parameters)[0] for t in time]
         ax.plot(time, y_values)
 
-        # Set axis labels and legend
         ax.set_xlabel("Time (s)")
         ax.set_ylabel("Amplitude")
         ax.legend(title="Damped Vibrations")
 
-        # Update the graph bar with the new chart
         graph_bar.content = MatplotlibChart(fig, expand=True)
         graph_bar.update()
-
 
     dropdown_options = [
         ft.dropdown.Option(key=list(lang.values())[0], text=list(lang.keys())[0])
@@ -68,23 +59,29 @@ def home_view(page: ft.Page):
         label=language.get("language"),
         options=dropdown_options,
         value=current_language,
-        on_change=change_language
+        on_change=change_language,
     )
 
     checkbox1 = ft.Checkbox(
         label=language.get("damped_vibrations"),
         value=True,
-        on_change=lambda e: update_checkbox(checkbox1, [checkbox1, checkbox2, checkbox3], sliders[0:4]),
+        on_change=lambda e: update_checkbox(
+            checkbox1, [checkbox1, checkbox2, checkbox3], sliders[0:4]
+        ),
     )
     checkbox2 = ft.Checkbox(
         label=language.get("forced_damped_vibrations"),
         value=False,
-        on_change=lambda e: update_checkbox(checkbox2, [checkbox1, checkbox2, checkbox3], sliders[4:9]),
+        on_change=lambda e: update_checkbox(
+            checkbox2, [checkbox1, checkbox2, checkbox3], sliders[4:9]
+        ),
     )
     checkbox3 = ft.Checkbox(
         label=language.get("dynamic_vibration_absorber"),
         value=False,
-        on_change=lambda e: update_checkbox(checkbox3, [checkbox1, checkbox2, checkbox3], sliders[9:]),
+        on_change=lambda e: update_checkbox(
+            checkbox3, [checkbox1, checkbox2, checkbox3], sliders[9:]
+        ),
     )
 
     sliders_dict = {}
@@ -92,13 +89,11 @@ def home_view(page: ft.Page):
     def create_sliders_from_json(data):
         rows = []
 
-        # Iterate over each level in the JSON data
         for level_name, controls in data.items():
-            rows.append(ft.Text(value=level_name, style="titleMedium"))  # Section title
+            rows.append(ft.Text(value=level_name, style="titleMedium"))
 
             sliders_dict[level_name] = {}
 
-            # Iterate over the individual control elements
             for control_name, control_data in controls.items():
                 min_val = control_data["min"]
                 max_val = control_data["max"]
@@ -109,13 +104,11 @@ def home_view(page: ft.Page):
                 )
                 sliders_dict[level_name][control_name] = slider_with_text
                 row = slider_with_text.create_row()
-                rows.append(row)  # Add the row to the list
+                rows.append(row)
 
         return rows
 
     sliders = create_sliders_from_json(config)
-
-
 
     side_bar_top = ft.Container(
         content=ft.Column(
@@ -128,19 +121,16 @@ def home_view(page: ft.Page):
         ),
         width=400,
         bgcolor=ft.colors.AMBER,
-        padding=10
+        padding=10,
     )
 
     side_bar_main = ft.Container(
-        content=ft.Column(
-            controls=sliders[0:4]
-        ),
+        content=ft.Column(controls=sliders[0:4]),
         width=400,
         bgcolor=ft.colors.AMBER,
         padding=10,
-        visible=True  # Initially visible
+        visible=True,
     )
-
 
     nav_bar = ft.Container(
         content=ft.Row(
@@ -158,8 +148,6 @@ def home_view(page: ft.Page):
         padding=10,
     )
 
-
-
     rectangle = ft.Container(
         bgcolor=ft.colors.BLACK,
         width=100,
@@ -167,93 +155,56 @@ def home_view(page: ft.Page):
         left=(1000 - 100) // 2,
         top=20,
     )
-    # Tworzenie licznika czasu
+
     time_text = ft.Text(
         value="0.00",
         color=ft.colors.WHITE,
         size=16,
-        # Pozycjonowanie w prawym dolnym rogu kontenera
         left=10,
         top=10,
     )
 
-    # Main content
     main = ft.Container(
-        content=ft.Stack(
-            controls=[rectangle, time_text],
-            width=1000,
-            height=500
-        ),
+        content=ft.Stack(controls=[rectangle, time_text], width=1000, height=500),
         expand=True,
         height=900,
         bgcolor=ft.colors.LIGHT_GREEN,
-        padding=10
-    )
-
-
-    side_bar_top = ft.Container(
-        content=ft.Column(
-            controls=[
-                ft.Text(value="Side Bar", style="titleLarge"),
-                checkbox1,
-                checkbox2,
-                checkbox3,
-            ]
-        ),
-        width=400,
-        bgcolor=ft.colors.AMBER,
-        padding=10
-    )
-
-    nav_bar = ft.Container(
-        content=ft.Row(
-            controls=[
-                ft.Text(value="Navigation Bar", style="headlineSmall"),
-                dropdown,
-            ],
-            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-        ),
-        height=100,
-        bgcolor=ft.colors.BLUE,
         padding=10,
     )
 
-    # Graph bar
     graph_bar = ft.Container(
-        content=ft.Text(
-            value="Graph Bar",
-            style="titleMedium"
-        ),
+        content=ft.Text(value="Graph Bar", style="titleMedium"),
         height=700,
         bgcolor=ft.colors.LIGHT_BLUE,
-        padding=10
+        padding=10,
     )
 
-    # Layout
     layout = ft.Column(
         controls=[
             nav_bar,
             ft.Row(
                 controls=[
+                    ft.Container(content=main, expand=True),
                     ft.Column(
-                        controls = [main, graph_bar]
+                        controls=[side_bar_top, side_bar_main],
+                        alignment=ft.MainAxisAlignment.START,
                     ),
-                    ft.Column(
-                        controls=[
-                            side_bar_top,
-                            side_bar_main
-                        ]
-                    )
                 ],
-                expand=True
-            )
+                expand=True,
+                vertical_alignment=ft.CrossAxisAlignment.START,
+            ),
+            graph_bar,
         ],
-        expand=True
+        expand=True,
     )
-    
-    animation = DampedVibrationAnimator(rectangle,sliders_dict,time_text)
+    animation = DampedVibrationAnimator(rectangle, sliders_dict, time_text)
     page.add(layout)
+    page.scroll = True
 
-    page.add(ft.ElevatedButton("Start Animation", on_click=lambda e: asyncio.run(animation.start_animation())))
+    page.add(
+        ft.ElevatedButton(
+            "Start Animation",
+            on_click=lambda e: asyncio.run(animation.start_animation()),
+        )
+    )
     page.add(ft.ElevatedButton("Plot Graph", on_click=lambda e: update_graph()))
-

@@ -174,9 +174,15 @@ class Level:
         self.display_surface.blit(parameters2, (1010, 250))
         self.display_surface.blit(parameters3, (1010, 275))
         self.display_surface.blit(parameters4, (1010, 300))
-        self.display_surface.blit(parameters5, (self.circle.rect.centerx - 10, self.circle.rect.centery - 15))
-        self.display_surface.blit(parameters6, (self.spring.rect.centerx + 20, self.spring.rect.centery))
-        self.display_surface.blit(parameters7, (self.silencer.rect.centerx - 40, self.silencer.rect.centery))
+        self.display_surface.blit(
+            parameters5, (self.circle.rect.centerx - 10, self.circle.rect.centery - 15)
+        )
+        self.display_surface.blit(
+            parameters6, (self.spring.rect.centerx + 20, self.spring.rect.centery)
+        )
+        self.display_surface.blit(
+            parameters7, (self.silencer.rect.centerx - 40, self.silencer.rect.centery)
+        )
         fps_text = self.font.render(f"{fps}", True, ("black"))
         time_text = self.font.render(f"{TIME}: {round(self.time,2)}", True, ("black"))
         if self.show_fps == True:
@@ -205,7 +211,6 @@ class Level:
 
         self.controls.update()
         self.input()
-        
 
         self.spring.stretch(True)
         if self.start_button.is_playing == False:

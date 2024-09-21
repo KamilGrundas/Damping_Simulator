@@ -15,7 +15,7 @@ class Language:
             file_path = os.path.join("i18n", "languages.json")
             if not os.path.exists(file_path):
                 raise FileNotFoundError(f"Language file {file_path} does not exist.")
-            
+
             with open(file_path, "r", encoding="utf-8") as f:
                 logger.info(f"Languages loaded: {file_path}")
                 return json.load(f)
@@ -28,11 +28,11 @@ class Language:
             file_path = os.path.join("i18n", "translations", f"{self.language}.json")
             if not os.path.exists(file_path):
                 raise FileNotFoundError(f"Language file {file_path} does not exist.")
-            
+
             with open(file_path, "r", encoding="utf-8") as f:
                 logger.info(f"Language loaded: {file_path}")
                 return json.load(f)
-        
+
         except (FileNotFoundError, json.JSONDecodeError) as e:
             logger.error(f"Error loading language file: {e}")
             return {}
@@ -45,9 +45,12 @@ class Language:
     def get(self, key):
         value = self.translations.get(key)
         if value is None:
-            logger.warning(f"Translation key '{key}' not found for language '{self.language}'")
+            logger.warning(
+                f"Translation key '{key}' not found for language '{self.language}'"
+            )
             return key
         return value
+
 
 language = Language(settings.config["language"])
 print(language.supported_languages)
