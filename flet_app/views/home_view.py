@@ -21,7 +21,7 @@ def home_view(page: ft.Page):
 
     rectangle = ft.Container(
         bgcolor=ft.colors.BLACK,
-        width=100,
+        width=200,
         height=100,
         top=20,
     )
@@ -33,8 +33,25 @@ def home_view(page: ft.Page):
         left=10,
         top=10,
     )
+    def animate_spring(e):
+        if spring_image_container.height == 300:
+            spring_image_container.height = 200
+        else:
+            spring_image_container.height = 300
+        page.update()
 
-    main_content = MainContent(rectangle, time_text)
+    spring_image_container = ft.Container(
+        content=ft.Image(
+            src="/spring.png",
+            width=100,
+            height=300,
+        ),
+        width=100,
+        height=300,
+        animate=ft.animation.Animation(9500, ft.AnimationCurve.ELASTIC_OUT),
+    )
+
+    main_content = MainContent(rectangle,spring_image_container, time_text)
     graph_bar = GraphBar()
     navigation_bar = NavigationBar(on_language_change=change_language)
     side_bar = SideBar()
@@ -58,6 +75,7 @@ def home_view(page: ft.Page):
                                 "Reset",
                                 on_click=lambda e: asyncio.run(animation.timer.reset()),
                             ),
+                            ft.ElevatedButton("Animate Spring!", on_click=animate_spring),
                             ft.ElevatedButton(
                                 "Start",
                                 on_click=lambda e: asyncio.run(animation.timer.start()),
