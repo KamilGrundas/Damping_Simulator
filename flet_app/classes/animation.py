@@ -3,8 +3,9 @@ import numpy as np
 
 
 class DampedVibrationAnimator:
-    def __init__(self, rectangle, sliders_dict, time_text):
+    def __init__(self, rectangle, sliders_dict, time_text, spring):
         self.rectangle = rectangle
+        self.spring = spring
         self.sliders_dict = sliders_dict["damped_vibrations"]
         self.timer = Timer()
         self.time_text = time_text
@@ -13,6 +14,8 @@ class DampedVibrationAnimator:
 
     def animate_rectangle(self, time):
         displacement = damped_vibrations(time, self.sliders_dict)[0]
+        self.spring.height = 305 + displacement * 100
+        self.spring.update()
         self.rectangle.top = 300 + displacement * 100
         self.rectangle.update()
         self.time_text.value = self.timer.get_formatted_time()

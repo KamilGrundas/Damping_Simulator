@@ -33,22 +33,14 @@ def home_view(page: ft.Page):
         left=10,
         top=10,
     )
-    def animate_spring(e):
-        if spring_image_container.height == 300:
-            spring_image_container.height = 200
-        else:
-            spring_image_container.height = 300
-        page.update()
+
 
     spring_image_container = ft.Container(
         content=ft.Image(
             src="/spring.png",
-            width=100,
-            height=300,
         ),
         width=100,
         height=300,
-        animate=ft.animation.Animation(9500, ft.AnimationCurve.ELASTIC_OUT),
     )
 
     main_content = MainContent(rectangle,spring_image_container, time_text)
@@ -75,7 +67,6 @@ def home_view(page: ft.Page):
                                 "Reset",
                                 on_click=lambda e: asyncio.run(animation.timer.reset()),
                             ),
-                            ft.ElevatedButton("Animate Spring!", on_click=animate_spring),
                             ft.ElevatedButton(
                                 "Start",
                                 on_click=lambda e: asyncio.run(animation.timer.start()),
@@ -92,6 +83,6 @@ def home_view(page: ft.Page):
         expand=True,
     )
 
-    animation = DampedVibrationAnimator(rectangle, side_bar.sliders_dict, time_text)
+    animation = DampedVibrationAnimator(rectangle, side_bar.sliders_dict, time_text, spring_image_container)
     page.add(layout)
     page.scroll = True
