@@ -1,5 +1,6 @@
 { 
-    "page_title": "Tytuł strony",
+    "page_title": "Symulator tłumienia",
+    "select_vibration_type": "Wybierz typ wibracji",
     "greeting": "Witamy", 
     "language": "Język", 
     "type_of_vibration": "Rodzaj drgań", 

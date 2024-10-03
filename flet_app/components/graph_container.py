@@ -5,13 +5,13 @@ from flet.matplotlib_chart import MatplotlibChart
 from flet_app.classes.animation import damped_vibrations
 
 
-class GraphBar:
+class GraphContainer:
     def __init__(self):
-        self.view = self.create_graph_bar()
+        self.view = self.create_graph_container()
 
-    def create_graph_bar(self):
+    def create_graph_container(self):
         return ft.Container(
-            content=ft.Text(value="Graph Bar", style="titleMedium"),
+            expand=True,
             height=700,
             bgcolor=ft.colors.LIGHT_BLUE,
             padding=10,

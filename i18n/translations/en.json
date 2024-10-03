@@ -1,5 +1,6 @@
 {
-    "page_title": "Page title",
+    "page_title": "Damping Simulator",
+    "select_vibration_type": "Select vibration type",
     "greeting": "Welcome",
     "language": "Language",
     "type_of_vibration": "Type of vibration",

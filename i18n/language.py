@@ -53,4 +53,3 @@ class Language:
 
 
 language = Language(settings.config["language"])
-print(language.supported_languages)

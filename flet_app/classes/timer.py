@@ -4,7 +4,9 @@ from typing import Optional, Callable
 
 
 class Timer:
-    def __init__(self):
+    def __init__(self, graph, sliders_dict):
+        self.graph = graph
+        self.parameters = sliders_dict
         self.value: Optional[float] = 0
         self.running = False
         self.on_change_callback: Optional[Callable[[float], None]] = None
@@ -33,6 +35,7 @@ class Timer:
 
     async def reset(self):
         self.running = False
+        self.graph.update_graph(self.parameters)
         await asyncio.sleep(0.02)
         self.value = 0
         if self.on_change_callback:
