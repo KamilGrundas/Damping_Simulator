@@ -48,10 +48,14 @@ class SelectionBar:
     def create_navigation_bar(self):
         return ft.Container(
             content=ft.Row(
-                controls=[self.vibration_type_dropdown, self.language_dropdown],
+                controls=[self.vibration_type_dropdown,
+                          ft.Text(value="Damped vibrations simulator",
+                                  size=30,
+                                  color="#2efad8"), self.language_dropdown],
                 alignment="spaceBetween",
             ),
             height=70,
-            bgcolor=ft.colors.BLUE,
-            padding=10,
+            border_radius=10,
+            bgcolor="#0c1d2c",
+            padding=ft.padding.only(top=10,left=10,right=10),
         )

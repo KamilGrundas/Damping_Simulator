@@ -1,13 +1,15 @@
 import flet as ft
 from i18n.language import language
+from flet_app.classes.simulation import simulation
 from flet_app.classes.input_slider import SliderWithText
 import json
 import asyncio
-
+from flet_app.classes.animation import damped_vibrations
 
 class SideBar:
     def __init__(self, selected_vibration_type):
         self.selected_vibration_type = selected_vibration_type
+        self.simulation_points = []
         self.animation = None
         self.sliders_dict = {}
         self.load_config_and_create_sliders()
@@ -28,7 +30,8 @@ class SideBar:
                 max_val = control_data["max"]
                 default_val = control_data["default_value"]
                 slider_with_text = SliderWithText(
-                    min_val, max_val, default_val, control_name
+                    min_val, max_val, default_val, control_name,
+                    on_slider_change_callback=self.on_any_slider_change
                 )
                 self.sliders_dict[vibration_type][control_name] = slider_with_text
                 row = slider_with_text.create_row()
@@ -38,16 +41,16 @@ class SideBar:
     def create_side_bar(self):
         start_button = ft.IconButton(
             icon=ft.icons.PLAY_CIRCLE_ROUNDED,
-            icon_color=ft.colors.GREEN,
-            icon_size=100,
+            icon_color=ft.colors.WHITE,
+            icon_size=140,
             tooltip="Start",
             on_click=lambda e: asyncio.run(self.animation.timer.start()),
         )
 
         reset_button = ft.IconButton(
             icon=ft.icons.REPLAY_CIRCLE_FILLED_ROUNDED,
-            icon_color=ft.colors.GREEN,
-            icon_size=100,
+            icon_color=ft.colors.WHITE,
+            icon_size=140,
             tooltip="Reset",
             on_click=lambda e: asyncio.run(self.animation.timer.reset()),
         )
@@ -60,16 +63,14 @@ class SideBar:
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
             ),
-            bgcolor=ft.colors.AMBER,
-            padding=10,
+            bgcolor="#0f8186",
         )
 
         self.side_bar_main = ft.Container(
             content=ft.Column(
                 controls=self.option_sliders[self.selected_vibration_type], expand=True
             ),
-            bgcolor=ft.colors.AMBER,
-            padding=10,
+            bgcolor="#0f8186",
             visible=True,
             expand=True,
         )
@@ -85,3 +86,6 @@ class SideBar:
         self.side_bar_main.content.controls = self.option_sliders[vibration_type]
         self.side_bar_main.content.update()
         self.view.update()
+
+    async def on_any_slider_change(self, e):
+        await simulation.update_points(self.selected_vibration_type, self.sliders_dict[self.selected_vibration_type])

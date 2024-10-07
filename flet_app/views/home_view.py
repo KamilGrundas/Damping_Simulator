@@ -57,6 +57,8 @@ def home_view(page: ft.Page):
     initial_vibration_type = selection_bar.vibration_type_dropdown.value
     side_bar = SideBar(selected_vibration_type=initial_vibration_type)
 
+    print(side_bar.sliders_dict["damped_vibrations"]["damping_coefficient"])
+
     right_side = ft.Row(
         controls=[
             ft.Container(content=side_bar.view, width=400),
