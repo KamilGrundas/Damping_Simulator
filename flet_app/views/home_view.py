@@ -37,7 +37,7 @@ def home_view(page: ft.Page):
     animation_container = AnimationContainer(
         rectangle, spring_image_container, time_text
     )
-    graph_container = GraphContainer()
+    
 
     def change_language(e):
         selected_lang_code = selection_bar.language_dropdown.value
@@ -57,6 +57,7 @@ def home_view(page: ft.Page):
     initial_vibration_type = selection_bar.vibration_type_dropdown.value
     side_bar = SideBar(selected_vibration_type=initial_vibration_type)
 
+    graph_container = GraphContainer()
     print(side_bar.sliders_dict["damped_vibrations"]["damping_coefficient"])
 
     right_side = ft.Row(

@@ -1,6 +1,7 @@
 import flet as ft
 from i18n.language import language
 from flet_app.classes.simulation import simulation
+from flet_app.classes.graph import graph
 from flet_app.classes.input_slider import SliderWithText
 import json
 import asyncio
@@ -14,6 +15,7 @@ class SideBar:
         self.sliders_dict = {}
         self.load_config_and_create_sliders()
         self.view = self.create_side_bar()
+        asyncio.run(self.create_graph())
 
     def load_config_and_create_sliders(self):
         with open("flet_app/views/widgets_config.json") as f:
@@ -87,5 +89,11 @@ class SideBar:
         self.side_bar_main.content.update()
         self.view.update()
 
+    async def create_graph(self):
+        await simulation.update_points(self.selected_vibration_type, self.sliders_dict[self.selected_vibration_type])
+        graph.create_line_chart(simulation.current_points)
+
     async def on_any_slider_change(self, e):
         await simulation.update_points(self.selected_vibration_type, self.sliders_dict[self.selected_vibration_type])
+        graph.update_graph_data(simulation.current_points)
+        graph.line_chart.update()

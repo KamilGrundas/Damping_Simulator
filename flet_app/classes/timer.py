@@ -35,7 +35,7 @@ class Timer:
 
     async def reset(self):
         self.running = False
-        self.graph.update_graph(self.parameters)
+        # self.graph.update_graph(self.parameters)
         await asyncio.sleep(0.02)
         self.value = 0
         if self.on_change_callback:

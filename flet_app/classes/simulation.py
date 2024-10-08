@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Simulation():
     def __init__(self):
         self.current_points = []
@@ -11,7 +12,7 @@ class Simulation():
             case "damped_vibrations":
                 while time < 120:
                     self.current_points.append(self.damped_vibrations(time,parameters)[0])
-                    time += 0.1
+                    time += 0.01
                     
             case "forced_vibrations":
                 pass
