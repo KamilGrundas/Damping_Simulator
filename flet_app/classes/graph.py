@@ -2,7 +2,6 @@ import numpy as np
 import flet as ft
 
 
-
 class Graph:
     def __init__(self):
         self.line_chart = None
@@ -102,7 +101,6 @@ class Graph:
             ),
             tooltip_bgcolor=ft.colors.with_opacity(2, ft.colors.WHITE12),
         )
-
 
     def view(self):
         return self.line_chart

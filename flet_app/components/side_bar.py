@@ -1,17 +1,17 @@
 import flet as ft
 from i18n.language import language
 from flet_app.classes.simulation import simulation
+from flet_app.classes.animation import animator
 from flet_app.classes.graph import graph
 from flet_app.classes.input_slider import SliderWithText
 import json
 import asyncio
-from flet_app.classes.animation import damped_vibrations
+
 
 class SideBar:
     def __init__(self, selected_vibration_type):
         self.selected_vibration_type = selected_vibration_type
         self.simulation_points = []
-        self.animation = None
         self.sliders_dict = {}
         self.load_config_and_create_sliders()
         self.view = self.create_side_bar()
@@ -32,8 +32,11 @@ class SideBar:
                 max_val = control_data["max"]
                 default_val = control_data["default_value"]
                 slider_with_text = SliderWithText(
-                    min_val, max_val, default_val, control_name,
-                    on_slider_change_callback=self.on_any_slider_change
+                    min_val,
+                    max_val,
+                    default_val,
+                    control_name,
+                    on_slider_change_callback=self.on_any_slider_change,
                 )
                 self.sliders_dict[vibration_type][control_name] = slider_with_text
                 row = slider_with_text.create_row()
@@ -46,7 +49,7 @@ class SideBar:
             icon_color=ft.colors.WHITE,
             icon_size=140,
             tooltip="Start",
-            on_click=lambda e: asyncio.run(self.animation.timer.start()),
+            on_click=lambda e: asyncio.run(animator.start()),
         )
 
         reset_button = ft.IconButton(
@@ -54,7 +57,7 @@ class SideBar:
             icon_color=ft.colors.WHITE,
             icon_size=140,
             tooltip="Reset",
-            on_click=lambda e: asyncio.run(self.animation.timer.reset()),
+            on_click=lambda e: asyncio.run(animator.reset()),
         )
 
         side_bar_top = ft.Container(
@@ -90,10 +93,16 @@ class SideBar:
         self.view.update()
 
     async def create_graph(self):
-        await simulation.update_points(self.selected_vibration_type, self.sliders_dict[self.selected_vibration_type])
+        await simulation.update_points(
+            self.selected_vibration_type,
+            self.sliders_dict[self.selected_vibration_type],
+        )
         graph.create_line_chart(simulation.current_points)
 
     async def on_any_slider_change(self, e):
-        await simulation.update_points(self.selected_vibration_type, self.sliders_dict[self.selected_vibration_type])
+        await simulation.update_points(
+            self.selected_vibration_type,
+            self.sliders_dict[self.selected_vibration_type],
+        )
         graph.update_graph_data(simulation.current_points)
         graph.line_chart.update()

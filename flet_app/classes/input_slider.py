@@ -3,7 +3,9 @@ from i18n.language import language
 
 
 class SliderWithText:
-    def __init__(self, min_val, max_val, default_val, label, on_slider_change_callback=None):
+    def __init__(
+        self, min_val, max_val, default_val, label, on_slider_change_callback=None
+    ):
         self.min_val = min_val
         self.max_val = max_val
         self.default_val = default_val

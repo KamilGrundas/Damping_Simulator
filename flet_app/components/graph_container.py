@@ -2,7 +2,6 @@ import flet as ft
 from flet_app.classes.graph import graph
 
 
-
 class GraphContainer:
     def __init__(self):
         self.graph = None
@@ -14,7 +13,7 @@ class GraphContainer:
             height=700,
             bgcolor=ft.colors.LIGHT_BLUE,
             padding=10,
-            content=graph.view()
+            content=graph.view(),
         )
 
     def update_graph(self):

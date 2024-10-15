@@ -1,70 +1,89 @@
-from flet_app.classes.timer import Timer
-import numpy as np
+from flet_app.classes.simulation import simulation
+from typing import Optional
+import asyncio
+import flet as ft
+import time
 
 
-class DampedVibrationAnimator:
-    def __init__(self, rectangle, sliders_dict, time_text, spring, graph):
-        self.rectangle = rectangle
-        self.spring = spring
-        self.sliders_dict = sliders_dict["damped_vibrations"]
-        self.timer = Timer(graph, self.sliders_dict)
-        self.time_text = time_text
+class Animator:
+    BASE_WIDTH = 50
+    MIN_HEIGHT = 250
+    MAX_HEIGHT = 400
+
+    def __init__(self):
+        self.rectangle = ft.Container(
+            bgcolor=ft.colors.BLACK,
+            width=200,
+            height=100,
+            top=20,
+        )
+
+        self.spring = ft.Container(
+            content=ft.Image(src="/spring.png", fit=ft.ImageFit.FILL),
+            width=100,
+            height=300,
+        )
+
+        self.time_text = ft.Text(
+            value="0.0",
+            color=ft.colors.WHITE,
+            size=16,
+            left=10,
+            top=10,
+        )
+
         self.amplitude = 2
-        self.timer.on_change(self.animate_rectangle)
+        self.time: Optional[float] = 0
+        self.running = False
 
-    def animate_rectangle(self, time):
+    def get_time(self):
+        if self.time is not None:
+            return round(self.time, 2)
+        return None
 
-        displacement = damped_vibrations(time, self.sliders_dict)[0]
+    def get_formatted_time(self):
+        return "{:.1f}".format(self.time)
 
+    def update_displacement(self, time_int):
+        displacement = simulation.current_points[time_int]
         self.spring.height = 305 + displacement * 100
-        self.spring.update()
 
-        base_width = 50
-        min_height = 250
-        max_height = 400
-
-        current_height = max(min(self.spring.height, max_height), min_height)
-
-        self.spring.width = base_width * (max_height / current_height)
+        current_height = max(min(self.spring.height, self.MAX_HEIGHT), self.MIN_HEIGHT)
+        self.spring.width = self.BASE_WIDTH * (self.MAX_HEIGHT / current_height)
         self.spring.update()
 
         self.rectangle.top = 300 + displacement * 100
         self.rectangle.update()
 
-        self.time_text.value = self.timer.get_formatted_time()
+    def update_time_text(self):
+        self.time_text.value = self.get_formatted_time()
         self.time_text.update()
 
+    async def start(self):
+        if self.running:
+            return
+        self.running = True
+        i = 0
+        start_time = time.time()
+        while self.running:
+            await asyncio.sleep(0.005)
+            current_time = time.time()
+            self.time += current_time - start_time
+            start_time = current_time
+            i += 1
+            time_int = int(self.get_time() * 100)
+            if time_int >= len(simulation.current_points):
+                self.running = False
+                break
+            self.update_displacement(time_int)
+            if i == 20:
+                i = 0
+                self.update_time_text()
 
-def damped_vibrations(time, parameters):
-    spring_constant = parameters["spring_constant"].get_value()
-    mass = parameters["mass"].get_value()
-    damping_coefficient = parameters["damping_coefficient"].get_value()
-    initial_displacement = 3
+    async def reset(self):
+        self.running = False
+        self.time = 0
+        self.update_time_text()
 
-    natural_frequency = np.sqrt(spring_constant / mass)
 
-    damping_factor = damping_coefficient / (2 * mass)
-
-    try:
-        damped_frequency = np.sqrt(
-            (natural_frequency**2) - (damping_factor / (2 * mass)) ** 2
-        )
-        damped_frequency_with_correction = np.sqrt(
-            damped_frequency**2 - damping_factor**2
-        )
-    except:
-        damped_frequency = 0
-        damped_frequency_with_correction = np.sqrt(
-            damped_frequency**2 - damping_factor**2
-        )
-
-    if natural_frequency == 0:
-        displacement = initial_displacement
-    else:
-        displacement = (
-            initial_displacement
-            * np.exp((-damping_factor / (2 * mass)) * time)
-            * np.cos(damped_frequency * time)
-        )
-
-    return displacement, damped_frequency, damped_frequency_with_correction
+animator = Animator()
