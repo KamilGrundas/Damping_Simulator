@@ -104,5 +104,6 @@ class SideBar:
             self.selected_vibration_type,
             self.sliders_dict[self.selected_vibration_type],
         )
+        await animator.reset()
         graph.update_graph_data(simulation.current_points)
         graph.line_chart.update()
