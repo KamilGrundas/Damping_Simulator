@@ -3,33 +3,30 @@ import numpy as np
 
 class Simulation:
     def __init__(self):
-        self.current_points = []
-        self.time_step = 0.01
+        self.current_points = tuple()
+        self.simulation_time = 10
+        self.time_step = 0.002
 
-    async def update_points(self, vibrations_type, parameters):
-        self.current_points = []
-        time = 0
+    async def update_points(self, vibrations_type: str, parameters):
+        self.current_points = tuple()
         match vibrations_type:
             case "damped_vibrations":
-                while time < 120:
-                    self.current_points.append(
-                        self.damped_vibrations(time, parameters)[0]
-                    )
-                    time += self.time_step
+                self.current_points = tuple(
+                    self.damped_vibrations(time, parameters)[0]
+                    for time in np.arange(0, 10, self.time_step)
+                )
 
             case "forced_damped_vibrations":
-                while time < 120:
-                    displacement = self.forced_vibrations(time, parameters)[0]
-                    self.current_points.append(displacement)
-                    time += self.time_step
+                self.current_points = tuple(
+                    self.forced_vibrations(time, parameters)[0]
+                    for time in np.arange(0, 10, self.time_step)
+                )
 
             case "dynamic_vibration_absorber":
-                while time < 120:
-                    y1, y2, optimal_k2 = self.dynamic_vibration_absorber(
-                        time, parameters
-                    )
-                    self.current_points.append(y1)
-                    time += self.time_step
+                self.current_points = tuple(
+                    self.dynamic_vibration_absorber(time, parameters)[0]
+                    for time in np.arange(0, 10, self.time_step)
+                )
 
     def damped_vibrations(self, time, parameters):
         spring_constant = parameters["spring_constant"].get_value()

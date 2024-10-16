@@ -38,7 +38,7 @@ class Animator:
 
     def get_time(self):
         if self.time is not None:
-            return round(self.time, 2)
+            return round(self.time, 3)
         return None
 
     def get_formatted_time(self):
@@ -66,12 +66,12 @@ class Animator:
         i = 0
         start_time = time.time()
         while self.running:
-            await asyncio.sleep(0.005)
+            await asyncio.sleep(0.002)
             current_time = time.time()
             self.time += current_time - start_time
             start_time = current_time
             i += 1
-            time_int = int(self.get_time() * 100)
+            time_int = int(self.get_time() * 500)
             if time_int >= len(simulation.current_points):
                 self.running = False
                 break

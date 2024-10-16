@@ -22,7 +22,7 @@ class Graph:
         self.line_chart.update()
 
     def create_graph_data(self, y_values):
-        time = [round(i * 0.01, 2) for i in range(int(120 / 0.01) + 1)]
+        time = [round(i * 0.002, 3) for i in range(int(10 / 0.002) + 1)]
         extrema_indices = self.find_local_extrema(y_values)
         data_points = [
             ft.LineChartDataPoint(time[i], y_values[i]) for i in extrema_indices
