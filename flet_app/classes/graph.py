@@ -1,12 +1,13 @@
 import numpy as np
 import flet as ft
+from typing import List, Tuple
 
 
 class Graph:
     def __init__(self):
         self.line_chart = None
 
-    def update_graph_data(self, y_values):
+    def update_graph_data(self, y_values: Tuple[float]):
         data_points = self.create_graph_data(y_values)
 
         line_chart_data = ft.LineChartData(
@@ -15,13 +16,15 @@ class Graph:
             color=ft.colors.BLACK45,
             curved=True,
             stroke_cap_round=True,
+            prevent_curve_over_shooting=True,
+            prevent_curve_over_shooting_threshold=2,
         )
 
         self.line_chart.data_series = [line_chart_data]
 
         self.line_chart.update()
 
-    def create_graph_data(self, y_values):
+    def create_graph_data(self, y_values: List[float]) -> List[ft.LineChartDataPoint]:
         time = [round(i * 0.002, 3) for i in range(int(10 / 0.002) + 1)]
         extrema_indices = self.find_local_extrema(y_values)
         data_points = [
@@ -29,7 +32,7 @@ class Graph:
         ]
         return data_points
 
-    def find_local_extrema(self, y_values):
+    def find_local_extrema(self, y_values: List[float]) -> List[float]:
         extrema_indices = []
 
         if (y_values[0] > y_values[1]) or (y_values[0] < y_values[1]):
@@ -46,7 +49,7 @@ class Graph:
 
         return extrema_indices
 
-    def create_line_chart(self, y_values):
+    def create_line_chart(self, y_values: List[float]):
         data_points = self.create_graph_data(y_values)
 
         line_chart_data = ft.LineChartData(

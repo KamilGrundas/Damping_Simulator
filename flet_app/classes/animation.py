@@ -36,12 +36,12 @@ class Animator:
         self.time: Optional[float] = 0
         self.running = False
 
-    def get_time(self):
+    def get_time(self) -> float:
         if self.time is not None:
             return round(self.time, 3)
-        return None
+        return 0.0
 
-    def get_formatted_time(self):
+    def get_formatted_time(self) -> str:
         return "{:.1f}".format(self.time)
 
     def update_displacement(self, time_int):

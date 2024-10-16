@@ -5,12 +5,12 @@ from logs.log_config import logger
 
 
 class Language:
-    def __init__(self, language="en"):
+    def __init__(self, language: str = "en"):
         self.supported_languages = self.load_supported_languages()
         self.language = language
         self.translations = self.load_translations()
 
-    def load_supported_languages(self):
+    def load_supported_languages(self) -> dict:
         try:
             file_path = os.path.join("i18n", "languages.json")
             if not os.path.exists(file_path):
@@ -23,7 +23,7 @@ class Language:
             logger.error(f"Error loading languages file: {e}")
             return {}
 
-    def load_translations(self):
+    def load_translations(self) -> dict:
         try:
             file_path = os.path.join("i18n", "translations", f"{self.language}.json")
             if not os.path.exists(file_path):
@@ -42,7 +42,7 @@ class Language:
         self.translations = self.load_translations()
         logger.info(f"Language switched to {language}")
 
-    def get(self, key):
+    def get(self, key: str) -> str:
         value = self.translations.get(key)
         if value is None:
             logger.warning(

@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Tuple
 
 
 class Simulation:
@@ -7,7 +8,7 @@ class Simulation:
         self.simulation_time = 10
         self.time_step = 0.002
 
-    async def update_points(self, vibrations_type: str, parameters):
+    async def update_points(self, vibrations_type: str, parameters: dict):
         self.current_points = tuple()
         match vibrations_type:
             case "damped_vibrations":
@@ -28,7 +29,7 @@ class Simulation:
                     for time in np.arange(0, 10, self.time_step)
                 )
 
-    def damped_vibrations(self, time, parameters):
+    def damped_vibrations(self, time: float, parameters: dict) -> Tuple:
         spring_constant = parameters["spring_constant"].get_value()
         mass = parameters["mass"].get_value()
         damping_coefficient = parameters["damping_coefficient"].get_value()
@@ -62,13 +63,13 @@ class Simulation:
 
         return displacement, damped_frequency, damped_frequency_with_correction
 
-    def damped_vibrations_max(k, m, n):
-        w_0 = np.sqrt(k / m)
-        b = n / (2 * m)
-        bk = 2 * w_0 * m
-        return [b, bk]
+    # def damped_vibrations_max(k, m, n):
+    #     w_0 = np.sqrt(k / m)
+    #     b = n / (2 * m)
+    #     bk = 2 * w_0 * m
+    #     return [b, bk]
 
-    def forced_vibrations(self, time, parameters):
+    def forced_vibrations(self, time: float, parameters: dict) -> Tuple:
         mass = parameters["mass"].get_value()
         spring_constant = parameters["spring"].get_value()
         damping_coefficient = parameters["damping_coefficient"].get_value()
@@ -88,7 +89,7 @@ class Simulation:
 
         return displacement, p / w
 
-    def dynamic_vibration_absorber(self, time, parameters):
+    def dynamic_vibration_absorber(self, time: float, parameters: dict) -> Tuple:
         mass1 = parameters["mass1"].get_value()
         spring1 = parameters["spring1"].get_value()
         mass2 = parameters["mass2"].get_value()

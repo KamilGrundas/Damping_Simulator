@@ -23,9 +23,10 @@ def home_view(page: ft.Page):
         page.clean()
         home_view(page)
 
-    def change_vibration_type(e):
+    async def change_vibration_type(e):
         selected_vibration_type = selection_bar.vibration_type_dropdown.value
         side_bar.update_vibration_type(selected_vibration_type)
+        await side_bar.on_any_slider_change(e)
 
     selection_bar = SelectionBar(
         on_language_change=change_language,
