@@ -21,6 +21,7 @@ class SelectionBar:
             options=dropdown_options,
             value=current_language,
             on_change=on_language_change,
+            color=ft.colors.WHITE,
         )
 
     def create_vibration_dropdown(self, on_vibration_type_change):
@@ -43,6 +44,7 @@ class SelectionBar:
             options=dropdown_options,
             value="damped_vibrations",
             on_change=on_vibration_type_change,
+            color=ft.colors.WHITE,
         )
 
     def create_navigation_bar(self):
@@ -51,7 +53,9 @@ class SelectionBar:
                 controls=[
                     self.vibration_type_dropdown,
                     ft.Text(
-                        value="Damped vibrations simulator", size=30, color="#2efad8"
+                        value="Damped vibrations simulator",
+                        size=30,
+                        color=ft.colors.WHITE,
                     ),
                     self.language_dropdown,
                 ],

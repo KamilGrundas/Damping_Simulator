@@ -71,6 +71,7 @@ class SideBar:
                 alignment=ft.MainAxisAlignment.CENTER,
             ),
             bgcolor="#0f8186",
+            border_radius=10,
         )
 
         self.side_bar_main = ft.Container(
@@ -80,6 +81,8 @@ class SideBar:
             bgcolor="#0f8186",
             visible=True,
             expand=True,
+            border_radius=10,
+            padding=10,
         )
 
         return ft.Column(

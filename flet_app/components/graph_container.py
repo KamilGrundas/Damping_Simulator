@@ -11,9 +11,10 @@ class GraphContainer:
         return ft.Container(
             expand=True,
             height=700,
-            bgcolor=ft.colors.LIGHT_BLUE,
+            bgcolor=ft.colors.WHITE,
             padding=10,
             content=graph.view(),
+            border_radius=10,
         )
 
     def update_graph(self):

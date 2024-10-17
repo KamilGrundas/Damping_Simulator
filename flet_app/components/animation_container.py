@@ -26,6 +26,7 @@ class AnimationContainer:
         return ft.Container(
             content=animation_content,
             expand=True,
-            bgcolor=ft.colors.LIGHT_GREEN,
+            bgcolor=ft.colors.WHITE,
             padding=10,
+            border_radius=10,
         )

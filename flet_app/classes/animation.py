@@ -30,7 +30,7 @@ class Animator:
 
         self.time_text = ft.Text(
             value="0.0",
-            color=ft.colors.WHITE,
+            color=ft.colors.BLACK87,
             size=16,
             left=10,
             top=10,

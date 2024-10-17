@@ -28,7 +28,10 @@ class Graph:
         time = [round(i * 0.002, 3) for i in range(int(10 / 0.002) + 1)]
         extrema_indices = self.find_local_extrema(y_values)
         data_points = [
-            ft.LineChartDataPoint(time[i], y_values[i]) for i in extrema_indices
+            ft.LineChartDataPoint(
+                time[i], y_values[i], tooltip=(round(time[i], 3), round(y_values[i], 3))
+            )
+            for i in extrema_indices
         ]
         return data_points
 
@@ -64,31 +67,32 @@ class Graph:
             data_series=[line_chart_data],
             min_x=0,
             max_x=10,
-            min_y=min([dp.y for dp in data_points]),
-            max_y=max([dp.y for dp in data_points]),
+            min_y=-3,
+            max_y=3,
             expand=True,
             border=ft.border.all(1, ft.colors.with_opacity(0.2, ft.colors.ON_SURFACE)),
             horizontal_grid_lines=ft.ChartGridLines(
                 interval=0.5,
-                color=ft.colors.with_opacity(0.2, ft.colors.ON_SURFACE),
+                color=ft.colors.with_opacity(1, ft.colors.ON_SURFACE),
                 width=1,
             ),
             vertical_grid_lines=ft.ChartGridLines(
                 interval=1,
-                color=ft.colors.with_opacity(0.2, ft.colors.ON_SURFACE),
+                color=ft.colors.with_opacity(1, ft.colors.ON_SURFACE),
                 width=1,
             ),
             left_axis=ft.ChartAxis(
                 labels=[
                     ft.ChartAxisLabel(
-                        value=v,
-                        label=ft.Text(f"{v:.1f}", size=12, weight=ft.FontWeight.BOLD),
+                        value=y,
+                        label=ft.Text(
+                            f"{y:.0f}",
+                            size=12,
+                            weight=ft.FontWeight.BOLD,
+                            color=ft.colors.BLACK87,
+                        ),
                     )
-                    for v in np.linspace(
-                        min([dp.y for dp in data_points]),
-                        max([dp.y for dp in data_points]),
-                        5,
-                    )
+                    for y in range(3, -4, -1)
                 ],
                 labels_size=40,
             ),
@@ -96,13 +100,18 @@ class Graph:
                 labels=[
                     ft.ChartAxisLabel(
                         value=t,
-                        label=ft.Text(f"{t:.0f}", size=12, weight=ft.FontWeight.BOLD),
+                        label=ft.Text(
+                            f"{t:.0f}",
+                            size=12,
+                            weight=ft.FontWeight.BOLD,
+                            color=ft.colors.BLACK87,
+                        ),
                     )
                     for t in np.linspace(0, 10, 11)
                 ],
                 labels_size=32,
             ),
-            tooltip_bgcolor=ft.colors.with_opacity(2, ft.colors.WHITE12),
+            tooltip_bgcolor=ft.colors.with_opacity(2, ft.colors.GREY_100),
         )
 
     def view(self):
