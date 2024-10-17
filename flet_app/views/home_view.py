@@ -14,7 +14,11 @@ def home_view(page: ft.Page):
     page.title = language.get("page_title")
 
     animation_container = AnimationContainer(
-        animator.rectangle, animator.spring, animator.time_text
+        animator.rectangle,
+        animator.spring,
+        animator.rectangle2,
+        animator.spring2,
+        animator.time_text,
     )
 
     def change_language(e):
@@ -26,6 +30,14 @@ def home_view(page: ft.Page):
     async def change_vibration_type(e):
         selected_vibration_type = selection_bar.vibration_type_dropdown.value
         side_bar.update_vibration_type(selected_vibration_type)
+        if selected_vibration_type == "dynamic_vibration_absorber":
+            animator.rectangle2.visible = True
+            animator.spring2.visible = True
+        else:
+            animator.rectangle2.visible = False
+            animator.spring2.visible = False
+        animator.rectangle2.update()
+        animator.spring2.update()
         await side_bar.on_any_slider_change(e)
 
     selection_bar = SelectionBar(

@@ -5,6 +5,7 @@ from typing import Tuple
 class Simulation:
     def __init__(self):
         self.current_points = tuple()
+        self.current_points_dynamic_absorber = tuple()
         self.simulation_time = 10
         self.time_step = 0.002
 
@@ -26,6 +27,10 @@ class Simulation:
             case "dynamic_vibration_absorber":
                 self.current_points = tuple(
                     self.dynamic_vibration_absorber(time, parameters)[0]
+                    for time in np.arange(0, 10, self.time_step)
+                )
+                self.current_points_dynamic_absorber = tuple(
+                    self.dynamic_vibration_absorber(time, parameters)[1]
                     for time in np.arange(0, 10, self.time_step)
                 )
 

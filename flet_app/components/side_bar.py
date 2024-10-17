@@ -49,7 +49,9 @@ class SideBar:
             icon_color=ft.colors.WHITE,
             icon_size=140,
             tooltip="Start",
-            on_click=lambda e: asyncio.run(animator.start()),
+            on_click=lambda e: asyncio.run(
+                animator.start(self.selected_vibration_type)
+            ),
         )
 
         reset_button = ft.IconButton(
